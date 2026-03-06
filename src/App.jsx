@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+/* eslint-disable */
+import { useState, useMemo } from "react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -545,7 +546,6 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile}){
   const [tab,setTab]=useState("overview");
   const [verified,setVerified]=useState({});
   const [copied,setCopied]=useState(null);
-  const pt=PROFILE_TYPES.find(p=>p.id===profile?.type);
   const city=CITIES[cityKey];
 
   return(
@@ -847,8 +847,6 @@ export default function App(){
 
   const goCity=ck=>{setActiveCityKey(ck);setPage("city");setGlobalQuery("");setLineTab("all");setFilterScore(0);setFilterDiff("all");setSortBy("name");};
   const goStation=(s,ck)=>{setActiveStation(s);setActiveCityKey(ck||activeCityKey);setPage("station");};
-  const goBack=()=>{if(page==="station")setPage("city");else setPage("home");};
-
   // City-level filtered stations
   const cityStations=useMemo(()=>{
     if(!activeCityKey)return[];
@@ -966,7 +964,6 @@ export default function App(){
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))",gap:10,marginBottom:24}}>
               {CITY_KEYS.map(ck=>{
                 const city=CITIES[ck];const w=city.weather;
-                const totalStations=city.stations.length;
                 const excellentCount=city.stations.filter(s=>s.accessScore>=4).length;
                 return(
                   <button key={ck} onClick={()=>goCity(ck)} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"18px 16px",cursor:"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s",position:"relative",overflow:"hidden"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(59,130,246,0.45)";e.currentTarget.style.background="rgba(59,130,246,0.07)";e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.08)";e.currentTarget.style.background="rgba(255,255,255,0.03)";e.currentTarget.style.transform="translateY(0)";}}>
