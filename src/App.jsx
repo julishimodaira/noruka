@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -20,6 +20,50 @@ const LINE_COLOR = {
   "JR Hakodate Main":"#3b82f6","Toho Line":"#f59e0b","JR Kagoshima Line":"#ef4444",
   "Airport Line":"#8b5cf6",
 };
+
+
+// ─── LIVE WEATHER HOOK ───────────────────────────────────────────────────────
+function useWeather() {
+  const [weather, setWeather] = useState(WEATHER_FALLBACK);
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      const keys = Object.keys(CITY_COORDS);
+      const results = {};
+      await Promise.all(keys.map(async (city) => {
+        try {
+          const {lat, lng} = CITY_COORDS[city];
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weathercode,is_day&timezone=auto`;
+          const res = await fetch(url);
+          const data = await res.json();
+          const cur = data.current;
+          const wmo = WMO(cur.weathercode, cur.is_day);
+          const temp = Math.round(cur.temperature_2m);
+          const warn = wmo.warn;
+          results[city] = {
+            icon: wmo.icon,
+            temp: `${temp}°C`,
+            label: wmo.label,
+            warn,
+            note: warn ? WARN_NOTE[warn] : WARN_NOTE["null"],
+            live: true,
+          };
+        } catch(e) {
+          results[city] = WEATHER_FALLBACK[city];
+        }
+      }));
+      setWeather(results);
+      setLastUpdated(new Date());
+    };
+    fetchAll();
+    // Refresh every 30 minutes
+    const interval = setInterval(fetchAll, 30 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return {weather, lastUpdated};
+}
 
 const PROFILE_TYPES = [
   {id:"manual",icon:"🦽",label:"Manual Wheelchair"},
@@ -47,12 +91,44 @@ const PHRASES = [
 ];
 
 // ─── WEATHER ─────────────────────────────────────────────────────────────────
-const WEATHER = {
-  tokyo:{icon:"⛅",temp:"14°C",label:"Partly Cloudy",warn:null,note:"Good conditions."},
-  osaka:{icon:"🌧",temp:"16°C",label:"Light Rain",warn:"rain",note:"⚠️ Rain may affect outdoor ramps."},
-  kyoto:{icon:"☀️",temp:"12°C",label:"Clear",warn:null,note:"Good conditions."},
-  sapporo:{icon:"❄️",temp:"-2°C",label:"Snow",warn:"ice",note:"⚠️ Ice risk on ramps. Extra caution."},
-  fukuoka:{icon:"☀️",temp:"17°C",label:"Clear",warn:null,note:"Good conditions."},
+// City coordinates for Open-Meteo API (free, no key needed)
+const CITY_COORDS = {
+  tokyo:   {lat:35.6762, lng:139.6503},
+  osaka:   {lat:34.6937, lng:135.5023},
+  kyoto:   {lat:35.0116, lng:135.7681},
+  sapporo: {lat:43.0642, lng:141.3469},
+  fukuoka: {lat:33.5904, lng:130.4017},
+};
+
+// Weather code → emoji + label + warn type
+const WMO = (code, isDay=1) => {
+  if(code===0) return {icon:"☀️",label:"Clear",warn:null};
+  if(code<=2)  return {icon:isDay?"⛅":"🌙",label:"Partly Cloudy",warn:null};
+  if(code<=3)  return {icon:"☁️",label:"Overcast",warn:null};
+  if(code<=49) return {icon:"🌫",label:"Foggy",warn:null};
+  if(code<=59) return {icon:"🌦",label:"Drizzle",warn:"rain"};
+  if(code<=69) return {icon:"🌧",label:"Rain",warn:"rain"};
+  if(code<=79) return {icon:"❄️",label:"Snow",warn:"ice"};
+  if(code<=84) return {icon:"🌧",label:"Rain Showers",warn:"rain"};
+  if(code<=87) return {icon:"🌨",label:"Snow Showers",warn:"ice"};
+  if(code<=99) return {icon:"⛈",label:"Thunderstorm",warn:"storm"};
+  return {icon:"🌡",label:"Unknown",warn:null};
+};
+
+const WARN_NOTE = {
+  rain: "⚠️ Rain may affect outdoor ramps — allow extra time.",
+  ice:  "⚠️ Ice risk on ramps. Extra caution advised.",
+  storm:"⚠️ Storm conditions — check station alerts.",
+  null: "Good conditions for travel.",
+};
+
+// Fallback static weather if API is unavailable
+const WEATHER_FALLBACK = {
+  tokyo:   {icon:"⛅",temp:"14°C",label:"Partly Cloudy",warn:null,note:"Good conditions."},
+  osaka:   {icon:"☁️",temp:"16°C",label:"Cloudy",warn:null,note:"Good conditions."},
+  kyoto:   {icon:"☀️",temp:"12°C",label:"Clear",warn:null,note:"Good conditions."},
+  sapporo: {icon:"❄️",temp:"-2°C",label:"Snow",warn:"ice",note:"⚠️ Ice risk on ramps. Extra caution."},
+  fukuoka: {icon:"☀️",temp:"17°C",label:"Clear",warn:null,note:"Good conditions."},
 };
 
 // ─── DATA HELPERS ─────────────────────────────────────────────────────────────
@@ -285,7 +361,7 @@ const TOKYO_STATIONS = [
 const OTHER_CITIES = {
   osaka:{
     id:"osaka",name:"Osaka",nameJp:"大阪",emoji:"🏯",
-    weather:WEATHER.osaka,
+    weather:null,
     stations:[{
       id:"osaka-umeda",name:"Osaka/Umeda Station",nameJp:"大阪・梅田駅",lat:34.7024,lng:135.4959,
       lines:["JR Osaka Loop","Midosuji Line","Hankyu","Hanshin"],
@@ -329,7 +405,7 @@ const OTHER_CITIES = {
   },
   kyoto:{
     id:"kyoto",name:"Kyoto",nameJp:"京都",emoji:"⛩️",
-    weather:WEATHER.kyoto,
+    weather:null,
     stations:[{
       id:"kyoto-main",name:"Kyoto Station",nameJp:"京都駅",lat:34.9858,lng:135.7588,
       lines:["JR Tokaido Shinkansen","JR Kyoto Line","Karasuma Line"],
@@ -357,7 +433,7 @@ const OTHER_CITIES = {
   },
   sapporo:{
     id:"sapporo",name:"Sapporo",nameJp:"札幌",emoji:"❄️",
-    weather:WEATHER.sapporo,
+    weather:null,
     stations:[{
       id:"sapporo-main",name:"Sapporo Station",nameJp:"札幌駅",lat:43.0687,lng:141.3508,
       lines:["JR Hakodate Main","Namboku Line","Toho Line"],
@@ -386,7 +462,7 @@ const OTHER_CITIES = {
   },
   fukuoka:{
     id:"fukuoka",name:"Fukuoka",nameJp:"福岡",emoji:"🌊",
-    weather:WEATHER.fukuoka,
+    weather:null,
     stations:[{
       id:"hakata",name:"Hakata Station",nameJp:"博多駅",lat:33.5898,lng:130.4207,
       lines:["JR Shinkansen","JR Kagoshima Line","Airport Line"],
@@ -420,11 +496,11 @@ const OTHER_CITIES = {
 
 // ─── ALL CITIES CONFIG ────────────────────────────────────────────────────────
 const CITIES = {
-  tokyo:{id:"tokyo",name:"Tokyo",nameJp:"東京",emoji:"🗼",weather:WEATHER.tokyo,stations:TOKYO_STATIONS,desc:"60 stations · All Yamanote + major interchange"},
-  osaka:{...OTHER_CITIES.osaka,desc:`${OTHER_CITIES.osaka.stations.length} stations · Umeda, Namba, Tennoji`},
-  kyoto:{...OTHER_CITIES.kyoto,desc:`${OTHER_CITIES.kyoto.stations.length} stations · Kyoto, Shijo`},
-  sapporo:{...OTHER_CITIES.sapporo,desc:`${OTHER_CITIES.sapporo.stations.length} stations · Sapporo, Odori`},
-  fukuoka:{...OTHER_CITIES.fukuoka,desc:`${OTHER_CITIES.fukuoka.stations.length} stations · Hakata, Tenjin`},
+  tokyo:{id:"tokyo",name:"Tokyo",nameJp:"東京",emoji:"🗼",weather:null,stations:TOKYO_STATIONS,desc:"60 stations · All Yamanote + major interchange"},
+  osaka:{...OTHER_CITIES.osaka,weather:null,desc:`${OTHER_CITIES.osaka.stations.length} stations · Umeda, Namba, Tennoji`},
+  kyoto:{...OTHER_CITIES.kyoto,weather:null,desc:`${OTHER_CITIES.kyoto.stations.length} stations · Kyoto, Shijo`},
+  sapporo:{...OTHER_CITIES.sapporo,weather:null,desc:`${OTHER_CITIES.sapporo.stations.length} stations · Sapporo, Odori`},
+  fukuoka:{...OTHER_CITIES.fukuoka,weather:null,desc:`${OTHER_CITIES.fukuoka.stations.length} stations · Hakata, Tenjin`},
 };
 const CITY_KEYS = Object.keys(CITIES);
 const ALL_STATIONS = CITY_KEYS.flatMap(ck=>CITIES[ck].stations.map(s=>({...s,cityKey:ck,cityName:CITIES[ck].name})));
@@ -542,7 +618,7 @@ function ProfileModal({profile,onSave,onClose}){
 }
 
 // ─── STATION DETAIL ───────────────────────────────────────────────────────────
-function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile}){
+function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather,lastUpdated}){
   const [tab,setTab]=useState("overview");
   const [verified,setVerified]=useState({});
   const [copied,setCopied]=useState(null);
@@ -569,11 +645,11 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile}){
       </div>
 
       {/* Weather */}
-      {city.weather&&(
-        <div style={{display:"flex",alignItems:"center",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:10,background:city.weather.warn?"rgba(245,158,11,0.08)":"rgba(52,211,153,0.06)",border:`1px solid ${city.weather.warn?"rgba(245,158,11,0.25)":"rgba(52,211,153,0.16)"}`,color:city.weather.warn?"#fde68a":"#6ee7b7",fontSize:11}}>
-          <span style={{fontSize:16}}>{city.weather.icon}</span><span>{city.weather.note}</span>
+      {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(
+        <div style={{display:"flex",alignItems:"center",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:10,background:cw.warn?"rgba(245,158,11,0.08)":"rgba(52,211,153,0.06)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.25)":"rgba(52,211,153,0.16)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:11}}>
+          <span style={{fontSize:16}}>{cw.icon}</span><span>{cw.note}</span>{cw.live&&<span style={{fontSize:9,opacity:0.5,marginLeft:"auto"}}>Live</span>}
         </div>
-      )}
+      ):null;})()}
 
       {/* Profile tip */}
       {profile?.type==="power"&&<div style={{background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"#fde68a",marginBottom:9}}>⚡ Power wheelchair: Check elevator door widths. Charging may be available — ask staff.</div>}
@@ -841,6 +917,7 @@ export default function App(){
   const [globalSearch,setGlobalSearch]=useState("");
   const [showGlobalResults,setShowGlobalResults]=useState(false);
 
+  const {weather, lastUpdated} = useWeather();
   const profileType=PROFILE_TYPES.find(p=>p.id===profile?.type);
   const toggleFav=id=>setFavorites(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]);
   const isFav=id=>favorites.includes(id);
@@ -963,7 +1040,7 @@ export default function App(){
             <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:11}}>Select a City</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))",gap:10,marginBottom:24}}>
               {CITY_KEYS.map(ck=>{
-                const city=CITIES[ck];const w=city.weather;
+                const city=CITIES[ck];const w=weather[ck]||WEATHER_FALLBACK[ck];
                 const excellentCount=city.stations.filter(s=>s.accessScore>=4).length;
                 return(
                   <button key={ck} onClick={()=>goCity(ck)} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:18,padding:"18px 16px",cursor:"pointer",textAlign:"left",fontFamily:"inherit",transition:"all 0.2s",position:"relative",overflow:"hidden"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(59,130,246,0.45)";e.currentTarget.style.background="rgba(59,130,246,0.07)";e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="rgba(255,255,255,0.08)";e.currentTarget.style.background="rgba(255,255,255,0.03)";e.currentTarget.style.transform="translateY(0)";}}>
@@ -1129,7 +1206,7 @@ export default function App(){
 
         {/* ══ STATION PAGE ══ */}
         {page==="station"&&activeStation&&(
-          <StationDetail station={activeStation} cityKey={activeCityKey} onBack={()=>setPage("city")} isFav={isFav(activeStation.id)} onToggleFav={toggleFav} profile={profile}/>
+          <StationDetail station={activeStation} cityKey={activeCityKey} onBack={()=>setPage("city")} isFav={isFav(activeStation.id)} onToggleFav={toggleFav} profile={profile} weather={weather} lastUpdated={lastUpdated}/>
         )}
 
       </div>
