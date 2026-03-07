@@ -1566,6 +1566,15 @@ export default function App(){
           <div style={{display:"flex",gap:5,flexShrink:0,alignItems:"center"}}>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button><button onClick={()=>setShowLangMenu(v=>!v)} style={{background:"rgba(59,130,246,0.15)",border:"1px solid rgba(59,130,246,0.4)",borderRadius:9,color:"#fff",padding:"6px 10px",cursor:"pointer",fontSize:16,fontFamily:"inherit",fontWeight:700}}>🌐</button>
+              {showLangMenu&&(
+                <div onClick={e=>e.stopPropagation()} style={{position:"fixed",top:56,right:16,background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",zIndex:9999,minWidth:140,boxShadow:"0 8px 32px rgba(0,0,0,0.8)"}}>
+                  {[["en","🇬🇧","EN"],["ja","🇯🇵","JA"],["es","🇪🇸","ES"],["fr","🇫🇷","FR"],["ko","🇰🇷","KO"]].map(([code,flag,label])=>(
+                    <button key={code} onClick={()=>{setLang(code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"11px 16px",background:lang===code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===code?"#7dd3fc":"rgba(255,255,255,0.85)",cursor:"pointer",fontSize:14,fontFamily:"Space Grotesk,sans-serif",fontWeight:lang===code?700:400,textAlign:"left"}}>
+                      <span style={{fontSize:20}}>{flag}</span> {label}
+                    </button>
+                  ))}
+                </div>
+              )}
             <div style={{position:"relative",flexShrink:0}}>
               <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(59,130,246,0.15)",border:"1px solid rgba(59,130,246,0.4)",borderRadius:9,color:"#fff",padding:"6px 10px",cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",gap:5,fontFamily:"'Space Grotesk',sans-serif",fontWeight:700}}>
                 {LANGS.find(l=>l.code===lang)?.flag} <span style={{fontSize:11,color:"#7dd3fc"}}>{LANGS.find(l=>l.code===lang)?.label}</span>
