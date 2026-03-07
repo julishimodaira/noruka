@@ -65,6 +65,357 @@ function useWeather() {
   return {weather, lastUpdated};
 }
 
+
+// ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
+const LANGS = [
+  {code:"en", flag:"🇬🇧", label:"EN"},
+  {code:"ja", flag:"🇯🇵", label:"JA"},
+  {code:"es", flag:"🇪🇸", label:"ES"},
+  {code:"fr", flag:"🇫🇷", label:"FR"},
+  {code:"ko", flag:"🇰🇷", label:"KO"},
+];
+
+const T = {
+  en: {
+    tagline: t.tagline,
+    hero1: "Navigate Japan",
+    hero2: "with confidence",
+    heroSub: "Elevators · Wheelchair cars · Platform gaps · Emergency support",
+    planBtn: "✨ Plan My Accessible Journey",
+    planBtnFloat: "✨ Plan Trip",
+    searchPlaceholder: "Search any station across Japan…",
+    selectCity: t.selectCity,
+    whatsIncluded: t.whatsIncluded,
+    stations: "stations",
+    favourites: "Favourites",
+    showFavOnly: "Favourites only",
+    elevatorStatus: "Elevator Status",
+    elevatorSub: "Live community verification",
+    wheelchairCars: "Wheelchair Cars",
+    wheelchairCarsSub: "Exact car & boarding spot",
+    platformGaps: "Platform Gaps",
+    platformGapsSub: "Colour-coded severity",
+    crowding: "Crowding Charts",
+    crowdingSub: "Best times to travel",
+    weatherAlerts: "Weather Alerts",
+    weatherAlertsSub: "Rain/ice ramp warnings",
+    restAreas: "Rest Areas",
+    restAreasSub: "Seating & charging",
+    taxi: "Accessible Taxi",
+    taxiSub: "WAV rank locations",
+    medical: "Medical Nearby",
+    medicalSub: "Closest accessible clinics",
+    hotels: "Hotels",
+    hotelsSub: "Accessibility ratings",
+    emergency: "Emergency Card",
+    emergencySub: "Japanese SOS card",
+    phrases: "Phrase Cards",
+    phrasesSub: "Medical & navigation",
+    profile: "My Profile",
+    profileSub: "Personalised to your needs",
+    journeyTitle: "✨ AI Journey Planner",
+    journeyDesc: "{t.journeyDesc}",
+    from: "From",
+    to: "To",
+    anythingElse: "Anything else?",
+    anythingElseOpt: "(optional)",
+    planningFor: "Planning for",
+    planJourneyBtn: "✨ Plan My Accessible Journey",
+    planning: "✨ Planning your route…",
+    yourRoute: "Your Accessible Route",
+    planAnother: "Plan another journey",
+    connectionError: t.connectionError,
+    disclaimer: "{t.disclaimer}",
+    live: t.live,
+    profileMode: "mode active",
+    edit: "Edit",
+    saveProfile: "Save Profile",
+    emergencyContact: "Emergency contact",
+    noFavourites: "No favourites yet — tap ♡ on any station",
+    back: "Back",
+    linesServed: "Lines served",
+    transferNote: "Transfer note",
+    staffAssistance: "Staff Assistance",
+    platformGap: "Platform Gap",
+    wheelchairCar: "Wheelchair car",
+    taxiInfo: "Accessible taxi",
+    fromPlaceholder: "e.g. Tokyo Station, Shinjuku, Haneda Airport…",
+    toPlaceholder: "e.g. Asakusa, Shibuya, Kyoto Station…",
+    notesPlaceholder: "e.g. I have a large power wheelchair, travelling with a carer, arriving at 9am rush hour…",
+  },
+  ja: {
+    tagline: "日本の鉄道 · バリアフリー旅行ガイド",
+    hero1: "自信を持って",
+    hero2: "日本を旅しよう",
+    heroSub: "エレベーター · 車椅子スペース · ホームの段差 · 緊急サポート",
+    planBtn: "✨ バリアフリー経路を計画",
+    planBtnFloat: "✨ 経路計画",
+    searchPlaceholder: "日本全国の駅を検索…",
+    selectCity: "都市を選択",
+    whatsIncluded: "機能一覧",
+    stations: "駅",
+    favourites: "お気に入り",
+    showFavOnly: "お気に入りのみ",
+    elevatorStatus: "エレベーター状況",
+    elevatorSub: "コミュニティによるリアルタイム確認",
+    wheelchairCars: "車椅子対応車両",
+    wheelchairCarsSub: "乗車位置の詳細",
+    platformGaps: "ホームの段差",
+    platformGapsSub: "色分けで表示",
+    crowding: "混雑状況",
+    crowdingSub: "移動に最適な時間帯",
+    weatherAlerts: "天気警報",
+    weatherAlertsSub: "雨・氷によるスロープへの影響",
+    restAreas: "休憩エリア",
+    restAreasSub: "座席・充電スポット",
+    taxi: "バリアフリータクシー",
+    taxiSub: "車椅子対応タクシー乗り場",
+    medical: "近くの医療機関",
+    medicalSub: "最寄りのバリアフリークリニック",
+    hotels: "ホテル",
+    hotelsSub: "バリアフリー評価",
+    emergency: "緊急連絡カード",
+    emergencySub: "日本語SOSカード",
+    phrases: "フレーズカード",
+    phrasesSub: "医療・案内用フレーズ",
+    profile: "マイプロフィール",
+    profileSub: "あなたに合わせた設定",
+    journeyTitle: "✨ AI経路プランナー",
+    journeyDesc: "旅程を入力して、バリアフリーなルートプランを取得",
+    from: "出発駅",
+    to: "到着駅",
+    anythingElse: "その他",
+    anythingElseOpt: "（任意）",
+    planningFor: "プランニング対象",
+    planJourneyBtn: "✨ バリアフリー経路を計画する",
+    planning: "✨ ルートを計画中…",
+    yourRoute: "バリアフリールート",
+    planAnother: "別の経路を計画する",
+    connectionError: "接続エラー。インターネット接続を確認して再試行してください。",
+    disclaimer: "到着時は駅スタッフにエレベーターの状況をご確認ください · JR東日本英語案内: 050-2016-1603",
+    live: "ライブ",
+    profileMode: "モード有効",
+    edit: "編集",
+    saveProfile: "プロフィールを保存",
+    emergencyContact: "緊急連絡先",
+    noFavourites: "お気に入りなし — 駅の♡をタップして追加",
+    back: "戻る",
+    linesServed: "利用路線",
+    transferNote: "乗り換えメモ",
+    staffAssistance: "駅員サポート",
+    platformGap: "ホームの段差",
+    wheelchairCar: "車椅子対応車両",
+    taxiInfo: "バリアフリータクシー",
+    fromPlaceholder: "例: 東京駅、新宿、羽田空港…",
+    toPlaceholder: "例: 浅草、渋谷、京都駅…",
+    notesPlaceholder: "例: 大型電動車椅子使用、介助者同伴、朝9時のラッシュ時到着…",
+  },
+  es: {
+    tagline: "FERROCARRIL JAPÓN · GUÍA DE VIAJE ACCESIBLE",
+    hero1: "Navega Japón",
+    hero2: "con confianza",
+    heroSub: "Ascensores · Vagones para sillas de ruedas · Brechas de plataforma · Soporte de emergencia",
+    planBtn: "✨ Planificar mi viaje accesible",
+    planBtnFloat: "✨ Planificar",
+    searchPlaceholder: "Buscar cualquier estación en Japón…",
+    selectCity: "SELECCIONAR CIUDAD",
+    whatsIncluded: "QUÉ INCLUYE",
+    stations: "estaciones",
+    favourites: "Favoritos",
+    showFavOnly: "Solo favoritos",
+    elevatorStatus: "Estado del ascensor",
+    elevatorSub: "Verificación comunitaria en vivo",
+    wheelchairCars: "Vagones para sillas de ruedas",
+    wheelchairCarsSub: "Vagón exacto y punto de embarque",
+    platformGaps: "Brechas de plataforma",
+    platformGapsSub: "Codificado por colores",
+    crowding: "Gráficos de afluencia",
+    crowdingSub: "Mejores horarios para viajar",
+    weatherAlerts: "Alertas meteorológicas",
+    weatherAlertsSub: "Advertencias de lluvia/hielo en rampas",
+    restAreas: "Áreas de descanso",
+    restAreasSub: "Asientos y carga",
+    taxi: "Taxi accesible",
+    taxiSub: "Ubicaciones de paradas WAV",
+    medical: "Médico cercano",
+    medicalSub: "Clínicas accesibles más cercanas",
+    hotels: "Hoteles",
+    hotelsSub: "Valoraciones de accesibilidad",
+    emergency: "Tarjeta de emergencia",
+    emergencySub: "Tarjeta SOS en japonés",
+    phrases: "Tarjetas de frases",
+    phrasesSub: "Médico y navegación",
+    profile: "Mi perfil",
+    profileSub: "Personalizado a tus necesidades",
+    journeyTitle: "✨ Planificador de viaje IA",
+    journeyDesc: "Describe tu viaje y obtén un plan de ruta accesible personalizado",
+    from: "Desde",
+    to: "Hasta",
+    anythingElse: "¿Algo más?",
+    anythingElseOpt: "(opcional)",
+    planningFor: "Planificando para",
+    planJourneyBtn: "✨ Planificar mi viaje accesible",
+    planning: "✨ Planificando tu ruta…",
+    yourRoute: "Tu ruta accesible",
+    planAnother: "Planificar otro viaje",
+    connectionError: "Error de conexión. Comprueba tu conexión a internet e inténtalo de nuevo.",
+    disclaimer: "Confirma siempre el estado del ascensor con el personal de la estación · JR East inglés: 050-2016-1603",
+    live: "En vivo",
+    profileMode: "modo activo",
+    edit: "Editar",
+    saveProfile: "Guardar perfil",
+    emergencyContact: "Contacto de emergencia",
+    noFavourites: "Sin favoritos — toca ♡ en cualquier estación",
+    back: "Volver",
+    linesServed: "Líneas",
+    transferNote: "Nota de transbordo",
+    staffAssistance: "Asistencia del personal",
+    platformGap: "Brecha de plataforma",
+    wheelchairCar: "Vagón para sillas de ruedas",
+    taxiInfo: "Taxi accesible",
+    fromPlaceholder: "ej. Estación de Tokio, Shinjuku, Aeropuerto de Haneda…",
+    toPlaceholder: "ej. Asakusa, Shibuya, Estación de Kioto…",
+    notesPlaceholder: "ej. Tengo una silla de ruedas eléctrica grande, viajo con acompañante…",
+  },
+  fr: {
+    tagline: "RAIL JAPON · GUIDE DE VOYAGE ACCESSIBLE",
+    hero1: "Naviguez au Japon",
+    hero2: "en toute confiance",
+    heroSub: "Ascenseurs · Wagons fauteuils roulants · Lacunes de quai · Support d'urgence",
+    planBtn: "✨ Planifier mon voyage accessible",
+    planBtnFloat: "✨ Planifier",
+    searchPlaceholder: "Rechercher une gare au Japon…",
+    selectCity: "CHOISIR UNE VILLE",
+    whatsIncluded: "CE QUI EST INCLUS",
+    stations: "gares",
+    favourites: "Favoris",
+    showFavOnly: "Favoris uniquement",
+    elevatorStatus: "État des ascenseurs",
+    elevatorSub: "Vérification communautaire en direct",
+    wheelchairCars: "Wagons fauteuils roulants",
+    wheelchairCarsSub: "Wagon exact et point d'embarquement",
+    platformGaps: "Lacunes de quai",
+    platformGapsSub: "Code couleur par gravité",
+    crowding: "Graphiques d'affluence",
+    crowdingSub: "Meilleurs horaires pour voyager",
+    weatherAlerts: "Alertes météo",
+    weatherAlertsSub: "Avertissements pluie/glace sur rampes",
+    restAreas: "Zones de repos",
+    restAreasSub: "Sièges et recharge",
+    taxi: "Taxi accessible",
+    taxiSub: "Emplacements des stations WAV",
+    medical: "Médical à proximité",
+    medicalSub: "Cliniques accessibles les plus proches",
+    hotels: "Hôtels",
+    hotelsSub: "Évaluations d'accessibilité",
+    emergency: "Carte d'urgence",
+    emergencySub: "Carte SOS en japonais",
+    phrases: "Cartes de phrases",
+    phrasesSub: "Médical et navigation",
+    profile: "Mon profil",
+    profileSub: "Personnalisé selon vos besoins",
+    journeyTitle: "✨ Planificateur de voyage IA",
+    journeyDesc: "Décrivez votre voyage et obtenez un plan d'itinéraire accessible personnalisé",
+    from: "De",
+    to: "À",
+    anythingElse: "Autre chose ?",
+    anythingElseOpt: "(facultatif)",
+    planningFor: "Planification pour",
+    planJourneyBtn: "✨ Planifier mon voyage accessible",
+    planning: "✨ Planification de votre itinéraire…",
+    yourRoute: "Votre itinéraire accessible",
+    planAnother: "Planifier un autre voyage",
+    connectionError: "Erreur de connexion. Vérifiez votre connexion internet et réessayez.",
+    disclaimer: "Confirmez toujours l'état des ascenseurs avec le personnel · JR East anglais: 050-2016-1603",
+    live: "En direct",
+    profileMode: "mode actif",
+    edit: "Modifier",
+    saveProfile: "Enregistrer le profil",
+    emergencyContact: "Contact d'urgence",
+    noFavourites: "Pas de favoris — appuyez sur ♡ sur une gare",
+    back: "Retour",
+    linesServed: "Lignes desservies",
+    transferNote: "Note de correspondance",
+    staffAssistance: "Assistance du personnel",
+    platformGap: "Lacune de quai",
+    wheelchairCar: "Wagon fauteuil roulant",
+    taxiInfo: "Taxi accessible",
+    fromPlaceholder: "ex. Gare de Tokyo, Shinjuku, Aéroport de Haneda…",
+    toPlaceholder: "ex. Asakusa, Shibuya, Gare de Kyoto…",
+    notesPlaceholder: "ex. J'ai un grand fauteuil roulant électrique, je voyage avec un accompagnateur…",
+  },
+  ko: {
+    tagline: "일본 철도 · 배리어프리 여행 가이드",
+    hero1: "자신 있게",
+    hero2: "일본을 여행하세요",
+    heroSub: "엘리베이터 · 휠체어 칸 · 플랫폼 간격 · 긴급 지원",
+    planBtn: "✨ 배리어프리 여행 계획하기",
+    planBtnFloat: "✨ 경로 계획",
+    searchPlaceholder: "일본 전역 역 검색…",
+    selectCity: "도시 선택",
+    whatsIncluded: "포함 기능",
+    stations: "역",
+    favourites: "즐겨찾기",
+    showFavOnly: "즐겨찾기만 보기",
+    elevatorStatus: "엘리베이터 상태",
+    elevatorSub: "실시간 커뮤니티 확인",
+    wheelchairCars: "휠체어 칸",
+    wheelchairCarsSub: "정확한 탑승 위치",
+    platformGaps: "플랫폼 간격",
+    platformGapsSub: "색상 코드로 표시",
+    crowding: "혼잡도 차트",
+    crowdingSub: "최적의 이동 시간대",
+    weatherAlerts: "날씨 경보",
+    weatherAlertsSub: "비/얼음 경사로 경고",
+    restAreas: "휴게 공간",
+    restAreasSub: "좌석 및 충전 공간",
+    taxi: "배리어프리 택시",
+    taxiSub: "휠체어 택시 승차 위치",
+    medical: "근처 의료 시설",
+    medicalSub: "가장 가까운 배리어프리 클리닉",
+    hotels: "호텔",
+    hotelsSub: "접근성 평가",
+    emergency: "긴급 카드",
+    emergencySub: "일본어 SOS 카드",
+    phrases: "회화 카드",
+    phrasesSub: "의료 및 안내 표현",
+    profile: "내 프로필",
+    profileSub: "맞춤형 설정",
+    journeyTitle: "✨ AI 여행 플래너",
+    journeyDesc: "여정을 입력하고 맞춤형 배리어프리 경로 계획을 받아보세요",
+    from: "출발",
+    to: "도착",
+    anythingElse: "추가 정보",
+    anythingElseOpt: "(선택사항)",
+    planningFor: "계획 대상",
+    planJourneyBtn: "✨ 배리어프리 여행 계획하기",
+    planning: "✨ 경로 계획 중…",
+    yourRoute: "배리어프리 경로",
+    planAnother: "다른 여행 계획하기",
+    connectionError: "연결 오류. 인터넷 연결을 확인하고 다시 시도하세요.",
+    disclaimer: "도착 시 역 직원에게 엘리베이터 상태를 확인하세요 · JR East 영어 안내: 050-2016-1603",
+    live: "실시간",
+    profileMode: "모드 활성",
+    edit: "편집",
+    saveProfile: "프로필 저장",
+    emergencyContact: "긴급 연락처",
+    noFavourites: "즐겨찾기 없음 — 역의 ♡를 탭하여 추가",
+    back: "뒤로",
+    linesServed: "운행 노선",
+    transferNote: "환승 안내",
+    staffAssistance: "직원 지원",
+    platformGap: "플랫폼 간격",
+    wheelchairCar: "휠체어 칸",
+    taxiInfo: "배리어프리 택시",
+    fromPlaceholder: "예: 도쿄역, 신주쿠, 하네다 공항…",
+    toPlaceholder: "예: 아사쿠사, 시부야, 교토역…",
+    notesPlaceholder: "예: 대형 전동 휠체어 사용, 보호자 동반, 오전 9시 러시아워 도착…",
+  },
+};
+
+const LangContext = React.createContext("en");
+const useLang = () => { const lang = React.useContext(LangContext); return T[lang] || T.en; };
+
 const PROFILE_TYPES = [
   {id:"manual",icon:"🦽",label:"Manual Wheelchair"},
   {id:"power",icon:"⚡",label:"Power Wheelchair"},
@@ -626,7 +977,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
   return(
     <div>
-      <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginBottom:14}}>← Back to {city.name}</button>
+      <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginBottom:14}}>{t.back} to {city.name}</button>
 
       {/* Header */}
       <div style={{marginBottom:11}}>
@@ -900,6 +1251,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
 // ─── AI JOURNEY PLANNER ──────────────────────────────────────────────────────
 function JourneyPlanner({profile, onClose}) {
+  const t = useLang();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [notes, setNotes] = useState("");
@@ -995,7 +1347,7 @@ Please provide a complete step-by-step accessible journey plan.`;
         {/* Header */}
         <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
           <div>
-            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>✨ AI Journey Planner</div>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>{t.journeyTitle}</div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>Describe your journey and get a personalised accessible route plan</div>
           </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
@@ -1052,7 +1404,7 @@ Please provide a complete step-by-step accessible journey plan.`;
             disabled={loading || !from.trim() || !to.trim()}
             style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.08)":"linear-gradient(135deg,#3b82f6,#06b6d4)",color:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.3)":"#fff",fontWeight:700,cursor:loading||!from.trim()||!to.trim()?"not-allowed":"pointer",fontSize:14,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"-0.2px",transition:"all 0.2s",marginBottom:16}}
           >
-            {loading ? "✨ Planning your route…" : "✨ Plan My Accessible Journey"}
+            {loading ? t.planning : t.planJourneyBtn}
           </button>
 
           {/* Loading animation */}
@@ -1075,7 +1427,7 @@ Please provide a complete step-by-step accessible journey plan.`;
           {plan && (
             <div style={{marginTop:4}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>Your Accessible Route</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>{t.yourRoute}</div>
                 <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"}}>
                   {copied?"✓ Copied":"📋 Copy"}
                 </button>
@@ -1113,6 +1465,9 @@ export default function App(){
   const [viewMode,setViewMode]=useState("grid");
   const [favorites,setFavorites]=useState([]);
   const [showFavOnly,setShowFavOnly]=useState(false);
+  const [lang,setLang]=useState("en");
+  const [showLangMenu,setShowLangMenu]=useState(false);
+  const t = T[lang] || T.en;
   const [showPhrases,setShowPhrases]=useState(false);
   const [showJourney,setShowJourney]=useState(false);
   const [showEmergency,setShowEmergency]=useState(false);
@@ -1210,6 +1565,20 @@ export default function App(){
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
+            <div style={{position:"relative"}}>
+              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 10px",cursor:"pointer",fontSize:11,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,transition:"all 0.15s",display:"flex",alignItems:"center",gap:4}}>
+                {LANGS.find(l=>l.code===lang)?.flag} {LANGS.find(l=>l.code===lang)?.label} <span style={{fontSize:9,opacity:0.5}}>▼</span>
+              </button>
+              {showLangMenu&&(
+                <div onClick={e=>e.stopPropagation()} style={{position:"absolute",top:"calc(100% + 6px)",right:0,background:"#131929",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,overflow:"hidden",zIndex:300,minWidth:110,boxShadow:"0 8px 32px rgba(0,0,0,0.5)"}}>
+                  {LANGS.map(l=>(
+                    <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"9px 14px",background:lang===l.code?"rgba(59,130,246,0.15)":"transparent",border:"none",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.7)",cursor:"pointer",fontSize:12,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left",transition:"background 0.1s"}}>
+                      <span style={{fontSize:16}}>{l.flag}</span> {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1221,10 +1590,10 @@ export default function App(){
           <>
             <div style={{textAlign:"center",marginBottom:28,paddingTop:8}}>
               <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:20,padding:"4px 14px",fontSize:11,color:"#93c5fd",letterSpacing:"1px",textTransform:"uppercase",marginBottom:16}}>Japan Rail · Accessible Travel Guide</div>
-              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>Navigate Japan<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with confidence</span></div>
-              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>Elevators · Wheelchair cars · Platform gaps · Emergency support</div>
+              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>{t.hero1}<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{t.hero2}</span></div>
+              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>{t.heroSub}</div>
               <button onClick={()=>setShowJourney(true)} style={{display:"inline-flex",alignItems:"center",gap:8,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:14,padding:"13px 24px",fontSize:15,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,letterSpacing:"-0.2px",boxShadow:"0 4px 24px rgba(59,130,246,0.35)",marginBottom:8,transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
-                <span style={{fontSize:18}}>✨</span> Plan My Accessible Journey
+                {t.planBtn}
               </button>
               {profile&&(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
@@ -1234,7 +1603,7 @@ export default function App(){
             {/* Global search */}
             <div style={{position:"relative",marginBottom:22}}>
               <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:14,pointerEvents:"none"}}>🔍</span>
-              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder="Search any station across Japan…" style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
+              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder={t.searchPlaceholder} style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
               {globalSearch&&showGlobalResults&&globalResults.length>0&&(
                 <div style={{position:"absolute",top:"calc(100% + 6px)",left:0,right:0,background:"#1a2540",border:"1px solid rgba(255,255,255,0.1)",borderRadius:11,overflow:"hidden",zIndex:400,boxShadow:"0 16px 48px rgba(0,0,0,0.5)"}}>
                   {globalResults.map(s=>(
