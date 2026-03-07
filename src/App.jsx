@@ -1567,16 +1567,16 @@ export default function App(){
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
-            {/* Language toggle */}
-            <div style={{position:"relative"}}>
-              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:9,color:"#fff",padding:"5px 8px",cursor:"pointer",fontSize:18,lineHeight:1,display:"flex",alignItems:"center",gap:4,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>
+            {/* Language toggle — replaces clipped header button */}
+            <div style={{position:"relative",flexShrink:0}}>
+              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:9,color:"#fff",padding:"6px 9px",cursor:"pointer",fontSize:17,lineHeight:1,display:"flex",alignItems:"center"}}>
                 {LANGS.find(l=>l.code===lang)?.flag}
               </button>
               {showLangMenu&&(
-                <div onClick={e=>e.stopPropagation()} style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",zIndex:9999,minWidth:120,boxShadow:"0 8px 32px rgba(0,0,0,0.7)"}}>
+                <div onClick={e=>e.stopPropagation()} style={{position:"fixed",top:56,right:16,background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",zIndex:9999,minWidth:130,boxShadow:"0 8px 32px rgba(0,0,0,0.8)"}}>
                   {LANGS.map(l=>(
-                    <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"10px 14px",background:lang===l.code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.85)",cursor:"pointer",fontSize:13,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left"}}>
-                      <span style={{fontSize:18}}>{l.flag}</span> {l.label}
+                    <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"11px 16px",background:lang===l.code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.85)",cursor:"pointer",fontSize:14,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left"}}>
+                      <span style={{fontSize:20}}>{l.flag}</span> {l.label}
                     </button>
                   ))}
                 </div>
