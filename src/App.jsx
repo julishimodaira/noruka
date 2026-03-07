@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, createContext, useContext } from "react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -84,8 +84,8 @@ const T = {
     planBtn: "✨ Plan My Accessible Journey",
     planBtnFloat: "✨ Plan Trip",
     searchPlaceholder: "Search any station across Japan…",
-    selectCity: t.selectCity,
-    whatsIncluded: t.whatsIncluded,
+    selectCity: "SELECT A CITY",
+    whatsIncluded: "WHAT'S INCLUDED",
     stations: "stations",
     favourites: "Favourites",
     showFavOnly: "Favourites only",
@@ -413,8 +413,8 @@ const T = {
   },
 };
 
-const LangContext = React.createContext("en");
-const useLang = () => { const lang = React.useContext(LangContext); return T[lang] || T.en; };
+const LangContext = createContext("en");
+const useLang = () => { const lang = useContext(LangContext); return T[lang] || T.en; };
 
 const PROFILE_TYPES = [
   {id:"manual",icon:"🦽",label:"Manual Wheelchair"},
@@ -1512,6 +1512,7 @@ export default function App(){
   const activeCity=activeCityKey?CITIES[activeCityKey]:null;
 
   return(
+    <LangContext.Provider value={lang}>
     <div style={{minHeight:"100vh",background:"#080b14",fontFamily:"'Inter',system-ui,sans-serif",color:"#e2e8f7"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -1799,5 +1800,6 @@ export default function App(){
 
       </div>
     </div>
+    </LangContext.Provider>
   );
 }
