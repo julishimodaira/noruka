@@ -897,6 +897,209 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   );
 }
 
+
+// ─── AI JOURNEY PLANNER ──────────────────────────────────────────────────────
+function JourneyPlanner({profile, onClose}) {
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [plan, setPlan] = useState(null);
+  const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
+  const profileType = PROFILE_TYPES.find(p => p.id === profile?.type);
+
+  // Build a rich context string from all station data for the AI
+  const buildStationContext = () => {
+    return ALL_STATIONS.map(s => {
+      const elevSummary = (s.elevators||[]).slice(0,3).map(e =>
+        `${e.location}(${e.floors||"?"}, ${e.doorWidthCm||"?"}cm door, ${e.status||"operational"})`
+      ).join("; ");
+      const staffInfo = STAFF_LOCATION[s.id] || DEFAULT_STAFF;
+      return `STATION: ${s.name} (${s.nameJp}) | City: ${s.cityName} | Lines: ${s.lines.join(", ")} | Elevators: ${s.elevatorCount} [${elevSummary}] | Transfer: ${s.transferDifficulty} | Platform gap: ${s.platformGap} | Wheelchair car: ${s.wheelchairCar} | Staff gate: ${staffInfo.gate} | Transfer note: ${s.transferNote} | Taxi: ${s.taxiInfo}${s.alerts&&s.alerts.length>0?" | ALERT: "+s.alerts.map(a=>a.msg).join("; "):""}`;
+    }).join("\n");
+  };
+
+  const handlePlan = async () => {
+    if(!from.trim() || !to.trim()) return;
+    setLoading(true);
+    setPlan(null);
+    setError(null);
+
+    const profileContext = profileType
+      ? `The user is a ${profileType.label} user.${profile?.needs ? " Additional needs: "+profile.needs : ""}`
+      : "The user has not specified their accessibility profile.";
+
+    const stationData = buildStationContext();
+
+    const systemPrompt = `You are Noruka's AI accessibility journey planner for Japan's rail network. You have deep knowledge of station accessibility including exact elevator locations, door widths, platform gaps, wheelchair car positions, staff assistance points, and transfer difficulty.
+
+Your job is to create warm, practical, step-by-step accessible journey plans that give users genuine confidence. You are talking to someone who may have mobility, visual, or other accessibility needs — be thoughtful, specific, and reassuring.
+
+STATION DATABASE:
+${stationData}
+
+FORMATTING RULES:
+- Use clear numbered steps
+- Use emoji sparingly but meaningfully (🛗 for elevator, 🚃 for train, 👨‍💼 for staff, ♿ for accessibility note, ⚠️ for warnings, 💡 for tips)
+- Include exact elevator names, door widths where relevant
+- Mention which car to board at origin and where it positions you at destination
+- Note platform gap and whether a ramp is needed
+- Include realistic time estimates accounting for accessibility needs
+- End with an encouraging note
+- If a station is not in the database, say so honestly and give general advice
+- Keep the plan concise but complete — no unnecessary filler`;
+
+    const userMessage = `Plan an accessible journey from ${from} to ${to}.
+
+${profileContext}
+${notes ? "Additional context: " + notes : ""}
+
+Please provide a complete step-by-step accessible journey plan.`;
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: "user", content: userMessage }]
+        })
+      });
+      const data = await response.json();
+      if(data.content && data.content[0]) {
+        setPlan(data.content[0].text);
+      } else {
+        setError("Couldn't generate a plan. Please try again.");
+      }
+    } catch(e) {
+      setError("Connection error. Please check your internet and try again.");
+    }
+    setLoading(false);
+  };
+
+  const handleCopy = () => {
+    if(plan) {
+      navigator.clipboard?.writeText(plan).catch(()=>{});
+      setCopied(true);
+      setTimeout(()=>setCopied(false), 2000);
+    }
+  };
+
+  return (
+    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center",backdropFilter:"blur(8px)",WebkitBackdropFilter:"blur(8px)"}} onClick={onClose}>
+      <div onClick={e=>e.stopPropagation()} style={{background:"#0f1424",borderRadius:"22px 22px 0 0",border:"1px solid rgba(255,255,255,0.09)",width:"100%",maxWidth:700,maxHeight:"92vh",overflowY:"auto",paddingBottom:40}}>
+
+        {/* Header */}
+        <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
+          <div>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>✨ AI Journey Planner</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>Describe your journey and get a personalised accessible route plan</div>
+          </div>
+          <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
+        </div>
+
+        {/* Profile banner */}
+        {profileType && (
+          <div style={{margin:"0 18px 14px",padding:"8px 12px",background:"rgba(59,130,246,0.08)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:10,fontSize:11,color:"#7dd3fc",display:"flex",alignItems:"center",gap:7}}>
+            <span style={{fontSize:16}}>{profileType.icon}</span>
+            <span>Planning for <strong>{profileType.label}</strong>{profile?.needs?` · ${profile.needs}`:""}</span>
+          </div>
+        )}
+
+        {/* Form */}
+        <div style={{padding:"0 18px"}}>
+          <div style={{marginBottom:11}}>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:6,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>From</div>
+            <input
+              value={from}
+              onChange={e=>setFrom(e.target.value)}
+              placeholder="e.g. Tokyo Station, Shinjuku, Haneda Airport…"
+              style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"11px 14px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s"}}
+              onFocus={e=>e.target.style.borderColor="#3b82f6"}
+              onBlur={e=>e.target.style.borderColor="rgba(255,255,255,0.1)"}
+            />
+          </div>
+
+          <div style={{marginBottom:11}}>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:6,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>To</div>
+            <input
+              value={to}
+              onChange={e=>setTo(e.target.value)}
+              placeholder="e.g. Asakusa, Shibuya, Kyoto Station…"
+              style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"11px 14px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit",boxSizing:"border-box",transition:"border-color 0.15s"}}
+              onFocus={e=>e.target.style.borderColor="#3b82f6"}
+              onBlur={e=>e.target.style.borderColor="rgba(255,255,255,0.1)"}
+            />
+          </div>
+
+          <div style={{marginBottom:16}}>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",letterSpacing:"1.5px",textTransform:"uppercase",marginBottom:6,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>Anything else? <span style={{textTransform:"none",letterSpacing:0,color:"rgba(255,255,255,0.2)"}}>(optional)</span></div>
+            <textarea
+              value={notes}
+              onChange={e=>setNotes(e.target.value)}
+              placeholder="e.g. I have a large power wheelchair, travelling with a carer, arriving at 9am rush hour, need to catch Shinkansen…"
+              style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"11px 14px",fontSize:12,color:"#fff",outline:"none",fontFamily:"inherit",resize:"vertical",minHeight:70,boxSizing:"border-box",lineHeight:1.5,transition:"border-color 0.15s"}}
+              onFocus={e=>e.target.style.borderColor="#3b82f6"}
+              onBlur={e=>e.target.style.borderColor="rgba(255,255,255,0.1)"}
+            />
+          </div>
+
+          <button
+            onClick={handlePlan}
+            disabled={loading || !from.trim() || !to.trim()}
+            style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.08)":"linear-gradient(135deg,#3b82f6,#06b6d4)",color:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.3)":"#fff",fontWeight:700,cursor:loading||!from.trim()||!to.trim()?"not-allowed":"pointer",fontSize:14,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"-0.2px",transition:"all 0.2s",marginBottom:16}}
+          >
+            {loading ? "✨ Planning your route…" : "✨ Plan My Accessible Journey"}
+          </button>
+
+          {/* Loading animation */}
+          {loading && (
+            <div style={{textAlign:"center",padding:"24px 0",color:"rgba(255,255,255,0.4)"}}>
+              <div style={{fontSize:28,marginBottom:10,animation:"spin 2s linear infinite",display:"inline-block"}}>⏳</div>
+              <div style={{fontSize:12,lineHeight:1.6}}>Checking elevator widths, platform gaps,<br/>transfer routes and accessibility details…</div>
+              <style>{`@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}`}</style>
+            </div>
+          )}
+
+          {/* Error state */}
+          {error && (
+            <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:"11px 13px",fontSize:12,color:"#f87171",marginBottom:12}}>
+              ⚠️ {error}
+            </div>
+          )}
+
+          {/* Journey plan result */}
+          {plan && (
+            <div style={{marginTop:4}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>Your Accessible Route</div>
+                <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"}}>
+                  {copied?"✓ Copied":"📋 Copy"}
+                </button>
+              </div>
+              <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 15px",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.8,whiteSpace:"pre-wrap",fontFamily:"inherit"}}>
+                {plan}
+              </div>
+              <div style={{marginTop:10,fontSize:10,color:"rgba(255,255,255,0.2)",textAlign:"center",lineHeight:1.5}}>
+                Always confirm elevator status with station staff on arrival · Call ahead: JR East English 050-2016-1603
+              </div>
+              <button
+                onClick={()=>{setPlan(null);setFrom("");setTo("");setNotes("");}}
+                style={{width:"100%",marginTop:12,padding:"10px",borderRadius:10,border:"1px solid rgba(255,255,255,0.09)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.5)",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}
+              >
+                Plan another journey
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN APP ─────────────────────────────────────────────────────────────────
 export default function App(){
   const [page,setPage]=useState("home"); // home | city | station
@@ -911,6 +1114,7 @@ export default function App(){
   const [favorites,setFavorites]=useState([]);
   const [showFavOnly,setShowFavOnly]=useState(false);
   const [showPhrases,setShowPhrases]=useState(false);
+  const [showJourney,setShowJourney]=useState(false);
   const [showEmergency,setShowEmergency]=useState(false);
   const [showProfile,setShowProfile]=useState(false);
   const [profile,setProfile]=useState(null);
@@ -972,6 +1176,7 @@ export default function App(){
       `}</style>
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
+      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)}/>}
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
       {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)}/>}
 
@@ -998,6 +1203,7 @@ export default function App(){
           <div style={{display:"flex",gap:5,flexShrink:0}}>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
+            <button onClick={()=>setShowJourney(true)} style={{background:"rgba(59,130,246,0.12)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:9,color:"#7dd3fc",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s",fontWeight:600}}>✨ Plan Trip</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
           </div>
         </div>
