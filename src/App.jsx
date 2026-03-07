@@ -1565,20 +1565,7 @@ export default function App(){
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
-            <div style={{position:"relative"}}>
-              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 10px",cursor:"pointer",fontSize:11,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,transition:"all 0.15s",display:"flex",alignItems:"center",gap:4}}>
-                {LANGS.find(l=>l.code===lang)?.flag} {LANGS.find(l=>l.code===lang)?.label} <span style={{fontSize:9,opacity:0.5}}>▼</span>
-              </button>
-              {showLangMenu&&(
-                <div onClick={e=>e.stopPropagation()} style={{position:"absolute",top:"calc(100% + 6px)",right:0,background:"#131929",border:"1px solid rgba(255,255,255,0.12)",borderRadius:12,overflow:"hidden",zIndex:300,minWidth:110,boxShadow:"0 8px 32px rgba(0,0,0,0.5)"}}>
-                  {LANGS.map(l=>(
-                    <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:8,width:"100%",padding:"9px 14px",background:lang===l.code?"rgba(59,130,246,0.15)":"transparent",border:"none",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.7)",cursor:"pointer",fontSize:12,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left",transition:"background 0.1s"}}>
-                      <span style={{fontSize:16}}>{l.flag}</span> {l.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+
           </div>
         </div>
       </div>
