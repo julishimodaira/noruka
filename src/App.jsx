@@ -958,11 +958,9 @@ ${notes ? "Additional context: " + notes : ""}
 Please provide a complete step-by-step accessible journey plan.`;
 
     try {
-      const apiKey = process.env.REACT_APP_ANTHROPIC_KEY;
-      if(!apiKey) { setError("API key not configured. Please add REACT_APP_ANTHROPIC_KEY to Vercel environment variables."); setLoading(false); return; }
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/plan", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           model: "claude-sonnet-4-20250514",
           max_tokens: 1000,
