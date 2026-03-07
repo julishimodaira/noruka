@@ -1563,11 +1563,25 @@ export default function App(){
             </div>
           )}
 
-          <div style={{display:"flex",gap:5,flexShrink:0}}>
+          <div style={{display:"flex",gap:5,flexShrink:0,alignItems:"center"}}>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
-
+            {/* Language toggle */}
+            <div style={{position:"relative"}}>
+              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:9,color:"#fff",padding:"5px 8px",cursor:"pointer",fontSize:18,lineHeight:1,display:"flex",alignItems:"center",gap:4,fontFamily:"'Space Grotesk',sans-serif",fontWeight:600}}>
+                {LANGS.find(l=>l.code===lang)?.flag}
+              </button>
+              {showLangMenu&&(
+                <div onClick={e=>e.stopPropagation()} style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",zIndex:9999,minWidth:120,boxShadow:"0 8px 32px rgba(0,0,0,0.7)"}}>
+                  {LANGS.map(l=>(
+                    <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"10px 14px",background:lang===l.code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.85)",cursor:"pointer",fontSize:13,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left"}}>
+                      <span style={{fontSize:18}}>{l.flag}</span> {l.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1781,24 +1795,6 @@ export default function App(){
           <StationDetail station={activeStation} cityKey={activeCityKey} onBack={()=>setPage("city")} isFav={isFav(activeStation.id)} onToggleFav={toggleFav} profile={profile} weather={weather} lastUpdated={lastUpdated}/>
         )}
 
-      </div>
-
-      {/* ── Language Switcher — fixed bottom left ── */}
-      <div style={{position:"fixed",bottom:80,left:16,zIndex:9999}} onClick={e=>e.stopPropagation()}>
-        {showLangMenu&&(
-          <div style={{background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",marginBottom:8,boxShadow:"0 8px 32px rgba(0,0,0,0.7)"}}>
-            {LANGS.map(l=>(
-              <button key={l.code} onClick={()=>{setLang(l.code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"10px 18px",background:lang===l.code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===l.code?"#7dd3fc":"rgba(255,255,255,0.8)",cursor:"pointer",fontSize:13,fontFamily:"'Space Grotesk',sans-serif",fontWeight:lang===l.code?700:400,textAlign:"left",whiteSpace:"nowrap"}}>
-                <span style={{fontSize:20}}>{l.flag}</span> {l.label}
-              </button>
-            ))}
-          </div>
-        )}
-        <button onClick={()=>setShowLangMenu(v=>!v)} style={{display:"flex",alignItems:"center",gap:8,background:"#1a2035",border:"1px solid rgba(255,255,255,0.18)",borderRadius:50,padding:"10px 16px",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",boxShadow:"0 4px 20px rgba(0,0,0,0.5)",fontSize:13}}>
-          <span style={{fontSize:20}}>{LANGS.find(l=>l.code===lang)?.flag}</span>
-          <span>{LANGS.find(l=>l.code===lang)?.label}</span>
-          <span style={{fontSize:10,opacity:0.5}}>{showLangMenu?"▾":"▴"}</span>
-        </button>
       </div>
 
     </div>
