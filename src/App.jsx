@@ -1177,6 +1177,12 @@ export default function App(){
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
       {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)}/>}
+      {/* Floating Plan Trip button - visible on city and station pages */}
+      {page!=="home"&&(
+        <button onClick={()=>setShowJourney(true)} style={{position:"fixed",bottom:24,right:16,zIndex:200,display:"flex",alignItems:"center",gap:7,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:50,padding:"12px 18px",fontSize:13,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,boxShadow:"0 4px 20px rgba(59,130,246,0.45)",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
+          <span style={{fontSize:16}}>✨</span> Plan Trip
+        </button>
+      )}
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
       {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)}/>}
 
@@ -1203,7 +1209,6 @@ export default function App(){
           <div style={{display:"flex",gap:5,flexShrink:0}}>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
-            <button onClick={()=>setShowJourney(true)} style={{background:"rgba(59,130,246,0.12)",border:"1px solid rgba(59,130,246,0.3)",borderRadius:9,color:"#7dd3fc",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s",fontWeight:600}}>✨ Plan Trip</button>
             <button onClick={()=>setShowPhrases(true)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:12,fontFamily:"inherit",transition:"all 0.15s"}}>🗣️</button>
           </div>
         </div>
@@ -1217,7 +1222,10 @@ export default function App(){
             <div style={{textAlign:"center",marginBottom:28,paddingTop:8}}>
               <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:20,padding:"4px 14px",fontSize:11,color:"#93c5fd",letterSpacing:"1px",textTransform:"uppercase",marginBottom:16}}>Japan Rail · Accessible Travel Guide</div>
               <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>Navigate Japan<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with confidence</span></div>
-              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:14,lineHeight:1.6}}>Elevators · Wheelchair cars · Platform gaps · Emergency support</div>
+              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>Elevators · Wheelchair cars · Platform gaps · Emergency support</div>
+              <button onClick={()=>setShowJourney(true)} style={{display:"inline-flex",alignItems:"center",gap:8,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:14,padding:"13px 24px",fontSize:15,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,letterSpacing:"-0.2px",boxShadow:"0 4px 24px rgba(59,130,246,0.35)",marginBottom:8,transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
+                <span style={{fontSize:18}}>✨</span> Plan My Accessible Journey
+              </button>
               {profile&&(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
               )}
