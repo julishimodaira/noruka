@@ -1,6 +1,5 @@
 /* eslint-disable */
 import { useState, useMemo, useEffect } from "react";
-import T from "./translations";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -292,13 +291,54 @@ const makeDefaultElevators = (id,count) =>
   }));
 
 // Compact station builder for Tokyo's 60-station dataset
-const mk = (id,name,jp,lat,lng,lines,elevs,score,diff,assist,phone,wcCar,gap,crowding,quiet,txNote,taxi,med,alerts=[],hotels=[],restAreas=[],charging=[]) => ({
+const mk = (id,name,jp,lat,lng,lines,elevs,score,diff,assist,phone,wcCar,gap,crowding,quiet,txNote,taxi,med,alerts=[],hotels=[],restAreas=[],charging=[],toilets=[]) => ({
+  toilets,
   id,name,nameJp:jp,lat,lng,lines,elevatorCount:elevs,accessScore:score,
   transferDifficulty:diff,staffAssist:assist,phone,wheelchairCar:wcCar,platformGap:gap,
   crowding,quietHours:quiet,transferNote:txNote,taxiInfo:taxi,medicalNearby:med,
   alerts,nearbyHotels:hotels,restAreas,chargingPoints:charging,
   elevators: makeDefaultElevators(id,elevs),
 });
+
+
+// ─── TOILET DATA ──────────────────────────────────────────────────────────────
+const TOILETS = {
+  tokyo:     [{floor:"1F Marunouchi South",ostomate:true,baby:true,notes:"Near Marunouchi South Exit, 24h"},{floor:"1F Yaesu North",ostomate:true,baby:false,notes:"Near Shinkansen gates"}],
+  shinjuku:  [{floor:"B1 West Exit",ostomate:true,baby:true,notes:"Largest accessible bathroom in the station, 24h"},{floor:"3F South Exit",ostomate:false,baby:true,notes:"Near Odakyu transfer"}],
+  shibuya:   [{floor:"2F Scramble Square side",ostomate:true,baby:true,notes:"Near Tokyu transfer gates"},{floor:"B1 Ginza Line",ostomate:false,baby:false,notes:"Near Ginza Line platform"}],
+  ikebukuro: [{floor:"1F East Exit",ostomate:true,baby:true,notes:"Near Seibu transfer"},{floor:"B1 Marunouchi Line",ostomate:true,baby:false,notes:"Near Marunouchi platform"}],
+  ueno:      [{floor:"1F Central Concourse",ostomate:true,baby:true,notes:"Near park exit, 24h"},{floor:"B1 Hibiya Line",ostomate:false,baby:false,notes:"Near Hibiya platform"}],
+  akihabara: [{floor:"1F Electric Town Exit",ostomate:true,baby:false,notes:"Near main exit"}],
+  shinagawa: [{floor:"1F Central Concourse",ostomate:true,baby:true,notes:"Near Shinkansen gates, 24h"}],
+  yurakucho: [{floor:"1F Hibiya Exit",ostomate:true,baby:false,notes:"Near Hibiya Exit"}],
+  koenji:    [{floor:"1F North Exit",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  kichijoji: [{floor:"1F North Exit",ostomate:true,baby:true,notes:"Near Atré mall entrance"}],
+  harajuku:  [{floor:"1F Takeshita Exit",ostomate:false,baby:false,notes:"Near Takeshita Exit"}],
+  ebisu:     [{floor:"1F West Exit",ostomate:true,baby:true,notes:"Near Garden Place bridge"}],
+  meguro:    [{floor:"1F East Exit",ostomate:true,baby:false,notes:"Near East Exit"}],
+  gotanda:   [{floor:"1F East Exit",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  osaki:     [{floor:"1F South Exit",ostomate:true,baby:true,notes:"Near South Exit, 24h"}],
+  omori:     [{floor:"1F East Exit",ostomate:false,baby:false,notes:"Near East Exit"}],
+  kamata:    [{floor:"1F East Exit",ostomate:true,baby:false,notes:"Near East Exit"}],
+  kawasaki:  [{floor:"1F Central",ostomate:true,baby:true,notes:"Near Lazona mall entrance, 24h"}],
+  yokohama:  [{floor:"1F Central Concourse",ostomate:true,baby:true,notes:"Near JR gates, 24h"},{floor:"B1 Blue Line",ostomate:false,baby:false,notes:"Near subway gates"}],
+  ofuna:     [{floor:"1F East Exit",ostomate:true,baby:false,notes:"Near East Exit"}],
+  totsuka:   [{floor:"1F East Exit",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  hodogaya:  [{floor:"1F",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  higashi_kanagawa:[{floor:"1F",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  shin_koenji:[{floor:"1F",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  nishi_ogikubo:[{floor:"1F",ostomate:false,baby:false,notes:"Near ticket gates"}],
+  musashi_kosugi:[{floor:"1F Central",ostomate:true,baby:true,notes:"Near main exit, newly renovated"}],
+  umeda:     [{floor:"1F Central",ostomate:true,baby:true,notes:"Near main gates, 24h"},{floor:"B2 Midosuji Line",ostomate:true,baby:false,notes:"Near subway platform"}],
+  namba:     [{floor:"B1 Central",ostomate:true,baby:true,notes:"Near Midosuji gates, 24h"}],
+  tennoji:   [{floor:"1F Central",ostomate:true,baby:true,notes:"Near West Exit, 24h"}],
+  kyoto_st:  [{floor:"2F Central Concourse",ostomate:true,baby:true,notes:"Near Shinkansen gates, 24h"},{floor:"B1",ostomate:false,baby:false,notes:"Near Kintetsu gates"}],
+  shijo:     [{floor:"B1",ostomate:true,baby:false,notes:"Near ticket gates"}],
+  sapporo_st:[{floor:"1F West Concourse",ostomate:true,baby:true,notes:"Near West Exit, 24h"}],
+  odori:     [{floor:"B2",ostomate:true,baby:false,notes:"Near South Exit"}],
+  hakata:    [{floor:"1F Central",ostomate:true,baby:true,notes:"Near Hakata Exit, 24h"}],
+  tenjin:    [{floor:"B1",ostomate:true,baby:false,notes:"Near North Exit"}],
+};
 
 // ─── TOKYO STATIONS (60) ──────────────────────────────────────────────────────
 const TOKYO_STATIONS = [
@@ -885,6 +925,22 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       {tab==="phrases"&&(
         <div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9}}>Tap a card to copy the Japanese text to show to staff.</div>
+          {(()=>{const toilets=TOILETS[station.id]||[];return toilets.length>0?(
+            <div style={{background:"rgba(20,30,48,0.7)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:14,padding:"14px 16px",marginBottom:14}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#34d399",textTransform:"uppercase",letterSpacing:1}}>Accessible Toilets</span></div>
+              {toilets.map((t,i)=><div key={i} style={{background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.15)",borderRadius:9,padding:"10px 12px",marginBottom:7}}>
+                <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:4}}>{t.floor}</div>
+                <div style={{display:"flex",gap:6,marginBottom:5,flexWrap:"wrap"}}>
+                  {t.ostomate&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>Ostomate ✓</span>}
+                  {t.baby&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(96,165,250,0.15)",border:"1px solid rgba(96,165,250,0.3)",color:"#60a5fa"}}>Baby changing ✓</span>}
+                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.5)"}}>♿ Wide door</span>
+                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.5)"}}>Grab bars</span>
+                </div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.55)",lineHeight:1.4}}>{t.notes}</div>
+              </div>)}
+              <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:4,lineHeight:1.5}}>多機能トイレ · Follow ♿ signs from concourse. All have grab bars and wide doors.</div>
+            </div>
+          ):null;})()}
           {PHRASES.map((p,i)=>(
             <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.14)":"rgba(255,255,255,0.04)",border:`2px solid ${copied===i?"#3b82f6":"rgba(255,255,255,0.07)"}`,borderRadius:9,padding:"9px 12px",marginBottom:5,cursor:"pointer",position:"relative"}}>
               <div style={{fontSize:15,color:"#fff",fontWeight:700,marginBottom:2}}>{p.jp}</div>
@@ -901,7 +957,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
 
 // ─── AI JOURNEY PLANNER ──────────────────────────────────────────────────────
-function JourneyPlanner({profile, onClose, t}) {
+function JourneyPlanner({profile, onClose}) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [notes, setNotes] = useState("");
@@ -977,7 +1033,7 @@ Please provide a complete step-by-step accessible journey plan.`;
         setError("Couldn't generate a plan. Please try again.");
       }
     } catch(e) {
-      setError(t.connectionError);
+      setError("Connection error. Please check your internet and try again.");
     }
     setLoading(false);
   };
@@ -997,8 +1053,8 @@ Please provide a complete step-by-step accessible journey plan.`;
         {/* Header */}
         <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
           <div>
-            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>{t.journeyTitle}</div>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>{t.journeyDesc}</div>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>"✨ AI Journey Planner"</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>Describe your journey and get a personalised accessible route plan</div>
           </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
         </div>
@@ -1077,7 +1133,7 @@ Please provide a complete step-by-step accessible journey plan.`;
           {plan && (
             <div style={{marginTop:4}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>{t.yourRoute}</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>"Your Accessible Route"</div>
                 <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"}}>
                   {copied?"✓ Copied":"📋 Copy"}
                 </button>
@@ -1092,7 +1148,7 @@ Please provide a complete step-by-step accessible journey plan.`;
                 onClick={()=>{setPlan(null);setFrom("");setTo("");setNotes("");}}
                 style={{width:"100%",marginTop:12,padding:"10px",borderRadius:10,border:"1px solid rgba(255,255,255,0.09)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.5)",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}
               >
-                {t.planAnother}
+                Plan another journey
               </button>
             </div>
           )}
@@ -1120,9 +1176,6 @@ export default function App(){
   const [showEmergency,setShowEmergency]=useState(false);
   const [showProfile,setShowProfile]=useState(false);
   const [profile,setProfile]=useState(null);
-  const [lang,setLang]=useState("en");
-  const [showLangMenu,setShowLangMenu]=useState(false);
-  const t = T[lang] || T.en;
   const [globalSearch,setGlobalSearch]=useState("");
   const [showGlobalResults,setShowGlobalResults]=useState(false);
 
@@ -1181,7 +1234,7 @@ export default function App(){
       `}</style>
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
-      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t}/>}
+      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)}/>}
       {/* Floating Plan Trip button - visible on city and station pages */}
       {page!=="home"&&(
         <button onClick={()=>setShowJourney(true)} style={{position:"fixed",bottom:24,right:16,zIndex:200,display:"flex",alignItems:"center",gap:7,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:50,padding:"12px 18px",fontSize:13,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,boxShadow:"0 4px 20px rgba(59,130,246,0.45)",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
@@ -1214,21 +1267,7 @@ export default function App(){
 
           <div style={{display:"flex",gap:5,flexShrink:0,alignItems:"center"}}>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
-            <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button>
-            <div style={{position:"relative"}}>
-              <button onClick={e=>{e.stopPropagation();setShowLangMenu(v=>!v);}} style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.18)",borderRadius:9,color:"#fff",padding:"6px 10px",cursor:"pointer",fontSize:15,display:"flex",alignItems:"center",gap:5,fontFamily:"inherit",fontWeight:600}}>
-                🌐 <span style={{fontSize:11}}>{lang.toUpperCase()}</span>
-              </button>
-              {showLangMenu&&(
-                <div style={{position:"fixed",top:52,right:12,background:"#131929",border:"1px solid rgba(255,255,255,0.15)",borderRadius:14,overflow:"hidden",zIndex:9999,minWidth:130,boxShadow:"0 8px 32px rgba(0,0,0,0.8)"}}>
-                  {[["en","🇬🇧","English"],["ja","🇯🇵","日本語"],["es","🇪🇸","Español"],["fr","🇫🇷","Français"],["ko","🇰🇷","한국어"]].map(([code,flag,label])=>(
-                    <button key={code} onClick={()=>{setLang(code);setShowLangMenu(false);}} style={{display:"flex",alignItems:"center",gap:10,width:"100%",padding:"11px 16px",background:lang===code?"rgba(59,130,246,0.2)":"transparent",border:"none",borderBottom:"1px solid rgba(255,255,255,0.05)",color:lang===code?"#7dd3fc":"rgba(255,255,255,0.85)",cursor:"pointer",fontSize:13,fontFamily:"inherit",fontWeight:lang===code?700:400,textAlign:"left"}}>
-                      <span style={{fontSize:18}}>{flag}</span> {label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div></div>
+            <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button></div>
         </div>
       </div>
 
@@ -1239,10 +1278,10 @@ export default function App(){
           <>
             <div style={{textAlign:"center",marginBottom:28,paddingTop:8}}>
               <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:20,padding:"4px 14px",fontSize:11,color:"#93c5fd",letterSpacing:"1px",textTransform:"uppercase",marginBottom:16}}>Japan Rail · Accessible Travel Guide</div>
-              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>{t.hero1}<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{t.hero2}</span></div>
-              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>{t.heroSub}</div>
+              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>Navigate Japan<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with confidence</span></div>
+              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>Elevators · Wheelchair cars · Platform gaps · Emergency support</div>
               <button onClick={()=>setShowJourney(true)} style={{display:"inline-flex",alignItems:"center",gap:8,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:14,padding:"13px 24px",fontSize:15,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,letterSpacing:"-0.2px",boxShadow:"0 4px 24px rgba(59,130,246,0.35)",marginBottom:8,transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
-                {t.planBtn}
+                ✨ Plan My Accessible Journey
               </button>
               {profile&&(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
@@ -1252,7 +1291,7 @@ export default function App(){
             {/* Global search */}
             <div style={{position:"relative",marginBottom:22}}>
               <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:14,pointerEvents:"none"}}>🔍</span>
-              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder={t.searchPlaceholder} style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
+              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder="Search any station across Japan…" style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
               {globalSearch&&showGlobalResults&&globalResults.length>0&&(
                 <div style={{position:"absolute",top:"calc(100% + 6px)",left:0,right:0,background:"#1a2540",border:"1px solid rgba(255,255,255,0.1)",borderRadius:11,overflow:"hidden",zIndex:400,boxShadow:"0 16px 48px rgba(0,0,0,0.5)"}}>
                   {globalResults.map(s=>(
