@@ -598,7 +598,7 @@ function PhraseModal({onClose}){
           {cats.map(c=><button key={c} onClick={()=>setCat(c)} style={{padding:"3px 11px",borderRadius:20,border:"1px solid",borderColor:c===cat?"#3b82f6":"rgba(255,255,255,0.14)",background:c===cat?"rgba(66,133,244,0.2)":"transparent",color:c===cat?"#fff":"rgba(255,255,255,0.45)",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>{c}</button>)}
         </div>
         {list.map((p,i)=>(
-          <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.15)":"rgba(255,255,255,0.04)",border:`2px solid ${copied===i?"#3b82f6":"rgba(255,255,255,0.07)"}`,borderRadius:10,padding:"10px 12px",cursor:"pointer",marginBottom:6,position:"relative"}}>
+          <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.15)":"rgba(255,255,255,0.04)",border:(copied===i?"2px solid #3b82f6":"2px solid rgba(255,255,255,0.07)"),borderRadius:10,padding:"10px 12px",cursor:"pointer",marginBottom:6,position:"relative"}}>
             <div style={{fontSize:16,color:"#fff",fontWeight:700,marginBottom:3}}>{p.jp}</div>
             <div style={{fontSize:10,color:"#06b6d4",fontFamily:"monospace",marginBottom:2}}>{p.ro}</div>
             <div style={{fontSize:10,color:"rgba(255,255,255,0.45)"}}>{p.en}</div>
@@ -928,11 +928,11 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         <div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9}}>Tap a card to copy the Japanese text to show to staff.</div>
           {PHRASES.map((p,i)=>(
-            <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.14)":"rgba(255,255,255,0.04)",border:`2px solid ${copied===i?"#3b82f6":"rgba(255,255,255,0.07)"}`,borderRadius:9,padding:"9px 12px",marginBottom:5,cursor:"pointer",position:"relative"}}>
+            <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.14)":"rgba(255,255,255,0.04)",border:(copied===i?"2px solid #3b82f6":"2px solid rgba(255,255,255,0.07)"),borderRadius:9,padding:"9px 12px",marginBottom:5,cursor:"pointer",position:"relative"}}>
               <div style={{fontSize:15,color:"#fff",fontWeight:700,marginBottom:2}}>{p.jp}</div>
               <div style={{fontSize:9,color:"#06b6d4",fontFamily:"monospace",marginBottom:2}}>{p.ro}</div>
               <div style={{fontSize:9,color:"rgba(255,255,255,0.42)"}}>{p.en}</div>
-              <div style={{position:"absolute",top:8,right:9,fontSize:7,color:copied===i?"#3b82f6":"rgba(255,255,255,0.2)"}}>{copied===i?"\u2713":"Tap"}</div>
+              <div style={{position:"absolute",top:8,right:9,fontSize:7,color:copied===i?"#3b82f6":"rgba(255,255,255,0.2)"}}>{copied===i?"✓":"Tap"}</div>
             </div>
           ))}
         </div>
