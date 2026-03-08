@@ -709,7 +709,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
-        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"]].map(([v,l])=>(
+        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","🚻 Toilets"]].map(([v,l])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"7px 10px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",background:"none",border:"none",borderBottom:`2px solid ${tab===v?"#3b82f6":"transparent"}`,marginBottom:-2,color:tab===v?"#3b82f6":"rgba(255,255,255,0.35)",whiteSpace:"nowrap"}}>{l}</button>
         ))}
       </div>
@@ -885,6 +885,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {tab==="comfort"&&(
         <div>
+
           {station.restAreas?.length>0&&<>
             <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7}}><span style={{fontSize:16}}>🪑</span><span style={{fontSize:10,fontWeight:700,color:"#818cf8",textTransform:"uppercase",letterSpacing:1}}>Rest Areas</span></div>
             {station.restAreas.map((r,i)=><div key={i} style={{background:"rgba(99,102,241,0.07)",border:"1px solid rgba(99,102,241,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:7}}><div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:2}}>{r.location}</div><div style={{fontSize:10,color:"rgba(255,255,255,0.38)",marginBottom:4,textTransform:"capitalize"}}>Type: {r.type}</div><div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.4}}>{r.notes}</div></div>)}
@@ -926,22 +927,6 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       {tab==="phrases"&&(
         <div>
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9}}>Tap a card to copy the Japanese text to show to staff.</div>
-          {(()=>{const toilets=TOILETS[station.id]||[];return toilets.length>0?(
-            <div style={{background:"rgba(20,30,48,0.7)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:14,padding:"14px 16px",marginBottom:14}}>
-              <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#34d399",textTransform:"uppercase",letterSpacing:1}}>Accessible Toilets</span></div>
-              {toilets.map((t,i)=><div key={i} style={{background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.15)",borderRadius:9,padding:"10px 12px",marginBottom:7}}>
-                <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:4}}>{t.floor}</div>
-                <div style={{display:"flex",gap:6,marginBottom:5,flexWrap:"wrap"}}>
-                  {t.ostomate&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>Ostomate ✓</span>}
-                  {t.baby&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(96,165,250,0.15)",border:"1px solid rgba(96,165,250,0.3)",color:"#60a5fa"}}>Baby changing ✓</span>}
-                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.5)"}}>♿ Wide door</span>
-                  <span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.12)",color:"rgba(255,255,255,0.5)"}}>Grab bars</span>
-                </div>
-                <div style={{fontSize:11,color:"rgba(255,255,255,0.55)",lineHeight:1.4}}>{t.notes}</div>
-              </div>)}
-              <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:4,lineHeight:1.5}}>多機能トイレ · Follow ♿ signs from concourse. All have grab bars and wide doors.</div>
-            </div>
-          ):null;})()}
           {PHRASES.map((p,i)=>(
             <div key={i} onClick={()=>{navigator.clipboard?.writeText(p.jp).catch(()=>{});setCopied(i);setTimeout(()=>setCopied(null),1800);}} style={{background:copied===i?"rgba(66,133,244,0.14)":"rgba(255,255,255,0.04)",border:`2px solid ${copied===i?"#3b82f6":"rgba(255,255,255,0.07)"}`,borderRadius:9,padding:"9px 12px",marginBottom:5,cursor:"pointer",position:"relative"}}>
               <div style={{fontSize:15,color:"#fff",fontWeight:700,marginBottom:2}}>{p.jp}</div>
@@ -952,6 +937,40 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           ))}
         </div>
       )}
+      {tab==="toilets"&&(
+        <div>
+          {(()=>{
+            const toilets=TOILETS[station.id]||[];
+            return toilets.length>0?(
+              <div>
+                <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:12}}>Multi-function accessible toilets (多機能トイレ) with grab bars, wide doors, and call buttons. Follow ♿ signs from concourse.</div>
+                {toilets.map((tl,i)=>(
+                  <div key={i} style={{background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:12,padding:"14px 16px",marginBottom:10}}>
+                    <div style={{fontWeight:700,fontSize:13,color:"#fff",marginBottom:8}}>📍 {tl.floor}</div>
+                    <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
+                      <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>♿ Wide door</span>
+                      <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>🤲 Grab bars</span>
+                      {tl.ostomate&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.2)",border:"1px solid rgba(52,211,153,0.4)",color:"#34d399",fontWeight:700}}>Ostomate ✓</span>}
+                      {tl.baby&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(96,165,250,0.2)",border:"1px solid rgba(96,165,250,0.4)",color:"#60a5fa",fontWeight:700}}>Baby changing ✓</span>}
+                    </div>
+                    <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{tl.notes}</div>
+                  </div>
+                ))}
+                <div style={{background:"rgba(20,30,48,0.6)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"12px 14px",marginTop:4}}>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.5)",lineHeight:1.6}}>💡 All accessible toilets in Japan have an emergency call button. Ostomate facilities include a special sink for appliance users. Baby changing tables are separate from the accessible stall at some stations.</div>
+                </div>
+              </div>
+            ):(
+              <div style={{textAlign:"center",padding:"40px 20px",color:"rgba(255,255,255,0.3)"}}>
+                <div style={{fontSize:32,marginBottom:12}}>🚻</div>
+                <div style={{fontSize:13,marginBottom:6}}>Toilet data not yet available</div>
+                <div style={{fontSize:11}}>All stations rated 3+ have accessible toilets. Follow ♿ signs from concourse.</div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
     </div>
   );
 }
