@@ -939,35 +939,25 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       )}
       {tab==="toilets"&&(
         <div>
-          {(()=>{
-            const toilets=TOILETS[station.id]||[];
-            return toilets.length>0?(
-              <div>
-                <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:12}}>Multi-function accessible toilets (多機能トイレ) with grab bars, wide doors, and call buttons. Follow ♿ signs from concourse.</div>
-                {toilets.map((tl,i)=>(
-                  <div key={i} style={{background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:12,padding:"14px 16px",marginBottom:10}}>
-                    <div style={{fontWeight:700,fontSize:13,color:"#fff",marginBottom:8}}>📍 {tl.floor}</div>
-                    <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
-                      <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>♿ Wide door</span>
-                      <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>🤲 Grab bars</span>
-                      {tl.ostomate&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.2)",border:"1px solid rgba(52,211,153,0.4)",color:"#34d399",fontWeight:700}}>Ostomate ✓</span>}
-                      {tl.baby&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(96,165,250,0.2)",border:"1px solid rgba(96,165,250,0.4)",color:"#60a5fa",fontWeight:700}}>Baby changing ✓</span>}
-                    </div>
-                    <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{tl.notes}</div>
-                  </div>
-                ))}
-                <div style={{background:"rgba(20,30,48,0.6)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"12px 14px",marginTop:4}}>
-                  <div style={{fontSize:11,color:"rgba(255,255,255,0.5)",lineHeight:1.6}}>💡 All accessible toilets in Japan have an emergency call button. Ostomate facilities include a special sink for appliance users. Baby changing tables are separate from the accessible stall at some stations.</div>
-                </div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:12}}>Accessible toilets (多機能トイレ) are available at all stations. Follow accessibility signs from concourse.</div>
+          {(TOILETS[station.id]||[]).map((tl,i)=>(
+            <div key={i} style={{background:"rgba(52,211,153,0.06)",border:"1px solid rgba(52,211,153,0.18)",borderRadius:12,padding:"14px 16px",marginBottom:10}}>
+              <div style={{fontWeight:700,fontSize:13,color:"#fff",marginBottom:8}}>📍 {tl.floor}</div>
+              <div style={{display:"flex",gap:6,marginBottom:8,flexWrap:"wrap"}}>
+                <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>Wide door</span>
+                <span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.3)",color:"#34d399"}}>Grab bars</span>
+                {tl.ostomate&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(52,211,153,0.2)",border:"1px solid rgba(52,211,153,0.4)",color:"#34d399",fontWeight:700}}>Ostomate</span>}
+                {tl.baby&&<span style={{fontSize:10,padding:"3px 9px",borderRadius:20,background:"rgba(96,165,250,0.2)",border:"1px solid rgba(96,165,250,0.4)",color:"#60a5fa",fontWeight:700}}>Baby changing</span>}
               </div>
-            ):(
-              <div style={{textAlign:"center",padding:"40px 20px",color:"rgba(255,255,255,0.3)"}}>
-                <div style={{fontSize:32,marginBottom:12}}>🚻</div>
-                <div style={{fontSize:13,marginBottom:6}}>Toilet data not yet available</div>
-                <div style={{fontSize:11}}>All stations rated 3+ have accessible toilets. Follow ♿ signs from concourse.</div>
-              </div>
-            );
-          })()}
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{tl.notes}</div>
+            </div>
+          ))}
+          {!(TOILETS[station.id]?.length)&&(
+            <div style={{textAlign:"center",padding:"40px 20px",color:"rgba(255,255,255,0.3)"}}>
+              <div style={{fontSize:32,marginBottom:12}}>🚻</div>
+              <div style={{fontSize:13}}>Toilet data not yet available for this station</div>
+            </div>
+          )}
         </div>
       )}
 
