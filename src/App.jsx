@@ -996,7 +996,7 @@ Please provide a complete step-by-step accessible journey plan.`;
         {/* Header */}
         <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
           <div>
-            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>"✨ AI Journey Planner"</div>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>✨ AI Journey Planner</div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>Describe your journey and get a personalised accessible route plan</div>
           </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
