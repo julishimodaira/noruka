@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { useState, useMemo, useEffect } from "react";
+import T from "./translations";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -976,7 +977,7 @@ Please provide a complete step-by-step accessible journey plan.`;
         setError("Couldn't generate a plan. Please try again.");
       }
     } catch(e) {
-      setError("Connection error. Please check your internet and try again.");
+      setError(t.connectionError);
     }
     setLoading(false);
   };
@@ -996,8 +997,8 @@ Please provide a complete step-by-step accessible journey plan.`;
         {/* Header */}
         <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
           <div>
-            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>✨ AI Journey Planner</div>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>Describe your journey and get a personalised accessible route plan</div>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>{t.journeyTitle}</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>{t.journeyDesc}</div>
           </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
         </div>
@@ -1053,7 +1054,7 @@ Please provide a complete step-by-step accessible journey plan.`;
             disabled={loading || !from.trim() || !to.trim()}
             style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.08)":"linear-gradient(135deg,#3b82f6,#06b6d4)",color:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.3)":"#fff",fontWeight:700,cursor:loading||!from.trim()||!to.trim()?"not-allowed":"pointer",fontSize:14,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"-0.2px",transition:"all 0.2s",marginBottom:16}}
           >
-            {loading ? "✨ Planning your route…" : "✨ Plan My Accessible Journey"}
+            {loading ? t.planning : t.planJourneyBtn}
           </button>
 
           {/* Loading animation */}
@@ -1076,7 +1077,7 @@ Please provide a complete step-by-step accessible journey plan.`;
           {plan && (
             <div style={{marginTop:4}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>"Your Accessible Route"</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>{t.yourRoute}</div>
                 <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"}}>
                   {copied?"✓ Copied":"📋 Copy"}
                 </button>
@@ -1091,7 +1092,7 @@ Please provide a complete step-by-step accessible journey plan.`;
                 onClick={()=>{setPlan(null);setFrom("");setTo("");setNotes("");}}
                 style={{width:"100%",marginTop:12,padding:"10px",borderRadius:10,border:"1px solid rgba(255,255,255,0.09)",background:"rgba(255,255,255,0.04)",color:"rgba(255,255,255,0.5)",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}
               >
-                Plan another journey
+                {t.planAnother}
               </button>
             </div>
           )}
@@ -1119,6 +1120,9 @@ export default function App(){
   const [showEmergency,setShowEmergency]=useState(false);
   const [showProfile,setShowProfile]=useState(false);
   const [profile,setProfile]=useState(null);
+  const [lang,setLang]=useState("en");
+  const [showLangMenu,setShowLangMenu]=useState(false);
+  const t = T[lang] || T.en;
   const [globalSearch,setGlobalSearch]=useState("");
   const [showGlobalResults,setShowGlobalResults]=useState(false);
 
@@ -1221,10 +1225,10 @@ export default function App(){
           <>
             <div style={{textAlign:"center",marginBottom:28,paddingTop:8}}>
               <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:20,padding:"4px 14px",fontSize:11,color:"#93c5fd",letterSpacing:"1px",textTransform:"uppercase",marginBottom:16}}>Japan Rail · Accessible Travel Guide</div>
-              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>Navigate Japan<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>with confidence</span></div>
-              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>Elevators · Wheelchair cars · Platform gaps · Emergency support</div>
+              <div style={{fontSize:"clamp(26px,5vw,40px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",marginBottom:8,lineHeight:1.1,letterSpacing:"-0.5px"}}>{t.hero1}<br/><span style={{background:"linear-gradient(90deg,#3b82f6,#06b6d4)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>{t.hero2}</span></div>
+              <div style={{color:"rgba(255,255,255,0.38)",fontSize:13,marginBottom:18,lineHeight:1.6}}>{t.heroSub}</div>
               <button onClick={()=>setShowJourney(true)} style={{display:"inline-flex",alignItems:"center",gap:8,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:14,padding:"13px 24px",fontSize:15,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,letterSpacing:"-0.2px",boxShadow:"0 4px 24px rgba(59,130,246,0.35)",marginBottom:8,transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="translateY(-2px)"} onMouseLeave={e=>e.currentTarget.style.transform="translateY(0)"}>
-                ✨ Plan My Accessible Journey
+                {t.planBtn}
               </button>
               {profile&&(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
@@ -1234,7 +1238,7 @@ export default function App(){
             {/* Global search */}
             <div style={{position:"relative",marginBottom:22}}>
               <span style={{position:"absolute",left:13,top:"50%",transform:"translateY(-50%)",fontSize:14,pointerEvents:"none"}}>🔍</span>
-              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder="Search any station across Japan…" style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
+              <input value={globalSearch} onChange={e=>{setGlobalSearch(e.target.value);setShowGlobalResults(true);}} onFocus={()=>setShowGlobalResults(true)} placeholder={t.searchPlaceholder} style={{width:"100%",background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:14,padding:"13px 40px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit"}} onFocus={e=>{e.target.style.borderColor="#3b82f6";setShowGlobalResults(true);}} onBlur={e=>{e.target.style.borderColor="rgba(255,255,255,0.12)";setTimeout(()=>setShowGlobalResults(false),200);}}/>
               {globalSearch&&showGlobalResults&&globalResults.length>0&&(
                 <div style={{position:"absolute",top:"calc(100% + 6px)",left:0,right:0,background:"#1a2540",border:"1px solid rgba(255,255,255,0.1)",borderRadius:11,overflow:"hidden",zIndex:400,boxShadow:"0 16px 48px rgba(0,0,0,0.5)"}}>
                   {globalResults.map(s=>(
