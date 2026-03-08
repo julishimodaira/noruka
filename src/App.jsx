@@ -1053,7 +1053,7 @@ Please provide a complete step-by-step accessible journey plan.`;
             disabled={loading || !from.trim() || !to.trim()}
             style={{width:"100%",padding:"13px",borderRadius:12,border:"none",background:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.08)":"linear-gradient(135deg,#3b82f6,#06b6d4)",color:loading||!from.trim()||!to.trim()?"rgba(255,255,255,0.3)":"#fff",fontWeight:700,cursor:loading||!from.trim()||!to.trim()?"not-allowed":"pointer",fontSize:14,fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"-0.2px",transition:"all 0.2s",marginBottom:16}}
           >
-            {loading ? t.planning : t.planJourneyBtn}
+            {loading ? "✨ Planning your route…" : "✨ Plan My Accessible Journey"}
           </button>
 
           {/* Loading animation */}
