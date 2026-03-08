@@ -680,7 +680,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           </div>
           <button onClick={()=>onToggleFav(station.id)} style={{background:"none",border:"none",fontSize:20,cursor:"pointer",color:isFav?"#fbbf24":"rgba(255,255,255,0.2)",padding:"0 0 0 8px"}}>★</button>
         </div>
-        <ScoreBar score={station.accessScore}/>
+        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:2}}><ScoreBar score={station.accessScore}/>
         <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",marginTop:8}}>
           {station.staffAssist&&<span style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.22)",borderRadius:20,padding:"3px 9px",fontSize:10,color:"#34d399"}}>Staff assistance available</span>}
           <button onClick={()=>window.open(`tel:${station.phone}`)} style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.25)",borderRadius:20,padding:"3px 9px",fontSize:10,color:"#7dd3fc",cursor:"pointer",fontFamily:"inherit"}}>📞 {station.phone}</button>
@@ -689,10 +689,11 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Weather */}
       {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(
-        <div style={{display:"flex",alignItems:"center",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:10,background:cw.warn?"rgba(245,158,11,0.08)":"rgba(52,211,153,0.06)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.25)":"rgba(52,211,153,0.16)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:11}}>
-          <span style={{fontSize:16}}>{cw.icon}</span><span>{cw.note}</span>{cw.live&&<span style={{fontSize:9,opacity:0.5,marginLeft:"auto"}}>Live</span>}
-        </div>
+        <span style={{display:"inline-flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:20,background:cw.warn?"rgba(245,158,11,0.12)":"rgba(52,211,153,0.1)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.3)":"rgba(52,211,153,0.2)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:10,fontWeight:600,verticalAlign:"middle"}}>
+          {cw.icon} {cw.warn?cw.note:"✓ Good conditions"}{cw.live&&<span style={{fontSize:8,opacity:0.5,marginLeft:2}}>·live</span>}
+        </span>
       ):null;})()}
+      </div>
 
       {/* Profile tip */}
       {profile?.type==="power"&&<div style={{background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"#fde68a",marginBottom:9}}>⚡ Power wheelchair: Check elevator door widths. Charging may be available — ask staff.</div>}
@@ -734,7 +735,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
               <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details →</div>
             </div>
             <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:9,padding:"10px 12px",textAlign:"center"}}>
-              <ScoreBar score={station.accessScore}/>
+              <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:2}}><ScoreBar score={station.accessScore}/>
               <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3}}>Access Score</div>
             </div>
           </div>
