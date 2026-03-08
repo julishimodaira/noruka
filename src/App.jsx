@@ -680,19 +680,18 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           </div>
           <button onClick={()=>onToggleFav(station.id)} style={{background:"none",border:"none",fontSize:20,cursor:"pointer",color:isFav?"#fbbf24":"rgba(255,255,255,0.2)",padding:"0 0 0 8px"}}>★</button>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:2}}><ScoreBar score={station.accessScore}/>
-        <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",marginTop:8}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",marginBottom:6}}>
+          <ScoreBar score={station.accessScore}/>
+          {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(
+            <span style={{display:"inline-flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:20,background:cw.warn?"rgba(245,158,11,0.12)":"rgba(52,211,153,0.1)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.3)":"rgba(52,211,153,0.2)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:10,fontWeight:600}}>
+              {cw.icon} {cw.warn?cw.note:"✓ Good conditions"}{cw.live&&<span style={{fontSize:8,opacity:0.5,marginLeft:2}}>·live</span>}
+            </span>
+          ):null;})()}
+        </div>
+        <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",marginBottom:8}}>
           {station.staffAssist&&<span style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.22)",borderRadius:20,padding:"3px 9px",fontSize:10,color:"#34d399"}}>Staff assistance available</span>}
           <button onClick={()=>window.open(`tel:${station.phone}`)} style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.25)",borderRadius:20,padding:"3px 9px",fontSize:10,color:"#7dd3fc",cursor:"pointer",fontFamily:"inherit"}}>📞 {station.phone}</button>
         </div>
-      </div>
-
-      {/* Weather */}
-      {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(
-        <span style={{display:"inline-flex",alignItems:"center",gap:4,padding:"3px 8px",borderRadius:20,background:cw.warn?"rgba(245,158,11,0.12)":"rgba(52,211,153,0.1)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.3)":"rgba(52,211,153,0.2)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:10,fontWeight:600,verticalAlign:"middle"}}>
-          {cw.icon} {cw.warn?cw.note:"✓ Good conditions"}{cw.live&&<span style={{fontSize:8,opacity:0.5,marginLeft:2}}>·live</span>}
-        </span>
-      ):null;})()}
       </div>
 
       {/* Profile tip */}
