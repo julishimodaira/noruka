@@ -952,7 +952,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
               <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{tl.notes}</div>
             </div>
           ))}
-          {!(TOILETS[station.id]?.length)&&(
+          {!TOILETS[station.id]&&(
             <div style={{textAlign:"center",padding:"40px 20px",color:"rgba(255,255,255,0.3)"}}>
               <div style={{fontSize:32,marginBottom:12}}>🚻</div>
               <div style={{fontSize:13}}>Toilet data not yet available for this station</div>
