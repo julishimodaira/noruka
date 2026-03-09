@@ -681,7 +681,15 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(<span style={{fontSize:10,color:cw.warn?"#fde68a":"rgba(255,255,255,0.35)"}}>{cw.icon} {cw.temp} · {cw.label}</span>):null;})()}
           </div>
           </div>
-          <button onClick={()=>onToggleFav(station.id)} style={{background:"none",border:"none",fontSize:20,cursor:"pointer",color:isFav?"#fbbf24":"rgba(255,255,255,0.2)",padding:"0 0 0 8px"}}>★</button>
+          <div style={{display:"flex",gap:4,alignItems:"center"}}>
+            <button onClick={()=>{
+              const text = `${station.name} (${station.nameJp}) - Accessibility info on Noruka`;
+              const url = `https://noruka.vercel.app`;
+              if(navigator.share){navigator.share({title:station.name,text,url}).catch(()=>{});}
+              else{navigator.clipboard?.writeText(`${text}: ${url}`).catch(()=>{});alert("Link copied to clipboard!");}
+            }} style={{background:"none",border:"none",fontSize:16,cursor:"pointer",color:"rgba(255,255,255,0.3)",padding:"0 4px"}}>Share</button>
+            <button onClick={()=>onToggleFav(station.id)} style={{background:"none",border:"none",fontSize:20,cursor:"pointer",color:isFav?"#fbbf24":"rgba(255,255,255,0.2)",padding:"0 0 0 4px"}}>★</button>
+          </div>
         </div>
         <ScoreBar score={station.accessScore}/>
         <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center",marginTop:8}}>
