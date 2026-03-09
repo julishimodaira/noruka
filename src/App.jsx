@@ -1385,15 +1385,13 @@ export default function App(){
         <div style={{maxWidth:900,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}} onClick={()=>{setPage("home");setActiveCityKey(null);}}>
             <div style={{width:34,height:34,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.5)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>
-              <svg width="22" height="22" viewBox="0 0 84 84" fill="none">
-                <line x1="22" y1="62" x2="22" y2="28" stroke="#3b82f6" strokeWidth="6" strokeLinecap="round"/>
-                <path d="M22 36 Q22 20 42 20 Q62 20 62 36 L62 62" stroke="#8b5cf6" strokeWidth="6" strokeLinecap="round" fill="none"/>
-                <circle cx="22" cy="28" r="6" fill="#3b82f6"/>
-                <circle cx="22" cy="62" r="6" fill="#1d4ed8"/>
-                <circle cx="42" cy="20" r="5" fill="#8b5cf6"/>
-                <circle cx="62" cy="62" r="6" fill="#06b6d4"/>
-                <circle cx="58" cy="28" r="4" fill="#8b5cf6" opacity="0.85"/>
-                <circle cx="58" cy="28" r="2" fill="#0d0d1a"/>
+              <svg width="24" height="24" viewBox="0 0 84 84" fill="none">
+                <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
+                <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
+                <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
+                <circle cx="22" cy="64" r="9" fill="#1d4ed8"/>
+                <circle cx="42" cy="16" r="7" fill="#8b5cf6"/>
+                <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
               </svg>
             </div>
             <div>
