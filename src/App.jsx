@@ -671,6 +671,12 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       {profile?.type==="visual"&&<div style={{background:"rgba(99,102,241,0.1)",border:"1px solid rgba(99,102,241,0.25)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"#c7d2fe",marginBottom:9}}>👁 Visual impairment: Tactile paving at all exits. Yellow guide strip leads to elevator.</div>}
 
       {/* Alerts */}
+      {(station.elevators||[]).some(e=>e.status==="maintenance")&&(
+        <div style={{display:"flex",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:8,fontSize:11,lineHeight:1.4,background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.28)",color:"#fde68a"}}>
+          <span>Elevator out of service:</span>
+          <span>{(station.elevators||[]).filter(e=>e.status==="maintenance").map(e=>e.location).join(", ")} — tap Elevators tab for alternatives</span>
+        </div>
+      )}
       {station.alerts?.map((a,i)=>(
         <div key={i} style={{display:"flex",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:8,fontSize:11,lineHeight:1.4,background:a.type==="warning"?"rgba(245,158,11,0.1)":"rgba(66,133,244,0.08)",border:`1px solid ${a.type==="warning"?"rgba(245,158,11,0.28)":"rgba(66,133,244,0.22)"}`,color:a.type==="warning"?"#fde68a":"#93c5fd"}}>
           <span>{a.type==="warning"?"⚠️":"ℹ️"}</span><span>{a.msg}</span>
