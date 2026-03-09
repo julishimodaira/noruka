@@ -1241,6 +1241,7 @@ export default function App(){
           )}
 
           <div style={{display:"flex",gap:5,flexShrink:0,alignItems:"center"}}>
+            <select value={lang} onChange={e=>setLang(e.target.value)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 8px",cursor:"pointer",fontSize:11,fontFamily:"inherit"}}><option value="en">EN</option><option value="ja">JA</option><option value="es">ES</option><option value="fr">FR</option><option value="ko">KO</option></select>
             <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button></div>
         </div>
@@ -1259,7 +1260,8 @@ export default function App(){
                 {t.planBtn}
               </button>
               {profile&&(
-                <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <select value={lang} onChange={e=>setLang(e.target.value)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 8px",cursor:"pointer",fontSize:11,fontFamily:"inherit"}}><option value="en">EN</option><option value="ja">JA</option><option value="es">ES</option><option value="fr">FR</option><option value="ko">KO</option></select>
+            <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
               )}
             </div>
 
