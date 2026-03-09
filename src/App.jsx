@@ -85,7 +85,7 @@ const PROFILE_TYPES = [
   {id:"power",icon:"⚡",label:"Power Wheelchair"},
   {id:"walking_frame",icon:"🚶",label:"Walker"},
   {id:"visual",icon:"👁",label:"Visual Impairment"},
-  {id:"companion",icon:"👥",label:"With Companion"},
+  {id:"companion",icon:"👥",label:"With Caretaker"},
   {id:"stroller",icon:"🍼",label:"Stroller"},
 ];
 
