@@ -1226,7 +1226,7 @@ export default function App(){
       <div style={{background:"rgba(8,11,20,0.92)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 18px",position:"sticky",top:0,zIndex:300,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)"}}>
         <div style={{maxWidth:900,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}} onClick={()=>{setPage("home");setActiveCityKey(null);}}>
-            <div style={{width:34,height:34,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>[wheelchair]</div>
+            <div style={{width:34,height:34,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>♿</div>
             <div>
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:17,fontWeight:700,color:"#fff",lineHeight:1,letterSpacing:"-0.4px"}}>Noruka</div>
               <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:"2px",textTransform:"uppercase",marginTop:2}}>Japan Rail Access</div>
