@@ -808,23 +808,13 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:9}}>
             <div onClick={()=>setTab("elevators")} style={{background:"rgba(66,133,244,0.08)",border:"2px solid rgba(66,133,244,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(66,133,244,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(66,133,244,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#3b82f6",fontFamily:"monospace"}}>{station.elevatorCount}</div>
-              <div style={{fontSize:9,color:"#7dd3fc"}}>Elevators</div>
-              <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details</div>
+              <div style={{fontSize:9,color:"#7dd3fc"}}>🛗 Elevators</div>
+              <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details →</div>
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(6,182,212,0.08)",border:"2px solid rgba(6,182,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#06b6d4",fontFamily:"monospace"}}>{TOILETS[station.id]?"1":"—"}</div>
               <div style={{fontSize:9,color:"#67e8f9"}}>Accessible Toilet</div>
-              <div style={{fontSize:8,color:"rgba(6,182,212,0.7)",marginTop:2}}>{TOILETS[station.id]?"Tap for info":"No data yet"}</div>
-            </div>
-            <div onClick={()=>setTab("toilets")} style={{background:"rgba(249,168,212,0.08)",border:"2px solid rgba(249,168,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.25)"}>
-              <div style={{fontSize:22,fontWeight:700,color:"#f9a8d4",fontFamily:"monospace"}}>{BABY_CHANGING[station.id]?"1":"—"}</div>
-              <div style={{fontSize:9,color:"#f9a8d4"}}>Baby Changing</div>
-              <div style={{fontSize:8,color:"rgba(249,168,212,0.7)",marginTop:2}}>{BABY_CHANGING[station.id]?"Tap for info":"No data yet"}</div>
-            </div>
-            <div onClick={()=>setTab("toilets")} style={{background:"rgba(251,191,36,0.08)",border:"2px solid rgba(251,191,36,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(251,191,36,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(251,191,36,0.25)"}>
-              <div style={{fontSize:22,fontWeight:700,color:"#fbbf24",fontFamily:"monospace"}}>{CHARGING[station.id]?CHARGING[station.id].length:"—"}</div>
-              <div style={{fontSize:9,color:"#fbbf24"}}>Charging</div>
-              <div style={{fontSize:8,color:"rgba(251,191,36,0.7)",marginTop:2}}>{CHARGING[station.id]?"Tap for info":"No data yet"}</div>
+              <div style={{fontSize:8,color:"rgba(6,182,212,0.7)",marginTop:2}}>{TOILETS[station.id]?"Tap for location →":"No data yet"}</div>
             </div>
           </div>
           <div style={{background:"rgba(251,191,36,0.07)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"10px 12px",marginBottom:9}}>
@@ -1581,8 +1571,6 @@ export default function App(){
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:`${DIFF_COLOR[s.transferDifficulty]}18`,border:`1px solid ${DIFF_COLOR[s.transferDifficulty]}40`,color:DIFF_COLOR[s.transferDifficulty]}}>{s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}</span>
                           {s.staffAssist&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
                           {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
-                          {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
-                          {CHARGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
                         </div>
                         {s.alerts?.length>0&&<div style={{marginTop:6,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                       </div>
@@ -1602,8 +1590,6 @@ export default function App(){
                         </span>
                         {s.staffAssist&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
                         {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
-                        {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
-                        {CHARGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
                       </div>
                       {s.alerts?.length>0&&<div style={{marginTop:7,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                     </div>
