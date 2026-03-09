@@ -704,8 +704,10 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
               <div style={{fontSize:9,color:"#7dd3fc"}}>🛗 Elevators</div>
               <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details →</div>
             </div>
-            <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:9,padding:"10px 12px",textAlign:"center"}}>
-
+            <div onClick={()=>setTab("toilets")} style={{background:"rgba(6,182,212,0.08)",border:"2px solid rgba(6,182,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.25)"}>
+              <div style={{fontSize:22,fontWeight:700,color:"#06b6d4",fontFamily:"monospace"}}>{TOILETS[station.id]?"1":"—"}</div>
+              <div style={{fontSize:9,color:"#67e8f9"}}>Accessible Toilet</div>
+              <div style={{fontSize:8,color:"rgba(6,182,212,0.7)",marginTop:2}}>{TOILETS[station.id]?"Tap for location →":"No data yet"}</div>
             </div>
           </div>
           <div style={{background:"rgba(251,191,36,0.07)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"10px 12px",marginBottom:9}}>
