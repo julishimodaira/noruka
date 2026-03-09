@@ -1634,7 +1634,7 @@ export default function App(){
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(0,196,204,0.12)",border:"1px solid rgba(0,196,204,0.28)",color:"#06b6d4"}}>🛗 {s.elevatorCount} lifts</span>
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:`${DIFF_COLOR[s.transferDifficulty]}18`,border:`1px solid ${DIFF_COLOR[s.transferDifficulty]}40`,color:DIFF_COLOR[s.transferDifficulty]}}>{s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}</span>
                           {s.staffAssist&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
-                          {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
+                          {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Restroom</span>}
                           {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
                           {CHARGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
                         </div>
@@ -1655,7 +1655,7 @@ export default function App(){
                           {s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}
                         </span>
                         {s.staffAssist&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
-                        {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
+                        {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Restroom</span>}
                         {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
                         {CHARGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
                       </div>
