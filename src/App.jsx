@@ -1263,7 +1263,7 @@ export default function App(){
               </button>
               {profile&&(
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <select value={lang} onChange={e=>setLang(e.target.value)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 8px",cursor:"pointer",fontSize:11,fontFamily:"inherit"}}><option value="en">EN</option><option value="ja">JA</option><option value="es">ES</option><option value="fr">FR</option><option value="ko">KO</option></select>
-            <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>Edit</button></div>
+            <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>{t.editProfile}</button></div>
               )}
             </div>
 
@@ -1287,7 +1287,7 @@ export default function App(){
             </div>
 
             {/* City cards */}
-            <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:11}}>Select a City</div>
+            <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:11}}>{t.selectCity}</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))",gap:10,marginBottom:24}}>
               {CITY_KEYS.map(ck=>{
                 const city=CITIES[ck];const w=weather[ck]||WEATHER_FALLBACK[ck];
@@ -1311,7 +1311,7 @@ export default function App(){
             {/* Favorites */}
             {favorites.length>0&&(
               <>
-                <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:10}}>★ Saved Stations</div>
+                <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:10}}>{t.savedStations}</div>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:8,marginBottom:22}}>
                   {favorites.map(fid=>{
                     const s=ALL_STATIONS.find(x=>x.id===fid);if(!s)return null;
@@ -1330,9 +1330,9 @@ export default function App(){
             )}
 
             {/* Feature grid */}
-            <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:10}}>What's Included</div>
+            <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:10}}>{t.whatsIncluded}</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:7}}>
-              {[["🛗","Elevator Status","Live community verification"],["🚃","Wheelchair Cars","Exact car & boarding spot"],["📏","Platform Gaps","Colour-coded severity"],["📊","Crowding Charts","Best times to travel"],["🌧","Weather Alerts","Rain/ice ramp warnings"],["🪑","Rest Areas","Seating & charging"],["🚕","Accessible Taxi","WAV rank locations"],["🏥","Medical Nearby","Closest accessible clinics"],["🏨","Hotels","Accessibility ratings"],["🆘","Emergency Card","Japanese SOS card"],["🗣️","Phrase Cards","Medical & navigation"],["👤","My Profile","Personalised to your needs"]].map(([icon,label,desc])=>(
+              {[["🛗",t.featureElevator,t.featureElevatorDesc],["🚃",t.featureWheelchair,t.featureWheelchairDesc],["📏",t.featurePlatform,t.featurePlatformDesc],["📊",t.featureCrowding,t.featureCrowdingDesc],["🌧",t.featureWeather,t.featureWeatherDesc],["🪑",t.featureRest,t.featureRestDesc],["🚕",t.featureTaxi,t.featureTaxiDesc],["🏥",t.featureMedical,t.featureMedicalDesc],["🏨",t.featureHotels,t.featureHotelsDesc],["🆘",t.featureEmergency,t.featureEmergencyDesc],["🗣️",t.featurePhrases,t.featurePhrasesDesc],["👤",t.featureProfile,t.featureProfileDesc]].map(([icon,label,desc])=>(
                 <div key={label} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12,padding:"12px 11px",transition:"all 0.2s"}}>
                   <div style={{fontSize:18,marginBottom:4}}>{icon}</div>
                   <div style={{fontSize:11,fontWeight:700,color:"#fff",marginBottom:2}}>{label}</div>
@@ -1346,7 +1346,7 @@ export default function App(){
         {/* ══ CITY PAGE ══ */}
         {page==="city"&&activeCity&&(
           <>
-            <button onClick={()=>setPage("home")} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginBottom:14}}>← Back to Japan</button>
+            <button onClick={()=>setPage("home")} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginBottom:14}}>{t.backToJapan}</button>
 
             {/* City header */}
             <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
