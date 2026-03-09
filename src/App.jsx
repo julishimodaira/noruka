@@ -84,14 +84,14 @@ const BABY_CHANGING = {
   shibuya:    {location:"B3 multipurpose toilet & Scramble Square 2F", note:"Full nursing room available"},
   ikebukuro:  {location:"East Exit B1 & Tobu department store", note:"Multiple nursing rooms nearby"},
   shinagawa:  {location:"Konan Exit concourse", note:"Nursing room in Ecute"},
-  ueno:       {location:"Central concourse 1F", note:"Baby room near multipurpose toilet"},
+  ueno:       {location:"Central concourse 1F", note:"Baby room near multipurpose restroom"},
   haneda:     {location:"Arrivals 1F & Departures 3F", note:"Full nursing rooms, formula available"},
-  asakusa:    {location:"1F near Kaminarimon Exit", note:"Baby changing table in multipurpose toilet"},
-  harajuku:   {location:"Takeshita Exit 1F", note:"Baby changing in multipurpose toilet"},
-  omotesando: {location:"B4 Exit concourse", note:"Baby changing in multipurpose toilet"},
+  asakusa:    {location:"1F near Kaminarimon Exit", note:"Baby changing table in multipurpose restroom"},
+  harajuku:   {location:"Takeshita Exit 1F", note:"Baby changing in multipurpose restroom"},
+  omotesando: {location:"B4 Exit concourse", note:"Baby changing in multipurpose restroom"},
   ebisu:      {location:"West Exit 1F", note:"Baby changing available"},
   roppongi:   {location:"Midtown B1", note:"Full nursing room in Midtown mall"},
-  otemachi:   {location:"C10 Exit concourse", note:"Baby changing in multipurpose toilet"},
+  otemachi:   {location:"C10 Exit concourse", note:"Baby changing in multipurpose restroom"},
 };
 
 function useWeather() {
@@ -819,7 +819,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
-        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","Toilets"]].map(([v,l])=>(
+        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","Restrooms"]].map(([v,l])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"7px 10px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",background:"none",border:"none",borderBottom:`2px solid ${tab===v?"#3b82f6":"transparent"}`,marginBottom:-2,color:tab===v?"#3b82f6":"rgba(255,255,255,0.35)",whiteSpace:"nowrap"}}>{l}</button>
         ))}
       </div>
@@ -845,7 +845,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(6,182,212,0.08)",border:"2px solid rgba(6,182,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#06b6d4",fontFamily:"monospace"}}>{TOILETS[station.id]?"1":"—"}</div>
-              <div style={{fontSize:9,color:"#67e8f9"}}>Accessible Toilet</div>
+              <div style={{fontSize:9,color:"#67e8f9"}}>Accessible Restroom</div>
               <div style={{fontSize:8,color:"rgba(6,182,212,0.7)",marginTop:2}}>{TOILETS[station.id]?"Tap for info":"No data yet"}</div>
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(249,168,212,0.08)",border:"2px solid rgba(249,168,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.25)"}>
@@ -1016,7 +1016,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           </>}
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>Accessible Restrooms</span></div>
           <div style={{background:"rgba(16,185,129,0.07)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:13}}>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function toilets (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow [wheelchair] signs from concourse.</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function restrooms (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow [wheelchair] signs from concourse.</div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7}}><span style={{fontSize:16}}>❤️</span><span style={{fontSize:10,fontWeight:700,color:"#f87171",textTransform:"uppercase",letterSpacing:1}}>AED & Emergency</span></div>
           <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.18)",borderRadius:9,padding:"10px 12px"}}>
@@ -1048,13 +1048,13 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {TOILETS[station.id] ? (
             <div style={{background:"rgba(6,182,212,0.06)",border:"1px solid rgba(6,182,212,0.2)",borderRadius:10,padding:"14px"}}>
-              <div style={{fontWeight:700,fontSize:12,color:"#06b6d4",marginBottom:6}}>Accessible Toilet</div>
+              <div style={{fontWeight:700,fontSize:12,color:"#06b6d4",marginBottom:6}}>Accessible Restroom</div>
               <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:4}}>{TOILETS[station.id].location}</div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{TOILETS[station.id].note}</div>
               {TOILETS[station.id].baby&&<div style={{fontSize:10,color:"#f9a8d4",marginTop:6}}>Baby changing table available</div>}
             </div>
           ) : (
-            <div style={{color:"rgba(255,255,255,0.35)",fontSize:12,padding:"12px 0",textAlign:"center"}}>No toilet data for this station yet.</div>
+            <div style={{color:"rgba(255,255,255,0.35)",fontSize:12,padding:"12px 0",textAlign:"center"}}>No restroom data for this station yet.</div>
           )}
           {BABY_CHANGING[station.id] && (
             <div style={{background:"rgba(249,168,212,0.06)",border:"1px solid rgba(249,168,212,0.2)",borderRadius:10,padding:"14px"}}>
@@ -1544,7 +1544,7 @@ export default function App(){
             {/* Feature grid */}
             <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:10}}>{t.whatsIncluded}</div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:7}}>
-              {[["🛗",t.featureElevator,t.featureElevatorDesc],["🚃",t.featureWheelchair,t.featureWheelchairDesc],["📏",t.featurePlatform,t.featurePlatformDesc],["📊",t.featureCrowding,t.featureCrowdingDesc],["🌧",t.featureWeather,t.featureWeatherDesc],["🪑",t.featureRest,t.featureRestDesc],["🚕",t.featureTaxi,t.featureTaxiDesc],["🏥",t.featureMedical,t.featureMedicalDesc],["🏨",t.featureHotels,t.featureHotelsDesc],["🆘",t.featureEmergency,t.featureEmergencyDesc],["🗣️",t.featurePhrases,t.featurePhrasesDesc],["👤",t.featureProfile,t.featureProfileDesc]].map(([icon,label,desc])=>(
+              {[["🛗",t.featureElevator,t.featureElevatorDesc],["🚃",t.featureWheelchair,t.featureWheelchairDesc],["📏",t.featurePlatform,t.featurePlatformDesc],["📊",t.featureCrowding,t.featureCrowdingDesc],["🌧",t.featureWeather,t.featureWeatherDesc],["🪑",t.featureRest,t.featureRestDesc],["🚕",t.featureTaxi,t.featureTaxiDesc],["🏥",t.featureMedical,t.featureMedicalDesc],["🏨",t.featureHotels,t.featureHotelsDesc],["🆘",t.featureEmergency,t.featureEmergencyDesc],["🗣️",t.featurePhrases,t.featurePhrasesDesc],["👤",t.featureProfile,t.featureProfileDesc],["🚻",t.featureToilet,t.featureToiletDesc],["🔋",t.featureCharging,t.featureChargingDesc],["👨‍💼",t.featureStaff,t.featureStaffDesc]].map(([icon,label,desc])=>(
                 <div key={label} style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:12,padding:"12px 11px",transition:"all 0.2s"}}>
                   <div style={{fontSize:18,marginBottom:4}}>{icon}</div>
                   <div style={{fontSize:11,fontWeight:700,color:"#fff",marginBottom:2}}>{label}</div>
