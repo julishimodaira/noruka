@@ -25,16 +25,73 @@ const LINE_COLOR = {
 
 // ─── LIVE WEATHER HOOK ───────────────────────────────────────────────────────
 const TOILETS = {
-  tokyo:      {location:"B1 near Marunouchi South Exit", type:"Multipurpose", note:"24hr access"},
-  shinjuku:   {location:"West Exit B1 concourse", type:"Multipurpose", note:"Near taxi rank"},
-  shibuya:    {location:"B3 Tokyu concourse", type:"Multipurpose", note:"Near elevator"},
-  asakusa:    {location:"1F near Kaminarimon Exit", type:"Multipurpose", note:"Attendant available"},
-  ueno:       {location:"Central concourse 1F", type:"Multipurpose", note:"Near park exit"},
-  ikebukuro:  {location:"East Exit concourse B1", type:"Multipurpose", note:"Near Seibu entrance"},
-  akihabara:  {location:"Electric Town Exit 1F", type:"Multipurpose", note:"Ground level"},
-  harajuku:   {location:"Takeshita Exit 1F", type:"Multipurpose", note:"Small station"},
-  shinagawa:  {location:"Konan Exit concourse", type:"Multipurpose", note:"Near buses"},
-  yurakucho:  {location:"Central Exit 1F", type:"Multipurpose", note:"Ground level"},
+  tokyo:           {location:"B1 Marunouchi South Exit & Yaesu Central concourse", note:"24hr, attendant available", baby:true},
+  shinjuku:        {location:"West Exit B1 & South Exit B1 concourse", note:"24hr access, near taxi rank", baby:true},
+  shibuya:         {location:"B3 Tokyu concourse near elevator", note:"Also in Scramble Square 2F", baby:true},
+  asakusa:         {location:"1F near Kaminarimon Exit", note:"Attendant available 8am-9pm", baby:true},
+  ueno:            {location:"Central concourse 1F & park exit", note:"Near park exit, attendant 8am-8pm", baby:true},
+  ikebukuro:       {location:"East Exit B1 & West Exit concourse", note:"Near Seibu entrance, 24hr", baby:true},
+  akihabara:       {location:"Electric Town Exit 1F", note:"Ground level, 24hr", baby:false},
+  harajuku:        {location:"Takeshita Exit 1F", note:"New building, step-free access", baby:true},
+  shinagawa:       {location:"Konan Exit concourse & Takanawa Exit", note:"Near buses, 24hr", baby:true},
+  yurakucho:       {location:"Central Exit 1F near elevator", note:"Ground level access", baby:false},
+  kanda:           {location:"East Exit 1F concourse", note:"Near elevator", baby:false},
+  okachimachi:     {location:"South Exit 1F", note:"Street level", baby:false},
+  uguisudani:      {location:"South Exit 1F", note:"Small station", baby:false},
+  nippori:         {location:"West Exit concourse 1F", note:"Near Keisei transfer", baby:false},
+  tabata:          {location:"South Exit 1F", note:"Simple layout", baby:false},
+  komagome:        {location:"South Exit 1F", note:"Near elevator", baby:false},
+  sugamo:          {location:"South Exit B1", note:"Near Mita Line", baby:false},
+  otsuka:          {location:"South Exit 1F", note:"Near tram stop", baby:false},
+  mejiro:          {location:"South Exit 1F", note:"Small station", baby:false},
+  yoyogi:          {location:"East Exit 1F", note:"Near Oedo transfer", baby:false},
+  ebisu:           {location:"West Exit 1F concourse", note:"Near Hibiya transfer", baby:true},
+  meguro:          {location:"East Exit 1F", note:"Near Namboku transfer", baby:false},
+  gotanda:         {location:"West Exit 1F", note:"Near Asakusa Line", baby:false},
+  osaki:           {location:"East Exit concourse", note:"Near Rinkai Line", baby:false},
+  tamachi:         {location:"East Exit 1F", note:"Near Mita Line", baby:false},
+  hamamatsucho:    {location:"North Exit 1F concourse", note:"Near Monorail", baby:false},
+  shimbashi:       {location:"North Exit 1F & SL Square", note:"Near Ginza Line", baby:true},
+  koenji:          {location:"South Exit 1F", note:"Street level", baby:false},
+  omotesando:      {location:"B4 Exit concourse", note:"Near all 3 lines", baby:true},
+  roppongi:        {location:"Main Exit 1F & Midtown B1", note:"Also in Midtown mall", baby:true},
+  kasumigaseki:    {location:"Exit C1 concourse", note:"Government area, clean facilities", baby:false},
+  ginza:           {location:"A13 Exit concourse B1", note:"Near all 3 lines", baby:true},
+  nihonbashi:      {location:"B1 Exit concourse", note:"Near Ginza Line", baby:false},
+  otemachi:        {location:"C10 Exit concourse", note:"Large station, multiple facilities", baby:true},
+  "tameike-sanno": {location:"Exit 7 concourse", note:"Clean, quiet station", baby:false},
+  iidabashi:       {location:"West Exit concourse", note:"Near Sobu Line", baby:false},
+  "kita-senju":    {location:"West Exit concourse 1F", note:"Near Joban Line", baby:true},
+  haneda:          {location:"Arrivals level & departures 3F", note:"24hr, full facilities", baby:true},
+  "azabu-juban":   {location:"Namboku Line concourse B3", note:"Near exit", baby:false},
+  "shin-toyosu":   {location:"Station exit 1F", note:"Modern, fully accessible", baby:true},
+};
+
+const CHARGING = {
+  tokyo:      [{location:"Gransta Mall 2F near Family Mart", note:"2 outlets, free, may need purchase"}],
+  shinjuku:   [{location:"Lumine 1 & 2 rest areas", note:"Free charging spots near rest areas"}],
+  shibuya:    [{location:"Scramble Square 2F lounge", note:"Free USB charging"}],
+  ikebukuro:  [{location:"Echika pool B1 food court", note:"Free outlets near seating area"}],
+  shinagawa:  [{location:"Ecute Shinagawa 2F", note:"Free outlets in food court seating"}],
+  ueno:       [{location:"Ueno station waiting area 1F", note:"Free outlets near benches"}],
+  haneda:     [{location:"Departures 3F & Arrivals 1F", note:"Multiple free charging stations"}],
+  omotesando: [{location:"B4 waiting area", note:"Free USB outlets near benches"}],
+};
+
+const BABY_CHANGING = {
+  tokyo:      {location:"B1 multipurpose toilet & Gransta Mall 2F", note:"Full nursing room in Gransta"},
+  shinjuku:   {location:"West Exit B1 & South Exit concourse", note:"Nursing rooms in Lumine"},
+  shibuya:    {location:"B3 multipurpose toilet & Scramble Square 2F", note:"Full nursing room available"},
+  ikebukuro:  {location:"East Exit B1 & Tobu department store", note:"Multiple nursing rooms nearby"},
+  shinagawa:  {location:"Konan Exit concourse", note:"Nursing room in Ecute"},
+  ueno:       {location:"Central concourse 1F", note:"Baby room near multipurpose toilet"},
+  haneda:     {location:"Arrivals 1F & Departures 3F", note:"Full nursing rooms, formula available"},
+  asakusa:    {location:"1F near Kaminarimon Exit", note:"Baby changing table in multipurpose toilet"},
+  harajuku:   {location:"Takeshita Exit 1F", note:"Baby changing in multipurpose toilet"},
+  omotesando: {location:"B4 Exit concourse", note:"Baby changing in multipurpose toilet"},
+  ebisu:      {location:"West Exit 1F", note:"Baby changing available"},
+  roppongi:   {location:"Midtown B1", note:"Full nursing room in Midtown mall"},
+  otemachi:   {location:"C10 Exit concourse", note:"Baby changing in multipurpose toilet"},
 };
 
 function useWeather() {
@@ -946,16 +1003,34 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       )}
 
       {tab==="toilets"&&(
-        <div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {TOILETS[station.id] ? (
-            <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"14px"}}>
-              <div style={{fontWeight:700,fontSize:13,color:"#fff",marginBottom:6}}>Accessible Toilet</div>
-              <div style={{fontSize:12,color:"rgba(255,255,255,0.7)",marginBottom:4}}>{TOILETS[station.id].location}</div>
-              <div style={{fontSize:11,color:"#06b6d4",marginBottom:4}}>{TOILETS[station.id].type}</div>
-              <div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>{TOILETS[station.id].note}</div>
+            <div style={{background:"rgba(6,182,212,0.06)",border:"1px solid rgba(6,182,212,0.2)",borderRadius:10,padding:"14px"}}>
+              <div style={{fontWeight:700,fontSize:12,color:"#06b6d4",marginBottom:6}}>Accessible Toilet</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:4}}>{TOILETS[station.id].location}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{TOILETS[station.id].note}</div>
+              {TOILETS[station.id].baby&&<div style={{fontSize:10,color:"#f9a8d4",marginTop:6}}>Baby changing table available</div>}
             </div>
           ) : (
-            <div style={{color:"rgba(255,255,255,0.35)",fontSize:12,padding:"20px 0",textAlign:"center"}}>No toilet data for this station yet.</div>
+            <div style={{color:"rgba(255,255,255,0.35)",fontSize:12,padding:"12px 0",textAlign:"center"}}>No toilet data for this station yet.</div>
+          )}
+          {BABY_CHANGING[station.id] && (
+            <div style={{background:"rgba(249,168,212,0.06)",border:"1px solid rgba(249,168,212,0.2)",borderRadius:10,padding:"14px"}}>
+              <div style={{fontWeight:700,fontSize:12,color:"#f9a8d4",marginBottom:6}}>Nursing & Baby Changing</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:4}}>{BABY_CHANGING[station.id].location}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{BABY_CHANGING[station.id].note}</div>
+            </div>
+          )}
+          {CHARGING[station.id] && (
+            <div style={{background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:10,padding:"14px"}}>
+              <div style={{fontWeight:700,fontSize:12,color:"#fbbf24",marginBottom:6}}>Device Charging</div>
+              {CHARGING[station.id].map((c,i)=>(
+                <div key={i} style={{marginBottom:i<CHARGING[station.id].length-1?8:0}}>
+                  <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:2}}>{c.location}</div>
+                  <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{c.note}</div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
