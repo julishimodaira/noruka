@@ -1176,6 +1176,17 @@ export default function App(){
   const [lineTab,setLineTab]=useState("all");
   const [viewMode,setViewMode]=useState("grid");
   const [favorites,setFavorites]=useState([]);
+  const [savedRoutes,setSavedRoutes]=useState(()=>{try{return JSON.parse(localStorage.getItem("noruka-routes")||"[]");}catch{return[];}});
+  const saveRoute = route => {
+    const updated = [route,...savedRoutes].slice(0,10);
+    setSavedRoutes(updated);
+    try{localStorage.setItem("noruka-routes",JSON.stringify(updated));}catch{}
+  };
+  const deleteRoute = id => {
+    const updated = savedRoutes.filter(r=>r.id!==id);
+    setSavedRoutes(updated);
+    try{localStorage.setItem("noruka-routes",JSON.stringify(updated));}catch{}
+  };
   const [showFavOnly,setShowFavOnly]=useState(false);
   const [showPhrases,setShowPhrases]=useState(false);
   const [showJourney,setShowJourney]=useState(false);
