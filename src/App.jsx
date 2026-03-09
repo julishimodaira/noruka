@@ -157,35 +157,35 @@ const C = (a,b,c,d,e,f,g,h,i) => ({"6am":a,"8am":b,"10am":c,"12pm":d,"2pm":e,"4p
 // intercom: where the intercom/call button is
 // tip: extra practical note
 const STAFF_LOCATION = {
-  tokyo:      {gate:"Marunouchi Central Gate (main hall) or Yaesu Central Gate", look:"Wide gate marked with a blue ♿ symbol — usually the leftmost or rightmost lane", intercom:"Press the silver intercom button on the gate pillar; a green light means staff are alerted", tip:"At busy times, go to the JR East Service Counter (Marunouchi South, 1F) for dedicated accessible travel help"},
+  tokyo:      {gate:"Marunouchi Central Gate (main hall) or Yaesu Central Gate", look:"Wide gate marked with a blue [wheelchair] symbol — usually the leftmost or rightmost lane", intercom:"Press the silver intercom button on the gate pillar; a green light means staff are alerted", tip:"At busy times, go to the JR East Service Counter (Marunouchi South, 1F) for dedicated accessible travel help"},
   asakusa:    {gate:"Kaminarimon Exit — the gate closest to the Kaminarimon Gate exit on the west side", look:"Wide blue gate, staff desk is directly to the right as you pass through", intercom:"Intercom button on the left pillar of the wide gate", tip:"Staff speak limited English but are very helpful — show them your destination on the phrase card"},
-  shinjuku:   {gate:"West Exit Central Gate or South Exit — both have dedicated wide gates", look:"Blue ♿ lane, usually second from the end of the gate row", intercom:"Intercom on gate pillar; alternatively walk to the JR East Midori no Madoguchi (green counter) inside West Exit", tip:"For Odakyu or Keio transfers, ask JR staff first — they will call ahead to the private line staff"},
-  shibuya:    {gate:"JR Hachiko Exit — wide gate on the far left of the gate row", look:"Blue ♿ symbol above the gate; staff booth is directly behind it", intercom:"Press intercom on gate pillar or call out to the staff booth window", tip:"Scramble Square side (east) has a newer, less crowded accessible gate — worth using if Hachiko side is busy"},
-  ikebukuro:  {gate:"West Exit Main Gate — wide gate on the south end of the gate row", look:"Blue ♿ gate; staffed booth is visible from the gate, facing the Tobu department store", intercom:"Press intercom or knock on the booth window — staff respond quickly", tip:"For Metro transfers, JR staff can call ahead to the Metro gate staff so they're ready for you"},
-  ueno:       {gate:"Ueno Park Exit — wide gate on the left side as you face the gate row", look:"Blue ♿ lane; green-uniformed JR staff are usually standing nearby during peak hours", intercom:"Intercom on gate pillar; staff desk also inside to the left", tip:"Tell staff your destination before you go through — they will phone ahead to your arrival station"},
-  shinagawa:  {gate:"Takanawa Gate (east side) — wide gate at the south end", look:"Blue ♿ gate with staff booth behind; 24h staffed", intercom:"Intercom on pillar, or speak directly to booth staff", tip:"For Shinkansen, go to the Shinkansen Midori no Madoguchi first to confirm your wheelchair reservation"},
-  akihabara:  {gate:"Electric Town Exit — wide gate on the left side of the gate row", look:"Blue ♿ symbol above gate; staff are often visible at the adjacent booth", intercom:"Intercom on gate pillar", tip:"For Hibiya Line, JR staff will walk you to the exit and direct you to the Hibiya station entrance 2 min away"},
-  ginza:      {gate:"Exit A13 — wide gate at the bottom of the A13 elevator", look:"Blue ♿ gate directly facing the elevator exit; staff booth is to the right", intercom:"Intercom on gate pillar or speak to booth", tip:"All 3 lines share the same concourse — once through the gate, one staff member can assist with all transfers"},
-  omotesando: {gate:"Exit B2 — wide gate at street level, corner of Omotesando and Aoyama-dori", look:"Blue ♿ gate on the left side; staff booth is just inside", intercom:"Intercom on left pillar of wide gate", tip:"Station is calm and staff are attentive — one of the easier stations for getting assistance"},
-  otemachi:   {gate:"Exit C10 — wide gate on the east side of the main concourse", look:"Blue ♿ gate at the end of the gate row; this is one of Tokyo's busiest stations so staff are always present", intercom:"Intercom on gate pillar; alternatively go to the Metro information counter 20m inside", tip:"With 5 lines, tell staff your exact destination line — they will contact the correct platform staff"},
-  kita_senju: {gate:"West Exit North Gate — wide gate at the north end of the JR gate row", look:"Blue ♿ gate; green-uniformed JR staff usually standing nearby", intercom:"Intercom on gate pillar", tip:"Use the north gate only — south end has escalator-only zones that are difficult to navigate"},
-  haneda:     {gate:"Arrivals level — wide gate at the Keikyu/Monorail transfer point, clearly signed", look:"Large blue ♿ signs throughout; airport staff in blue uniforms are stationed at all key points", intercom:"Not needed — staff are visible and proactive at this airport station", tip:"WAV taxi rank is before the transfer gate on Arrivals level — sort your onward transport before going to the platform"},
+  shinjuku:   {gate:"West Exit Central Gate or South Exit — both have dedicated wide gates", look:"Blue [wheelchair] lane, usually second from the end of the gate row", intercom:"Intercom on gate pillar; alternatively walk to the JR East Midori no Madoguchi (green counter) inside West Exit", tip:"For Odakyu or Keio transfers, ask JR staff first — they will call ahead to the private line staff"},
+  shibuya:    {gate:"JR Hachiko Exit — wide gate on the far left of the gate row", look:"Blue [wheelchair] symbol above the gate; staff booth is directly behind it", intercom:"Press intercom on gate pillar or call out to the staff booth window", tip:"Scramble Square side (east) has a newer, less crowded accessible gate — worth using if Hachiko side is busy"},
+  ikebukuro:  {gate:"West Exit Main Gate — wide gate on the south end of the gate row", look:"Blue [wheelchair] gate; staffed booth is visible from the gate, facing the Tobu department store", intercom:"Press intercom or knock on the booth window — staff respond quickly", tip:"For Metro transfers, JR staff can call ahead to the Metro gate staff so they're ready for you"},
+  ueno:       {gate:"Ueno Park Exit — wide gate on the left side as you face the gate row", look:"Blue [wheelchair] lane; green-uniformed JR staff are usually standing nearby during peak hours", intercom:"Intercom on gate pillar; staff desk also inside to the left", tip:"Tell staff your destination before you go through — they will phone ahead to your arrival station"},
+  shinagawa:  {gate:"Takanawa Gate (east side) — wide gate at the south end", look:"Blue [wheelchair] gate with staff booth behind; 24h staffed", intercom:"Intercom on pillar, or speak directly to booth staff", tip:"For Shinkansen, go to the Shinkansen Midori no Madoguchi first to confirm your wheelchair reservation"},
+  akihabara:  {gate:"Electric Town Exit — wide gate on the left side of the gate row", look:"Blue [wheelchair] symbol above gate; staff are often visible at the adjacent booth", intercom:"Intercom on gate pillar", tip:"For Hibiya Line, JR staff will walk you to the exit and direct you to the Hibiya station entrance 2 min away"},
+  ginza:      {gate:"Exit A13 — wide gate at the bottom of the A13 elevator", look:"Blue [wheelchair] gate directly facing the elevator exit; staff booth is to the right", intercom:"Intercom on gate pillar or speak to booth", tip:"All 3 lines share the same concourse — once through the gate, one staff member can assist with all transfers"},
+  omotesando: {gate:"Exit B2 — wide gate at street level, corner of Omotesando and Aoyama-dori", look:"Blue [wheelchair] gate on the left side; staff booth is just inside", intercom:"Intercom on left pillar of wide gate", tip:"Station is calm and staff are attentive — one of the easier stations for getting assistance"},
+  otemachi:   {gate:"Exit C10 — wide gate on the east side of the main concourse", look:"Blue [wheelchair] gate at the end of the gate row; this is one of Tokyo's busiest stations so staff are always present", intercom:"Intercom on gate pillar; alternatively go to the Metro information counter 20m inside", tip:"With 5 lines, tell staff your exact destination line — they will contact the correct platform staff"},
+  kita_senju: {gate:"West Exit North Gate — wide gate at the north end of the JR gate row", look:"Blue [wheelchair] gate; green-uniformed JR staff usually standing nearby", intercom:"Intercom on gate pillar", tip:"Use the north gate only — south end has escalator-only zones that are difficult to navigate"},
+  haneda:     {gate:"Arrivals level — wide gate at the Keikyu/Monorail transfer point, clearly signed", look:"Large blue [wheelchair] signs throughout; airport staff in blue uniforms are stationed at all key points", intercom:"Not needed — staff are visible and proactive at this airport station", tip:"WAV taxi rank is before the transfer gate on Arrivals level — sort your onward transport before going to the platform"},
   // Osaka
-  "osaka-umeda": {gate:"Central Gate — wide gate in the centre of the main concourse", look:"Blue ♿ gate with a staffed booth directly behind it; yellow tactile strip leads from elevator to gate", intercom:"Intercom on gate pillar", tip:"North Concourse elevator is currently under maintenance — Central Gate staff can advise on the best route"},
-  namba:      {gate:"Main Exit — wide gate on the south side of the concourse", look:"Blue ♿ gate; Midosuji Line staff wear dark blue uniforms and are stationed near the gate", intercom:"Intercom on gate pillar", tip:"Multiple operators here — tell staff which line you are using so they contact the right team"},
-  tennoji:    {gate:"West Gate — wide gate on the left side, facing Abeno Harukas tower", look:"Blue ♿ gate; staff booth is immediately behind it", intercom:"Intercom on gate pillar", tip:"JR and Metro staff share this concourse — either can assist regardless of which line you are using"},
+  "osaka-umeda": {gate:"Central Gate — wide gate in the centre of the main concourse", look:"Blue [wheelchair] gate with a staffed booth directly behind it; yellow tactile strip leads from elevator to gate", intercom:"Intercom on gate pillar", tip:"North Concourse elevator is currently under maintenance — Central Gate staff can advise on the best route"},
+  namba:      {gate:"Main Exit — wide gate on the south side of the concourse", look:"Blue [wheelchair] gate; Midosuji Line staff wear dark blue uniforms and are stationed near the gate", intercom:"Intercom on gate pillar", tip:"Multiple operators here — tell staff which line you are using so they contact the right team"},
+  tennoji:    {gate:"West Gate — wide gate on the left side, facing Abeno Harukas tower", look:"Blue [wheelchair] gate; staff booth is immediately behind it", intercom:"Intercom on gate pillar", tip:"JR and Metro staff share this concourse — either can assist regardless of which line you are using"},
   // Kyoto
-  "kyoto-main": {gate:"Central Gate — wide gate in the main hall, centre of the gate row", look:"Blue ♿ gate with staff booth behind; green-uniformed JR staff also patrol the main hall", intercom:"Intercom on gate pillar or speak to Midori no Madoguchi counter (left of gate row)", tip:"One of Japan's best-staffed stations for accessibility — staff proactively approach wheelchair users"},
+  "kyoto-main": {gate:"Central Gate — wide gate in the main hall, centre of the gate row", look:"Blue [wheelchair] gate with staff booth behind; green-uniformed JR staff also patrol the main hall", intercom:"Intercom on gate pillar or speak to Midori no Madoguchi counter (left of gate row)", tip:"One of Japan's best-staffed stations for accessibility — staff proactively approach wheelchair users"},
   // Sapporo
-  "sapporo-main": {gate:"South Exit Gate — wide gate at the south end of the gate row", look:"Blue ♿ gate; in winter, staff in orange high-vis vests are stationed nearby", intercom:"Intercom on gate pillar", tip:"In winter, ask staff to confirm the heated walkway route — outdoor paths may be icy"},
-  odori:      {gate:"East Concourse Gate — wide gate facing the east exit", look:"Blue ♿ gate; subway staff in dark blue uniforms are usually nearby", intercom:"Intercom on gate pillar", tip:"All 3 Sapporo subway lines share staff — any staff member can assist regardless of your line"},
+  "sapporo-main": {gate:"South Exit Gate — wide gate at the south end of the gate row", look:"Blue [wheelchair] gate; in winter, staff in orange high-vis vests are stationed nearby", intercom:"Intercom on gate pillar", tip:"In winter, ask staff to confirm the heated walkway route — outdoor paths may be icy"},
+  odori:      {gate:"East Concourse Gate — wide gate facing the east exit", look:"Blue [wheelchair] gate; subway staff in dark blue uniforms are usually nearby", intercom:"Intercom on gate pillar", tip:"All 3 Sapporo subway lines share staff — any staff member can assist regardless of your line"},
   // Fukuoka
-  hakata:     {gate:"Hakata Exit Gate — wide gate on the left side of the main gate row", look:"Blue ♿ gate with staff booth behind; JR Kyushu staff in dark blue uniforms", intercom:"Intercom on gate pillar or speak directly to booth", tip:"One of Japan's most efficient accessible stations — staff respond within seconds"},
-  tenjin:     {gate:"Main Exit Gate — wide gate on the south side", look:"Blue ♿ gate; Fukuoka City Subway staff in green uniforms are stationed nearby", intercom:"Intercom on gate pillar", tip:"Ask staff for a ramp to the train — they deploy it within 1–2 minutes"},
+  hakata:     {gate:"Hakata Exit Gate — wide gate on the left side of the main gate row", look:"Blue [wheelchair] gate with staff booth behind; JR Kyushu staff in dark blue uniforms", intercom:"Intercom on gate pillar or speak directly to booth", tip:"One of Japan's most efficient accessible stations — staff respond within seconds"},
+  tenjin:     {gate:"Main Exit Gate — wide gate on the south side", look:"Blue [wheelchair] gate; Fukuoka City Subway staff in green uniforms are stationed nearby", intercom:"Intercom on gate pillar", tip:"Ask staff for a ramp to the train — they deploy it within 1–2 minutes"},
 };
 
 // Fallback for stations without specific data
-const DEFAULT_STAFF = {gate:"Main ticket gate — look for the wide gate with a blue ♿ symbol", look:"Wide gate, usually at one end of the gate row. Yellow tactile strip on floor leads from elevator to gate.", intercom:"Press the silver intercom button on the gate pillar to alert staff", tip:"Tell staff your destination station before going through — they will phone ahead so assistance is ready on arrival"};
+const DEFAULT_STAFF = {gate:"Main ticket gate — look for the wide gate with a blue [wheelchair] symbol", look:"Wide gate, usually at one end of the gate row. Yellow tactile strip on floor leads from elevator to gate.", intercom:"Press the silver intercom button on the gate pillar to alert staff", tip:"Tell staff your destination station before going through — they will phone ahead so assistance is ready on arrival"};
 
 const ELEVATOR_DATA = {
   tokyo:[
@@ -198,7 +198,7 @@ const ELEVATOR_DATA = {
   ],
   asakusa:[
     {location:"Kaminarimon Exit (Asakusa Line)",floors:"Street (1F) → Concourse (B1) → Platform (B2)",landmark:"Directly beside Kaminarimon Gate exit, west side",doorWidthCm:140,tip:"This is the main accessible entry — staff desk is right next to it",status:"operational"},
-    {location:"Ginza Line Transfer",floors:"Concourse (B1) → Ginza Line Platform (B3)",landmark:"Inside paid area, follow yellow ♿ line from ticket gate",doorWidthCm:120,tip:"Ginza Line elevator is small — power wheelchair users should confirm fit with staff",status:"operational"},
+    {location:"Ginza Line Transfer",floors:"Concourse (B1) → Ginza Line Platform (B3)",landmark:"Inside paid area, follow yellow [wheelchair] line from ticket gate",doorWidthCm:120,tip:"Ginza Line elevator is small — power wheelchair users should confirm fit with staff",status:"operational"},
     {location:"East Exit (Tobu Skytree Line)",floors:"Street → Concourse → Platform",landmark:"East side, under Azumabashi bridge approach",doorWidthCm:140,tip:"Use for Tobu Skytree Line to Tokyo Skytree — step-free throughout",status:"operational"},
     {location:"Azumabashi Exit",floors:"Street (1F) → B1 Concourse",landmark:"Near Sumida River waterbus pier",doorWidthCm:120,tip:"Closest exit to Tokyo Skytree waterbus — ask staff about ramp to pier",status:"operational"},
   ],
@@ -222,12 +222,12 @@ const ELEVATOR_DATA = {
     {location:"Metro West (Marunouchi / Fukutoshin)",floors:"JR B1 → Metro B3",landmark:"Inside JR paid area, connecting passage",doorWidthCm:120,tip:"3 elevator stages to Marunouchi Line — allow 15 min total from JR",status:"operational"},
     {location:"East Exit (Seibu Ikebukuro Line)",floors:"Street → 2F Seibu concourse",landmark:"East plaza near Parco department store",doorWidthCm:140,tip:"Seibu Ikebukuro Line has good accessibility — less crowded than JR at peak",status:"operational"},
     {location:"North Exit",floors:"Street → B1 JR concourse",landmark:"Near Ikebukuro station north entrance, cinema street",doorWidthCm:140,tip:"Alternative to West Exit if West Exit B1 elevator is busy",status:"operational"},
-    {location:"Yurakucho Line (deep)",floors:"B1 → B4 (Yurakucho / Fukutoshin Line)",landmark:"Follow ♿ signs inside Metro paid area",doorWidthCm:120,tip:"Deep platforms — 2 elevators needed. Staff at B1 gate can guide you.",status:"operational"},
+    {location:"Yurakucho Line (deep)",floors:"B1 → B4 (Yurakucho / Fukutoshin Line)",landmark:"Follow [wheelchair] signs inside Metro paid area",doorWidthCm:120,tip:"Deep platforms — 2 elevators needed. Staff at B1 gate can guide you.",status:"operational"},
   ],
   ueno:[
     {location:"Ueno Park Exit (JR)",floors:"Street → JR Concourse (1F)",landmark:"West side, facing Ueno Park entrance",doorWidthCm:140,tip:"Main exit for Ueno Zoo and National Museum — all accessible from here",status:"operational"},
     {location:"Shinobazu Exit (JR)",floors:"Street → JR Concourse",landmark:"East side, near Ameya-Yokocho market",doorWidthCm:120,tip:"Crowded at weekends — use Ueno Park exit for quieter access",status:"operational"},
-    {location:"Ginza Line Transfer",floors:"JR 1F → Ginza Line B2",landmark:"Inside JR concourse, follow blue ♿ signs",doorWidthCm:140,tip:"Two elevators in sequence — first outside ticket gate, second inside",status:"operational"},
+    {location:"Ginza Line Transfer",floors:"JR 1F → Ginza Line B2",landmark:"Inside JR concourse, follow blue [wheelchair] signs",doorWidthCm:140,tip:"Two elevators in sequence — first outside ticket gate, second inside",status:"operational"},
     {location:"Hibiya Line Transfer",floors:"JR 1F → Hibiya Line B2",landmark:"South end of JR concourse",doorWidthCm:120,tip:"Hibiya Line platform is step-free once you reach it",status:"operational"},
     {location:"Keisei Ueno (street surface)",floors:"Street → Keisei Concourse (2F above street)",landmark:"Separate Keisei station building, 3 min walk north",doorWidthCm:140,tip:"Keisei Skyliner to Narita — book wheelchair seat in advance",status:"operational"},
   ],
@@ -235,7 +235,7 @@ const ELEVATOR_DATA = {
     {location:"Exit B2 (Chiyoda Line)",floors:"Street → B2 concourse → B3 platform",landmark:"Corner of Omotesando and Aoyama-dori, near H&M",doorWidthCm:140,tip:"Widest exit — best for power wheelchairs and buggies",status:"operational"},
     {location:"Exit B1 (Ginza / Hanzomon)",floors:"Street → B2 concourse",landmark:"Omotesando Hills side",doorWidthCm:120,tip:"All 3 lines share the B2 concourse — transfers are level and simple",status:"operational"},
     {location:"Exit A2 (surface)",floors:"Street → B1",landmark:"Near Nezu Museum",doorWidthCm:120,tip:"Quieter exit, less foot traffic",status:"operational"},
-    {location:"Platform Transfer (internal)",floors:"B3 Chiyoda → B2 → B4 Ginza/Hanzomon",landmark:"Inside paid area",doorWidthCm:120,tip:"No exit needed for line transfers — follow ♿ signs between platforms",status:"operational"},
+    {location:"Platform Transfer (internal)",floors:"B3 Chiyoda → B2 → B4 Ginza/Hanzomon",landmark:"Inside paid area",doorWidthCm:120,tip:"No exit needed for line transfers — follow [wheelchair] signs between platforms",status:"operational"},
   ],
   akihabara:[
     {location:"Electric Town Exit (JR)",floors:"Street → JR Concourse (1F)",landmark:"West side, Akihabara Electric Town",doorWidthCm:140,tip:"Main exit, facing the electronics district",status:"operational"},
@@ -247,7 +247,7 @@ const ELEVATOR_DATA = {
     {location:"Exit A13 (main accessible)",floors:"Street → B1 concourse → B2 platform (Ginza)",landmark:"Corner of Chuo-dori and Harumi-dori, near Mitsukoshi",doorWidthCm:140,tip:"Widest and best-lit elevator — start here",status:"operational"},
     {location:"Exit C2 (Hibiya Line)",floors:"Street → B1 → B3 (Hibiya Line platform)",landmark:"Ginza Six department store side",doorWidthCm:140,tip:"Hibiya Line sits deeper — 2 elevators in sequence",status:"operational"},
     {location:"Exit B3 (Marunouchi Line)",floors:"Street → B3 (Marunouchi platform)",landmark:"Near Wako building",doorWidthCm:120,tip:"Marunouchi Line platform is step-free once you reach concourse",status:"operational"},
-    {location:"Internal transfer (all 3 lines)",floors:"B1 concourse connects all lines",landmark:"Inside paid area",doorWidthCm:120,tip:"No need to exit — all 3 lines connected at B1. Follow ♿ signs.",status:"operational"},
+    {location:"Internal transfer (all 3 lines)",floors:"B1 concourse connects all lines",landmark:"Inside paid area",doorWidthCm:120,tip:"No need to exit — all 3 lines connected at B1. Follow [wheelchair] signs.",status:"operational"},
   ],
   shirokane_takanawa:[
     {location:"Exit 1",floors:"Street → B1 concourse → B2 platform (Namboku)",landmark:"Main north exit",doorWidthCm:140,tip:"Quiet station — elevator usually available immediately",status:"operational"},
@@ -296,7 +296,7 @@ const makeDefaultElevators = (id,count) =>
     id:i+1,
     location: i===0 ? "Main Exit" : i===1 ? "Transfer Corridor" : `Platform Access ${i+1}`,
     floors: i===0 ? "Street (1F) → Concourse (B1)" : i===1 ? "Concourse (B1) → Platform (B2)" : "Concourse → Platform",
-    landmark: "Follow ♿ signs from ticket gate",
+    landmark: "Follow [wheelchair] signs from ticket gate",
     doorWidthCm: 120,
     tip: "Ask staff at gate to confirm current operational status",
     status:"operational",
@@ -690,7 +690,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         <div>
           <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"11px 13px",marginBottom:9}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
-              <span style={{fontWeight:700,fontSize:12,color:"#fff"}}>♿ Transfer</span>
+              <span style={{fontWeight:700,fontSize:12,color:"#fff"}}>[wheelchair] Transfer</span>
               <Pill color={DIFF_COLOR[station.transferDifficulty]}>{station.transferDifficulty==="easy"?"Easy":station.transferDifficulty==="moderate"?"Moderate":"Challenging"}</Pill>
             </div>
             <div style={{fontSize:12,color:"rgba(255,255,255,0.6)",lineHeight:1.5}}>{station.transferNote}</div>
@@ -843,7 +843,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"12px 13px",marginBottom:9}}>
             <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:6}}>🚃 Wheelchair Boarding Car</div>
             <div style={{fontSize:13,color:"#7dd3fc",fontFamily:"monospace",marginBottom:6}}>{station.wheelchairCar}</div>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.6)",lineHeight:1.5,marginBottom:7}}>Look for the blue ♿ symbol on the platform floor. Staff can deploy a ramp on request — press the intercom on the platform or ask at the ticket gate.</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.6)",lineHeight:1.5,marginBottom:7}}>Look for the blue [wheelchair] symbol on the platform floor. Staff can deploy a ramp on request — press the intercom on the platform or ask at the ticket gate.</div>
             <div style={{background:`${GAP[station.platformGap]||"#7dd3fc"}14`,border:`1px solid ${GAP[station.platformGap]||"#7dd3fc"}38`,borderRadius:8,padding:"8px 10px",display:"flex",gap:6,alignItems:"flex-start"}}>
               <div style={{width:6,height:6,borderRadius:"50%",background:GAP[station.platformGap]||"#7dd3fc",marginTop:3,flexShrink:0}}/>
               <div><div style={{fontSize:10,fontWeight:700,color:GAP[station.platformGap]||"#7dd3fc",marginBottom:1}}>Gap: {GAP_LABEL[station.platformGap]||"Variable"}</div><div style={{fontSize:10,color:"rgba(255,255,255,0.45)"}}>Tell gate staff your destination — they phone ahead so a ramp is waiting at your arrival station.</div></div>
@@ -867,7 +867,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           </>}
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>Accessible Restrooms</span></div>
           <div style={{background:"rgba(16,185,129,0.07)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:13}}>
-            <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function toilets (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow ♿ signs from concourse.</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function toilets (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow [wheelchair] signs from concourse.</div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7}}><span style={{fontSize:16}}>❤️</span><span style={{fontSize:10,fontWeight:700,color:"#f87171",textTransform:"uppercase",letterSpacing:1}}>AED & Emergency</span></div>
           <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.18)",borderRadius:9,padding:"10px 12px"}}>
@@ -971,7 +971,7 @@ ${stationData}
 
 FORMATTING RULES:
 - Use clear numbered steps
-- Use emoji sparingly but meaningfully (🛗 for elevator, 🚃 for train, 👨‍💼 for staff, ♿ for accessibility note, ⚠️ for warnings, 💡 for tips)
+- Use emoji sparingly but meaningfully (🛗 for elevator, 🚃 for train, 👨‍💼 for staff, [wheelchair] for accessibility note, ⚠️ for warnings, 💡 for tips)
 - Include exact elevator names, door widths where relevant
 - Mention which car to board at origin and where it positions you at destination
 - Note platform gap and whether a ramp is needed
@@ -1224,7 +1224,7 @@ export default function App(){
       <div style={{background:"rgba(8,11,20,0.92)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 18px",position:"sticky",top:0,zIndex:300,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)"}}>
         <div style={{maxWidth:900,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}} onClick={()=>{setPage("home");setActiveCityKey(null);}}>
-            <div style={{width:34,height:34,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>♿</div>
+            <div style={{width:34,height:34,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>[wheelchair]</div>
             <div>
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:17,fontWeight:700,color:"#fff",lineHeight:1,letterSpacing:"-0.4px"}}>Noruka</div>
               <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:"2px",textTransform:"uppercase",marginTop:2}}>Japan Rail Access</div>
