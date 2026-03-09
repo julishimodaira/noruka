@@ -929,7 +929,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
 
 // ─── AI JOURNEY PLANNER ──────────────────────────────────────────────────────
-function JourneyPlanner({profile, onClose, t}) {
+function JourneyPlanner({profile, onClose, t, lang}) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [notes, setNotes] = useState("");
@@ -956,13 +956,15 @@ function JourneyPlanner({profile, onClose, t}) {
     setPlan(null);
     setError(null);
 
+    const langNames={en:"English",ja:"Japanese",es:"Spanish",fr:"French",ko:"Korean"};
+    const replyLang=langNames[lang]||"English";
     const profileContext = profileType
       ? `The user is a ${profileType.label} user.${profile?.needs ? " Additional needs: "+profile.needs : ""}`
       : "The user has not specified their accessibility profile.";
 
     const stationData = buildStationContext();
 
-    const systemPrompt = `You are Noruka's AI accessibility journey planner for Japan's rail network. You have deep knowledge of station accessibility including exact elevator locations, door widths, platform gaps, wheelchair car positions, staff assistance points, and transfer difficulty.
+    const systemPrompt = `Always reply in ${replyLang}. You are Noruka's AI accessibility journey planner for Japan's rail network. You have deep knowledge of station accessibility including exact elevator locations, door widths, platform gaps, wheelchair car positions, staff assistance points, and transfer difficulty.
 
 Your job is to create warm, practical, step-by-step accessible journey plans that give users genuine confidence. You are talking to someone who may have mobility, visual, or other accessibility needs — be thoughtful, specific, and reassuring.
 
@@ -1209,7 +1211,7 @@ export default function App(){
       `}</style>
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
-      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t}/>}
+      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t} lang={lang}/>}
       {/* Floating Plan Trip button - visible on city and station pages */}
       {page!=="home"&&(
         <button onClick={()=>setShowJourney(true)} style={{position:"fixed",bottom:24,right:16,zIndex:200,display:"flex",alignItems:"center",gap:7,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:50,padding:"12px 18px",fontSize:13,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,boxShadow:"0 4px 20px rgba(59,130,246,0.45)",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
