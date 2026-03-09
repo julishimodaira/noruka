@@ -648,7 +648,10 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
           <div>
             <div style={{fontSize:"clamp(18px,4vw,24px)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"#fff",lineHeight:1.2,letterSpacing:"-0.3px"}}>{station.name}</div>
-            <div style={{fontSize:15,color:"rgba(255,255,255,0.28)",marginBottom:5}}>{station.nameJp}</div>
+            <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:5}}>
+            <div style={{fontSize:15,color:"rgba(255,255,255,0.28)"}}>{station.nameJp}</div>
+            {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(<span style={{fontSize:10,color:cw.warn?"#fde68a":"rgba(255,255,255,0.35)"}}>{cw.icon} {cw.temp} · {cw.label}</span>):null;})()}
+          </div>
           </div>
           <button onClick={()=>onToggleFav(station.id)} style={{background:"none",border:"none",fontSize:20,cursor:"pointer",color:isFav?"#fbbf24":"rgba(255,255,255,0.2)",padding:"0 0 0 8px"}}>★</button>
         </div>
@@ -659,12 +662,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         </div>
       </div>
 
-      {/* Weather */}
-      {(()=>{const cw=weather[cityKey]||WEATHER_FALLBACK[cityKey];return cw?(
-        <div style={{display:"flex",alignItems:"center",gap:7,padding:"8px 11px",borderRadius:9,marginBottom:10,background:cw.warn?"rgba(245,158,11,0.08)":"rgba(52,211,153,0.06)",border:`1px solid ${cw.warn?"rgba(245,158,11,0.25)":"rgba(52,211,153,0.16)"}`,color:cw.warn?"#fde68a":"#6ee7b7",fontSize:11}}>
-          <span style={{fontSize:16}}>{cw.icon}</span><span>{cw.note}</span>{cw.live&&<span style={{fontSize:9,opacity:0.5,marginLeft:"auto"}}>Live</span>}
-        </div>
-      ):null;})()}
+
 
       {/* Profile tip */}
       {profile?.type==="power"&&<div style={{background:"rgba(251,191,36,0.08)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"8px 11px",fontSize:11,color:"#fde68a",marginBottom:9}}>⚡ Power wheelchair: Check elevator door widths. Charging may be available — ask staff.</div>}
