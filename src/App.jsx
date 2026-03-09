@@ -1384,8 +1384,8 @@ export default function App(){
       <div style={{background:"rgba(8,11,20,0.92)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 18px",position:"sticky",top:0,zIndex:300,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)"}}>
         <div style={{maxWidth:900,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
           <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}} onClick={()=>{setPage("home");setActiveCityKey(null);}}>
-            <div style={{width:34,height:34,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.5)",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 0 16px rgba(59,130,246,0.35)"}}>
-              <svg width="24" height="24" viewBox="0 0 84 84" fill="none">
+            <div style={{width:42,height:42,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.5)",borderRadius:12,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 0 20px rgba(59,130,246,0.4)"}}>
+              <svg width="30" height="30" viewBox="0 0 84 84" fill="none">
                 <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
                 <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
                 <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
@@ -1395,8 +1395,8 @@ export default function App(){
               </svg>
             </div>
             <div>
-              <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:17,fontWeight:700,color:"#fff",lineHeight:1,letterSpacing:"-0.4px"}}>Noruka</div>
-              <div style={{fontSize:8,color:"rgba(255,255,255,0.3)",letterSpacing:"2px",textTransform:"uppercase",marginTop:2}}>Japan Rail Access</div>
+              <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:20,fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:"-0.5px"}}>Noruka</div>
+              <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:"2px",textTransform:"uppercase",marginTop:3}}>Japan Rail Access</div>
             </div>
           </div>
 
