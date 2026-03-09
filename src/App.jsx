@@ -24,6 +24,19 @@ const LINE_COLOR = {
 
 
 // ─── LIVE WEATHER HOOK ───────────────────────────────────────────────────────
+const TOILETS = {
+  tokyo:      {location:"B1 near Marunouchi South Exit", type:"Multipurpose", note:"24hr access"},
+  shinjuku:   {location:"West Exit B1 concourse", type:"Multipurpose", note:"Near taxi rank"},
+  shibuya:    {location:"B3 Tokyu concourse", type:"Multipurpose", note:"Near elevator"},
+  asakusa:    {location:"1F near Kaminarimon Exit", type:"Multipurpose", note:"Attendant available"},
+  ueno:       {location:"Central concourse 1F", type:"Multipurpose", note:"Near park exit"},
+  ikebukuro:  {location:"East Exit concourse B1", type:"Multipurpose", note:"Near Seibu entrance"},
+  akihabara:  {location:"Electric Town Exit 1F", type:"Multipurpose", note:"Ground level"},
+  harajuku:   {location:"Takeshita Exit 1F", type:"Multipurpose", note:"Small station"},
+  shinagawa:  {location:"Konan Exit concourse", type:"Multipurpose", note:"Near buses"},
+  yurakucho:  {location:"Central Exit 1F", type:"Multipurpose", note:"Ground level"},
+};
+
 function useWeather() {
   const [weather, setWeather] = useState(WEATHER_FALLBACK);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -668,7 +681,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
-        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"]].map(([v,l])=>(
+        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","Toilets"]].map(([v,l])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"7px 10px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",background:"none",border:"none",borderBottom:`2px solid ${tab===v?"#3b82f6":"transparent"}`,marginBottom:-2,color:tab===v?"#3b82f6":"rgba(255,255,255,0.35)",whiteSpace:"nowrap"}}>{l}</button>
         ))}
       </div>
@@ -879,6 +892,21 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             </div>
           ))}
           <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",lineHeight:1.5,marginTop:4}}>Always call ahead to confirm accessibility needs. Accessible rooms require advance booking.</div>
+        </div>
+      )}
+
+      {tab==="toilets"&&(
+        <div>
+          {TOILETS[station.id] ? (
+            <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"14px"}}>
+              <div style={{fontWeight:700,fontSize:13,color:"#fff",marginBottom:6}}>Accessible Toilet</div>
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.7)",marginBottom:4}}>{TOILETS[station.id].location}</div>
+              <div style={{fontSize:11,color:"#06b6d4",marginBottom:4}}>{TOILETS[station.id].type}</div>
+              <div style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>{TOILETS[station.id].note}</div>
+            </div>
+          ) : (
+            <div style={{color:"rgba(255,255,255,0.35)",fontSize:12,padding:"20px 0",textAlign:"center"}}>No toilet data for this station yet.</div>
+          )}
         </div>
       )}
 
