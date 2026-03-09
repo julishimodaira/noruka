@@ -550,7 +550,8 @@ function CrowdingChart({crowding,quiet}){
       <div style={{display:"flex",gap:2,alignItems:"flex-end",height:38}}>
         {HOURS.map(hr=>{const val=crowding[hr];const ic=hr===now;const col=val<=3?"#34d399":val<=6?"#7dd3fc":val<=8?"#f59e0b":"#ef4444";return(<div key={hr} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:2}}><div style={{width:"100%",height:`${(val/10)*34}px`,background:ic?col:`${col}44`,borderRadius:2,border:ic?`1.5px solid ${col}`:"none"}}/><div style={{fontSize:6,color:ic?"#fff":"rgba(255,255,255,0.25)",fontFamily:"monospace"}}>{hr}</div></div>);})}
       </div>
-      {quiet&&<div style={{fontSize:10,color:"rgba(255,255,255,0.38)",marginTop:6,lineHeight:1.4}}>🌙 {quiet}</div>}
+      {quiet&&<div style={{fontSize:10,color:"rgba(255,255,255,0.38)",marginTop:6,lineHeight:1.4}}>Best times: {quiet}</div>}
+      {v>=7&&<div style={{marginTop:8,padding:"7px 10px",borderRadius:8,background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.3)",fontSize:10,color:"#fde68a",lineHeight:1.5}}>Peak hour warning: This station is currently busy. Wheelchair users may find it harder to board — consider waiting 20–30 min or using a quieter car at the end of the platform.</div>}
     </div>
   );
 }
