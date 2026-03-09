@@ -979,7 +979,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
 
 // ─── AI JOURNEY PLANNER ──────────────────────────────────────────────────────
-function JourneyPlanner({profile, onClose, t, lang}) {
+function JourneyPlanner({profile, onClose, t, lang, onSaveRoute}) {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [notes, setNotes] = useState("");
@@ -1284,7 +1284,7 @@ export default function App(){
       `}</style>
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
-      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t} lang={lang}/>}
+      {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t} lang={lang} onSaveRoute={saveRoute}/>}
       {/* Floating Plan Trip button - visible on city and station pages */}
       {page!=="home"&&(
         <button onClick={()=>setShowJourney(true)} style={{position:"fixed",bottom:24,right:16,zIndex:200,display:"flex",alignItems:"center",gap:7,background:"linear-gradient(135deg,#3b82f6,#06b6d4)",border:"none",borderRadius:50,padding:"12px 18px",fontSize:13,color:"#fff",cursor:"pointer",fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,boxShadow:"0 4px 20px rgba(59,130,246,0.45)",transition:"all 0.2s"}} onMouseEnter={e=>e.currentTarget.style.transform="scale(1.05)"} onMouseLeave={e=>e.currentTarget.style.transform="scale(1)"}>
