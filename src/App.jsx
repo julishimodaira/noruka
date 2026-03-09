@@ -671,7 +671,22 @@ function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpe
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.82)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center",backdropFilter:"blur(4px)"}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#0f1424",borderRadius:"20px 20px 0 0",border:"1px solid rgba(255,255,255,0.09)",width:"100%",maxWidth:700,maxHeight:"85vh",overflowY:"auto",padding:"20px 16px 40px"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:15}}>
-          <div style={{fontFamily:"monospace",fontSize:14,fontWeight:700,color:"#fff"}}>👤 My Accessibility Profile</div>
+          <div>
+            <div style={{fontFamily:"monospace",fontSize:14,fontWeight:700,color:"#fff",marginBottom:4}}>👤 My Accessibility Profile</div>
+            <div style={{display:"flex",alignItems:"center",gap:7}}>
+              <div style={{width:28,height:28,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.5)",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 0 10px rgba(59,130,246,0.3)"}}>
+                <svg width="18" height="18" viewBox="0 0 84 84" fill="none">
+                  <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
+                  <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
+                  <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
+                  <circle cx="22" cy="64" r="9" fill="#1d4ed8"/>
+                  <circle cx="42" cy="16" r="7" fill="#8b5cf6"/>
+                  <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
+                </svg>
+              </div>
+              <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>noruka</span>
+            </div>
+          </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.6)",width:28,height:28,cursor:"pointer",fontSize:13}}>✕</button>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:8,marginBottom:17}}>
@@ -1170,7 +1185,20 @@ Please provide a complete step-by-step accessible journey plan.`;
         <div style={{padding:"18px 18px 0",display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16}}>
           <div>
             <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",letterSpacing:"-0.3px",marginBottom:4}}>{t.journeyTitle}</div>
-            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5}}>{t.journeyDesc}</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",lineHeight:1.5,marginBottom:6}}>{t.journeyDesc}</div>
+            <div style={{display:"flex",alignItems:"center",gap:7}}>
+              <div style={{width:28,height:28,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.5)",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,boxShadow:"0 0 10px rgba(59,130,246,0.3)"}}>
+                <svg width="18" height="18" viewBox="0 0 84 84" fill="none">
+                  <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
+                  <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
+                  <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
+                  <circle cx="22" cy="64" r="9" fill="#1d4ed8"/>
+                  <circle cx="42" cy="16" r="7" fill="#8b5cf6"/>
+                  <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
+                </svg>
+              </div>
+              <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.4)",letterSpacing:"1.5px",textTransform:"uppercase"}}>noruka</span>
+            </div>
           </div>
           <button onClick={onClose} style={{background:"rgba(255,255,255,0.07)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.5)",width:30,height:30,cursor:"pointer",fontSize:14,flexShrink:0}}>✕</button>
         </div>
