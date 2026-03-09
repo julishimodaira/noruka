@@ -752,7 +752,22 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
   return(
     <div>
-      <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginBottom:14}}>← Back to {city.name}</button>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+        <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:10,color:"rgba(255,255,255,0.55)",padding:"7px 14px",cursor:"pointer",fontSize:12,fontFamily:"inherit"}}>← Back to {city.name}</button>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <div style={{width:22,height:22,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.4)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+            <svg width="14" height="14" viewBox="0 0 84 84" fill="none">
+              <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
+              <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
+              <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
+              <circle cx="22" cy="64" r="9" fill="#1d4ed8"/>
+              <circle cx="42" cy="16" r="7" fill="#8b5cf6"/>
+              <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
+            </svg>
+          </div>
+          <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.25)",letterSpacing:"1.5px",textTransform:"uppercase"}}>noruka</span>
+        </div>
+      </div>
 
       {/* Header */}
       <div style={{marginBottom:11}}>
