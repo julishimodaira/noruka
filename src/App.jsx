@@ -1422,6 +1422,7 @@ export default function App(){
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(0,196,204,0.12)",border:"1px solid rgba(0,196,204,0.28)",color:"#06b6d4"}}>🛗 {s.elevatorCount} lifts</span>
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:`${DIFF_COLOR[s.transferDifficulty]}18`,border:`1px solid ${DIFF_COLOR[s.transferDifficulty]}40`,color:DIFF_COLOR[s.transferDifficulty]}}>{s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}</span>
                           {s.staffAssist&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
+                          {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
                         </div>
                         {s.alerts?.length>0&&<div style={{marginTop:6,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                       </div>
@@ -1440,6 +1441,7 @@ export default function App(){
                           {s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}
                         </span>
                         {s.staffAssist&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
+                        {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Toilet</span>}
                       </div>
                       {s.alerts?.length>0&&<div style={{marginTop:7,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                     </div>
