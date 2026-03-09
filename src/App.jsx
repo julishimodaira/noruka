@@ -605,7 +605,7 @@ function EmergencyModal({profile,onClose}){
 }
 
 // ─── PROFILE MODAL ────────────────────────────────────────────────────────────
-function ProfileModal({profile,onSave,onClose}){
+function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpenJourney}){
   const [type,setType]=useState(profile?.type||"manual");
   const [needs,setNeeds]=useState(profile?.needs||"");
   const [contact,setContact]=useState(profile?.emergencyContact||"");
@@ -628,6 +628,31 @@ function ProfileModal({profile,onSave,onClose}){
         <textarea value={needs} onChange={e=>setNeeds(e.target.value)} placeholder="e.g. Power wheelchair, requires ramp, hearing impaired" style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:9,padding:"9px 11px",color:"#fff",fontSize:12,fontFamily:"inherit",resize:"vertical",minHeight:60,outline:"none",marginBottom:13,boxSizing:"border-box"}}/>
         <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:6}}>Emergency contact</div>
         <input value={contact} onChange={e=>setContact(e.target.value)} placeholder="e.g. Call John: +81-90-1234-5678" style={{width:"100%",background:"rgba(255,255,255,0.06)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:9,padding:"9px 11px",color:"#fff",fontSize:12,fontFamily:"inherit",outline:"none",marginBottom:17,boxSizing:"border-box"}}/>
+        {savedRoutes.length>0&&(
+          <div style={{marginBottom:17}}>
+            <div style={{fontSize:9,letterSpacing:"2px",textTransform:"uppercase",color:"rgba(255,255,255,0.35)",fontFamily:"'Space Grotesk',sans-serif",fontWeight:600,marginBottom:8}}>Saved Routes</div>
+            <div style={{display:"flex",flexDirection:"column",gap:7}}>
+              {savedRoutes.map(r=>(
+                <div key={r.id} style={{background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.18)",borderRadius:10,padding:"10px 12px"}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div>
+                      <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:1}}>{r.from} to {r.to}</div>
+                      <div style={{fontSize:10,color:"rgba(255,255,255,0.3)"}}>{r.date}</div>
+                    </div>
+                    <button onClick={()=>onDeleteRoute(r.id)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.25)",fontSize:16,cursor:"pointer",padding:0,lineHeight:1}}>×</button>
+                  </div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",marginTop:5,lineHeight:1.5,maxHeight:36,overflow:"hidden"}}>{r.plan.slice(0,100)}...</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {savedRoutes.length===0&&(
+          <div style={{marginBottom:17,padding:"12px",background:"rgba(255,255,255,0.03)",borderRadius:10,textAlign:"center"}}>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginBottom:6}}>No saved routes yet</div>
+            <button onClick={onOpenJourney} style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.25)",borderRadius:8,color:"#7dd3fc",padding:"5px 12px",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Plan a Journey</button>
+          </div>
+        )}
         <button onClick={()=>{onSave({type,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit"}}>Save Profile</button>
       </div>
     </div>
@@ -1227,7 +1252,7 @@ export default function App(){
       )}
 
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
-      {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)}/>}
+      {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}}/>}
 
       {/* HEADER */}
       <div style={{background:"rgba(8,11,20,0.92)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 18px",position:"sticky",top:0,zIndex:300,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)"}}>
