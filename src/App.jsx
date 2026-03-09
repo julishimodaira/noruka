@@ -640,7 +640,16 @@ function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpe
                       <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:1}}>{r.from} to {r.to}</div>
                       <div style={{fontSize:10,color:"rgba(255,255,255,0.3)"}}>{r.date}</div>
                     </div>
-                    <button onClick={()=>onDeleteRoute(r.id)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.25)",fontSize:16,cursor:"pointer",padding:0,lineHeight:1}}>x</button>
+                    <div style={{display:"flex",gap:8,alignItems:"center"}}>
+                      <button onClick={()=>{
+                        const text = `Accessible route: ${r.from} to ${r.to}
+
+${r.plan}`;
+                        if(navigator.share){navigator.share({title:`${r.from} to ${r.to} - Noruka Route`,text}).catch(()=>{});}
+                        else{navigator.clipboard?.writeText(text).catch(()=>{});alert("Route copied to clipboard!");}
+                      }} style={{background:"none",border:"none",color:"#7dd3fc",fontSize:11,cursor:"pointer",padding:0,fontFamily:"inherit"}}>Share</button>
+                      <button onClick={()=>onDeleteRoute(r.id)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.25)",fontSize:16,cursor:"pointer",padding:0,lineHeight:1}}>x</button>
+                    </div>
                   </div>
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",marginTop:5,lineHeight:1.5,maxHeight:36,overflow:"hidden"}}>{r.plan.slice(0,100)}...</div>
                 </div>
