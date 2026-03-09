@@ -524,7 +524,8 @@ const ALL_STATIONS = CITY_KEYS.flatMap(ck=>CITIES[ck].stations.map(s=>({...s,cit
 const ScoreBar = ({score}) => {
   const c=["","#ef4444","#f59e0b","#f59e0b","#34d399","#34d399"][score];
   const l=["","Very Limited","Basic","Adequate","Good","Excellent"][score];
-  return <div style={{display:"flex",alignItems:"center",gap:5}}><div style={{display:"flex",gap:2}}>{[1,2,3,4,5].map(i=><div key={i} style={{width:13,height:5,borderRadius:2,background:i<=score?c:"rgba(255,255,255,0.1)"}}/>)}</div><span style={{fontSize:9,color:c,fontWeight:700}}>{l}</span></div>;
+  const d=["","Few or no elevators, significant barriers","Some elevators, may have steps or gaps","Elevators available, some assistance needed","Good elevator coverage, staff available","Fully accessible, step-free throughout"][score];
+  return <div style={{marginBottom:4}}><div style={{display:"flex",alignItems:"center",gap:5,marginBottom:2}}><div style={{display:"flex",gap:2}}>{[1,2,3,4,5].map(i=><div key={i} style={{width:13,height:5,borderRadius:2,background:i<=score?c:"rgba(255,255,255,0.1)"}}/>)}</div><span style={{fontSize:10,color:c,fontWeight:700}}>{l} accessibility</span></div><div style={{fontSize:10,color:"rgba(255,255,255,0.4)",lineHeight:1.4}}>{d}</div></div>;
 };
 
 const LinePill = ({line}) => (
@@ -704,8 +705,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
               <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details →</div>
             </div>
             <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:9,padding:"10px 12px",textAlign:"center"}}>
-              <ScoreBar score={station.accessScore}/>
-              <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",marginTop:3}}>Access Score</div>
+
             </div>
           </div>
           <div style={{background:"rgba(251,191,36,0.07)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:9,padding:"10px 12px",marginBottom:9}}>
