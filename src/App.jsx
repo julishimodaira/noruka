@@ -714,9 +714,11 @@ function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpe
                     </div>
                     <div style={{display:"flex",gap:8,alignItems:"center"}}>
                       <button onClick={()=>{
-                        const text = `Accessible route: ${r.from} to ${r.to}
+                        const text = `Accessible route: ${r.from} to ${r.to} via Noruka
 
-${r.plan}`;
+${r.plan}
+
+Planned with Noruka · Japan Rail Access · noruka.vercel.app`;
                         if(navigator.share){navigator.share({title:`${r.from} to ${r.to} - Noruka Route`,text}).catch(()=>{});}
                         else{navigator.clipboard?.writeText(text).catch(()=>{});alert("Route copied to clipboard!");}
                       }} style={{background:"none",border:"none",color:"#7dd3fc",fontSize:11,cursor:"pointer",padding:0,fontFamily:"inherit"}}>Share</button>
