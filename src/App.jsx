@@ -83,9 +83,10 @@ function useWeather() {
 const PROFILE_TYPES = [
   {id:"manual",icon:"🦽",label:"Manual Wheelchair"},
   {id:"power",icon:"⚡",label:"Power Wheelchair"},
-  {id:"walking_frame",icon:"🚶",label:"Walking Frame"},
+  {id:"walking_frame",icon:"🚶",label:"Walker / Rollator"},
   {id:"visual",icon:"👁",label:"Visual Impairment"},
   {id:"companion",icon:"👥",label:"With Companion"},
+  {id:"stroller",icon:"🍼",label:"Stroller / Pram"},
 ];
 
 const PHRASES = [
@@ -606,7 +607,7 @@ function EmergencyModal({profile,onClose}){
 
 // ─── PROFILE MODAL ────────────────────────────────────────────────────────────
 function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpenJourney}){
-  const [type,setType]=useState(profile?.type||"manual");
+  const [types,setTypes]=useState(profile?.types||[profile?.type||"manual"]);
   const [needs,setNeeds]=useState(profile?.needs||"");
   const [contact,setContact]=useState(profile?.emergencyContact||"");
   return(
@@ -618,9 +619,9 @@ function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpe
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:8,marginBottom:17}}>
           {PROFILE_TYPES.map(pt=>(
-            <button key={pt.id} onClick={()=>setType(pt.id)} style={{padding:"11px 7px",borderRadius:10,border:`2px solid ${type===pt.id?"#3b82f6":"rgba(255,255,255,0.1)"}`,background:type===pt.id?"rgba(66,133,244,0.2)":"rgba(255,255,255,0.04)",cursor:"pointer",textAlign:"center",fontFamily:"inherit"}}>
+            <button key={pt.id} onClick={()=>setTypes(tt=>tt.includes(pt.id)?tt.filter(x=>x!==pt.id):[...tt,pt.id])} style={{padding:"11px 7px",borderRadius:10,border:`2px solid ${types.includes(pt.id)?"#3b82f6":"rgba(255,255,255,0.1)"}`,background:types.includes(pt.id)?"rgba(66,133,244,0.2)":"rgba(255,255,255,0.04)",cursor:"pointer",textAlign:"center",fontFamily:"inherit"}}>
               <div style={{fontSize:20,marginBottom:4}}>{pt.icon}</div>
-              <div style={{fontSize:11,color:type===pt.id?"#fff":"rgba(255,255,255,0.55)",fontWeight:type===pt.id?700:400,lineHeight:1.3}}>{pt.label}</div>
+              <div style={{fontSize:11,color:types.includes(pt.id)?"#fff":"rgba(255,255,255,0.55)",fontWeight:types.includes(pt.id)?700:400,lineHeight:1.3}}>{pt.label}</div>
             </button>
           ))}
         </div>
@@ -653,7 +654,7 @@ function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpe
             <button onClick={onOpenJourney} style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.25)",borderRadius:8,color:"#7dd3fc",padding:"5px 12px",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Plan a Journey</button>
           </div>
         )}
-        <button onClick={()=>{onSave({type,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit"}}>Save Profile</button>
+        <button onClick={()=>{onSave({type:types[0],types,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit"}}>Save Profile</button>
       </div>
     </div>
   );
@@ -969,6 +970,7 @@ function JourneyPlanner({profile, onClose, t, lang}) {
   const [plan, setPlan] = useState(null);
   const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const profileType = PROFILE_TYPES.find(p => p.id === profile?.type);
 
   // Build a rich context string from all station data for the AI
@@ -1050,6 +1052,12 @@ Please provide a complete step-by-step accessible journey plan.`;
       setCopied(true);
       setTimeout(()=>setCopied(false), 2000);
     }
+  };
+  const handleSave = () => {
+    if(!plan) return;
+    onSaveRoute({id:Date.now(),from,to,plan,date:new Date().toLocaleDateString()});
+    setSaved(true);
+    setTimeout(()=>setSaved(false), 2000);
   };
 
   return (
@@ -1140,9 +1148,14 @@ Please provide a complete step-by-step accessible journey plan.`;
             <div style={{marginTop:4}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                 <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",fontFamily:"'Space Grotesk',sans-serif",letterSpacing:"1px",textTransform:"uppercase"}}>{t.yourRoute}</div>
-                <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit",transition:"all 0.15s"}}>
-                  {copied?"✓ Copied":"📋 Copy"}
-                </button>
+                <div style={{display:"flex",gap:5}}>
+                  <button onClick={handleCopy} style={{background:copied?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",border:`1px solid ${copied?"rgba(52,211,153,0.3)":"rgba(255,255,255,0.1)"}`,borderRadius:8,color:copied?"#34d399":"rgba(255,255,255,0.5)",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>
+                    {copied?"Copied":"Copy"}
+                  </button>
+                  <button onClick={handleSave} style={{background:saved?"rgba(52,211,153,0.12)":"rgba(59,130,246,0.1)",border:`1px solid ${saved?"rgba(52,211,153,0.3)":"rgba(59,130,246,0.3)"}`,borderRadius:8,color:saved?"#34d399":"#7dd3fc",padding:"4px 10px",fontSize:10,cursor:"pointer",fontFamily:"inherit"}}>
+                    {saved?"Saved":"Save Route"}
+                  </button>
+                </div>
               </div>
               <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:14,padding:"14px 15px",fontSize:13,color:"rgba(255,255,255,0.85)",lineHeight:1.8,whiteSpace:"pre-wrap",fontFamily:"inherit"}}>
                 {plan}
