@@ -853,12 +853,12 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(249,168,212,0.08)",border:"2px solid rgba(249,168,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#f9a8d4",fontFamily:"monospace"}}>{BABY_CHANGING[station.id]?"1":"—"}</div>
-              <div style={{fontSize:9,color:"#f9a8d4"}}>Baby Changing</div>
+              <div style={{fontSize:9,color:"#f9a8d4"}}>👶 Baby Changing</div>
               <div style={{fontSize:8,color:"rgba(249,168,212,0.7)",marginTop:2}}>{BABY_CHANGING[station.id]?"Tap for info":"No data yet"}</div>
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(251,191,36,0.08)",border:"2px solid rgba(251,191,36,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(251,191,36,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(251,191,36,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#fbbf24",fontFamily:"monospace"}}>{CHARGING[station.id]?CHARGING[station.id].length:"—"}</div>
-              <div style={{fontSize:9,color:"#fbbf24"}}>Charging</div>
+              <div style={{fontSize:9,color:"#fbbf24"}}>🔋 Charging Station</div>
               <div style={{fontSize:8,color:"rgba(251,191,36,0.7)",marginTop:2}}>{CHARGING[station.id]?"Tap for info":"No data yet"}</div>
             </div>
           </div>
@@ -1056,7 +1056,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:13}}><span style={{fontSize:16}}>⚡</span><span style={{fontSize:10,fontWeight:700,color:"#fbbf24",textTransform:"uppercase",letterSpacing:1}}>Wheelchair Charging</span></div>
             {station.chargingPoints.map((c,i)=><div key={i} style={{background:"rgba(251,191,36,0.07)",border:"1px solid rgba(251,191,36,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:7}}><div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:3}}>{c.location}</div><div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.4}}>{c.notes}</div></div>)}
           </>}
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>Accessible Restrooms</span></div>
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>🚻 Accessible Restrooms</span></div>
           <div style={{background:"rgba(16,185,129,0.07)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:13}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function restrooms (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow [wheelchair] signs from concourse.</div>
           </div>
@@ -1100,14 +1100,14 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           )}
           {BABY_CHANGING[station.id] && (
             <div style={{background:"rgba(249,168,212,0.06)",border:"1px solid rgba(249,168,212,0.2)",borderRadius:10,padding:"14px"}}>
-              <div style={{fontWeight:700,fontSize:12,color:"#f9a8d4",marginBottom:6}}>Nursing & Baby Changing</div>
+              <div style={{fontWeight:700,fontSize:12,color:"#f9a8d4",marginBottom:6}}>👶 Nursing & Baby Changing</div>
               <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:4}}>{BABY_CHANGING[station.id].location}</div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{BABY_CHANGING[station.id].note}</div>
             </div>
           )}
           {CHARGING[station.id] && (
             <div style={{background:"rgba(251,191,36,0.06)",border:"1px solid rgba(251,191,36,0.2)",borderRadius:10,padding:"14px"}}>
-              <div style={{fontWeight:700,fontSize:12,color:"#fbbf24",marginBottom:6}}>Device Charging</div>
+              <div style={{fontWeight:700,fontSize:12,color:"#fbbf24",marginBottom:6}}>🔋 Charging Station</div>
               {CHARGING[station.id].map((c,i)=>(
                 <div key={i} style={{marginBottom:i<CHARGING[station.id].length-1?8:0}}>
                   <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:2}}>{c.location}</div>
