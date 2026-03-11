@@ -1,12 +1,6 @@
 /* eslint-disable */
 import { useState, useMemo, useEffect } from "react";
 import T from "./translations";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-// Fix leaflet default marker icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({iconRetinaUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",iconUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",shadowUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png"});
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -902,25 +896,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {tab==="elevators"&&(
         <div>
-          {/* Elevator Map */}
-          {station.lat&&station.lng&&(
-            <div style={{borderRadius:11,overflow:"hidden",marginBottom:12,border:"1px solid rgba(66,133,244,0.2)",height:200}}>
-              <MapContainer center={[station.lat,station.lng]} zoom={17} style={{height:"100%",width:"100%"}} zoomControl={true} scrollWheelZoom={false}>
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="© OpenStreetMap"/>
-                {(station.elevators||[]).map((e,i)=>{
-                  const angle=(i/Math.max(station.elevators.length,1))*2*Math.PI;
-                  const offset=0.00015;
-                  const pos=[station.lat+Math.sin(angle)*offset,station.lng+Math.cos(angle)*offset];
-                  const icon=L.divIcon({className:"",html:`<div style="background:${e.status==="maintenance"?"#f59e0b":"#3b82f6"};width:28px;height:28px;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.4)">🛗</div>`,iconSize:[28,28],iconAnchor:[14,14]});
-                  return(
-                    <Marker key={i} position={pos} icon={icon}>
-                      <Popup><strong>{e.location}</strong><br/>{e.floors}<br/><span style={{fontSize:11,color:e.status==="maintenance"?"#f59e0b":"#16a34a"}}>{e.status==="maintenance"?"⚠️ Under maintenance":"✓ Operational"}</span></Popup>
-                    </Marker>
-                  );
-                })}
-              </MapContainer>
-            </div>
-          )}
+
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9,lineHeight:1.5}}>
             Tap any elevator to see floor details, location landmark, and door width. Tap <strong style={{color:"#34d399"}}>Verify</strong> to confirm it's working.
           </div>
@@ -963,13 +939,29 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
                       </div>
                     </div>
 
-                    {/* Landmark */}
+                    {/* How to find */}
                     {e.landmark&&(
-                      <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                        <span style={{fontSize:14,flexShrink:0}}>📍</span>
-                        <div>
-                          <div style={{fontSize:9,color:"rgba(255,255,255,0.3)",textTransform:"uppercase",letterSpacing:1,marginBottom:2}}>Landmark</div>
-                          <div style={{fontSize:11,color:"rgba(255,255,255,0.7)",lineHeight:1.4}}>{e.landmark}</div>
+                      <div style={{background:"rgba(59,130,246,0.07)",border:"1px solid rgba(59,130,246,0.2)",borderRadius:9,padding:"10px 12px"}}>
+                        <div style={{fontSize:9,color:"#7dd3fc",textTransform:"uppercase",letterSpacing:1,fontWeight:700,marginBottom:8}}>🧭 How to find this elevator</div>
+                        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                          <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:"#3b82f6",color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>1</div>
+                            <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",lineHeight:1.4}}>Head to <strong style={{color:"#fff"}}>{e.location}</strong></div>
+                          </div>
+                          <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:"#3b82f6",color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>2</div>
+                            <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",lineHeight:1.4}}>Look for: <span style={{color:"rgba(255,255,255,0.9)"}}>{e.landmark}</span></div>
+                          </div>
+                          <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
+                            <div style={{width:18,height:18,borderRadius:"50%",background:"#3b82f6",color:"#fff",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1}}>3</div>
+                            <div style={{fontSize:11,color:"rgba(255,255,255,0.75)",lineHeight:1.4}}>Follow blue <strong style={{color:"#7dd3fc"}}>[wheelchair] signs</strong> — floors: <span style={{fontFamily:"monospace",color:"rgba(255,255,255,0.9)"}}>{e.floors}</span></div>
+                          </div>
+                          {e.tip&&(
+                            <div style={{display:"flex",gap:8,alignItems:"flex-start",marginTop:2,paddingTop:8,borderTop:"1px solid rgba(255,255,255,0.07)"}}>
+                              <span style={{fontSize:12,flexShrink:0}}>💡</span>
+                              <div style={{fontSize:11,color:"rgba(255,255,255,0.55)",lineHeight:1.4,fontStyle:"italic"}}>{e.tip}</div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
@@ -989,13 +981,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
                       </div>
                     )}
 
-                    {/* Tip */}
-                    {e.tip&&(
-                      <div style={{display:"flex",gap:8,alignItems:"flex-start"}}>
-                        <span style={{fontSize:14,flexShrink:0}}>💡</span>
-                        <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{e.tip}</div>
-                      </div>
-                    )}
+
 
                     {/* Verify button */}
                     <button onClick={e2=>{e2.stopPropagation();setVerified(vv=>({...vv,[key]:true}));}} style={{alignSelf:"flex-start",fontSize:11,padding:"6px 14px",borderRadius:20,border:`1px solid ${v?"rgba(52,211,153,0.45)":"rgba(255,255,255,0.18)"}`,background:v?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",color:v?"#34d399":"rgba(255,255,255,0.6)",cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>
