@@ -822,7 +822,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
-        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","Restrooms"]].map(([v,l])=>(
+        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","🚻 Restrooms"]].map(([v,l])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"7px 10px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",background:"none",border:"none",borderBottom:`2px solid ${tab===v?"#3b82f6":"transparent"}`,marginBottom:-2,color:tab===v?"#3b82f6":"rgba(255,255,255,0.35)",whiteSpace:"nowrap"}}>{l}</button>
         ))}
       </div>
@@ -1090,7 +1090,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         <div style={{display:"flex",flexDirection:"column",gap:10}}>
           {TOILETS[station.id] ? (
             <div style={{background:"rgba(6,182,212,0.06)",border:"1px solid rgba(6,182,212,0.2)",borderRadius:10,padding:"14px"}}>
-              <div style={{fontWeight:700,fontSize:12,color:"#06b6d4",marginBottom:6}}>Accessible Restroom</div>
+              <div style={{fontWeight:700,fontSize:12,color:"#06b6d4",marginBottom:6}}>🚻 Accessible Restroom</div>
               <div style={{fontSize:12,color:"rgba(255,255,255,0.8)",marginBottom:4}}>{TOILETS[station.id].location}</div>
               <div style={{fontSize:11,color:"rgba(255,255,255,0.45)"}}>{TOILETS[station.id].note}</div>
               {TOILETS[station.id].baby&&<div style={{fontSize:10,color:"#f9a8d4",marginTop:6}}>Baby changing table available</div>}
@@ -1676,9 +1676,9 @@ export default function App(){
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(0,196,204,0.12)",border:"1px solid rgba(0,196,204,0.28)",color:"#06b6d4"}}>🛗 {s.elevatorCount} lifts</span>
                           <span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:`${DIFF_COLOR[s.transferDifficulty]}18`,border:`1px solid ${DIFF_COLOR[s.transferDifficulty]}40`,color:DIFF_COLOR[s.transferDifficulty]}}>{s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}</span>
                           {s.staffAssist&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
-                          {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Restroom</span>}
-                          {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
-                          {CHARGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
+                          {TOILETS[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>🚻 Restroom</span>}
+                          {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>👶 Baby</span>}
+                          {CHARGING[s.id]&&<span style={{fontSize:9,padding:"1px 6px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>🔋 Charging Station</span>}
                         </div>
                         {s.alerts?.length>0&&<div style={{marginTop:6,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                       </div>
@@ -1697,9 +1697,9 @@ export default function App(){
                           {s.transferDifficulty==="easy"?"Easy transfer":s.transferDifficulty==="moderate"?"Moderate transfer":"Challenging transfer"}
                         </span>
                         {s.staffAssist&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.1)",border:"1px solid rgba(52,211,153,0.25)",color:"#34d399"}}>Staff assistance</span>}
-                        {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>Restroom</span>}
-                        {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>Baby</span>}
-                        {CHARGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>Charging</span>}
+                        {TOILETS[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(6,182,212,0.1)",border:"1px solid rgba(6,182,212,0.28)",color:"#67e8f9"}}>🚻 Restroom</span>}
+                        {BABY_CHANGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(249,168,212,0.1)",border:"1px solid rgba(249,168,212,0.28)",color:"#f9a8d4"}}>👶 Baby</span>}
+                        {CHARGING[s.id]&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(251,191,36,0.1)",border:"1px solid rgba(251,191,36,0.28)",color:"#fbbf24"}}>🔋 Charging Station</span>}
                       </div>
                       {s.alerts?.length>0&&<div style={{marginTop:7,fontSize:10,color:"#fde68a",lineHeight:1.4,display:"flex",gap:5,alignItems:"flex-start"}}><span style={{flexShrink:0}}>⚠</span><span>{s.alerts[0].msg}{s.alerts.length>1?` (+${s.alerts.length-1} more)`:""}</span></div>}
                     </div>
