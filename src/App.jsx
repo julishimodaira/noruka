@@ -848,7 +848,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(6,182,212,0.08)",border:"2px solid rgba(6,182,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#06b6d4",fontFamily:"monospace"}}>{TOILETS[station.id]?"1":"—"}</div>
-              <div style={{fontSize:9,color:"#67e8f9"}}>Accessible Restroom</div>
+              <div style={{fontSize:9,color:"#67e8f9"}}>🚻 Accessible Restroom</div>
               <div style={{fontSize:8,color:"rgba(6,182,212,0.7)",marginTop:2}}>{TOILETS[station.id]?"Tap for info":"No data yet"}</div>
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(249,168,212,0.08)",border:"2px solid rgba(249,168,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(249,168,212,0.25)"}>
@@ -1056,7 +1056,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:13}}><span style={{fontSize:16}}>⚡</span><span style={{fontSize:10,fontWeight:700,color:"#fbbf24",textTransform:"uppercase",letterSpacing:1}}>Wheelchair Charging</span></div>
             {station.chargingPoints.map((c,i)=><div key={i} style={{background:"rgba(251,191,36,0.07)",border:"1px solid rgba(251,191,36,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:7}}><div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:3}}>{c.location}</div><div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.4}}>{c.notes}</div></div>)}
           </>}
-          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:16}}>🚻</span><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>🚻 Accessible Restrooms</span></div>
+          <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:7,marginTop:station.restAreas?.length||station.chargingPoints?.length?13:0}}><span style={{fontSize:10,fontWeight:700,color:"#10b981",textTransform:"uppercase",letterSpacing:1}}>🚻 Accessible Restrooms</span></div>
           <div style={{background:"rgba(16,185,129,0.07)",border:"1px solid rgba(16,185,129,0.18)",borderRadius:9,padding:"10px 12px",marginBottom:13}}>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>Multi-function restrooms (多機能トイレ) with grab bars, wide doors, and ostomate facilities are available at all stations scoring 3+. Follow [wheelchair] signs from concourse.</div>
           </div>
