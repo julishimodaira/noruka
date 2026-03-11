@@ -748,6 +748,9 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   const [tab,setTab]=useState("overview");
   const [verified,setVerified]=useState({});
   const [copied,setCopied]=useState(null);
+  const [nearestElev,setNearestElev]=useState(null);
+  const [locLoading,setLocLoading]=useState(false);
+  const [locError,setLocError]=useState(null);
   const city=CITIES[cityKey];
 
   return(
@@ -900,6 +903,34 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9,lineHeight:1.5}}>
             Tap any elevator to see floor details, location landmark, and door width. Tap <strong style={{color:"#34d399"}}>Verify</strong> to confirm it's working.
           </div>
+
+          {/* Find nearest elevator button */}
+          <button onClick={()=>{
+            if(!navigator.geolocation){setLocError("Location not supported on this device");return;}
+            setLocLoading(true);setLocError(null);setNearestElev(null);
+            navigator.geolocation.getCurrentPosition(
+              (pos)=>{
+                const userLat=pos.coords.latitude;
+                const userLng=pos.coords.longitude;
+                let best=0,bestDist=Infinity;
+                (station.elevators||[]).forEach((e,i)=>{
+                  const angle=(i/Math.max(station.elevators.length,1))*2*Math.PI;
+                  const offset=0.0002;
+                  const eLat=station.lat+Math.sin(angle)*offset;
+                  const eLng=station.lng+Math.cos(angle)*offset;
+                  const dist=Math.sqrt(Math.pow(userLat-eLat,2)+Math.pow(userLng-eLng,2));
+                  if(dist<bestDist){bestDist=dist;best=i;}
+                });
+                setNearestElev(best);setLocLoading(false);
+              },
+              ()=>{setLocError("Could not get your location. Please enable location access.");setLocLoading(false);}
+            );
+          }} style={{width:"100%",padding:"10px",borderRadius:9,border:"1px solid rgba(59,130,246,0.35)",background:"rgba(59,130,246,0.08)",color:"#7dd3fc",fontSize:12,fontWeight:700,cursor:"pointer",fontFamily:"inherit",marginBottom:10,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+            {locLoading?"🔍 Locating you…":"📍 Find nearest elevator"}
+          </button>
+          {locError&&<div style={{fontSize:11,color:"#f87171",marginBottom:8,padding:"7px 10px",background:"rgba(248,113,113,0.08)",borderRadius:7,border:"1px solid rgba(248,113,113,0.2)"}}>{locError}</div>}
+          {nearestElev!==null&&<div style={{fontSize:11,color:"#34d399",marginBottom:8,padding:"7px 10px",background:"rgba(52,211,153,0.08)",borderRadius:7,border:"1px solid rgba(52,211,153,0.2)"}}>📍 Nearest elevator highlighted below</div>}
+
           {station.elevators?.map((e,i)=>{
             const key=`${station.id}-${e.id||i}`;
             const v=verified[key];
@@ -912,7 +943,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
                 <div onClick={()=>setVerified(vv=>({...vv,[`open-${key}`]:!isOpen}))} style={{padding:"11px 13px",display:"grid",gridTemplateColumns:"36px 1fr auto",gap:10,alignItems:"center",cursor:"pointer"}}>
                   <div style={{width:36,height:36,background:maintenance?"rgba(245,158,11,0.12)":"rgba(66,133,244,0.12)",border:`2px solid ${maintenance?"rgba(245,158,11,0.3)":"rgba(66,133,244,0.25)"}`,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>🛗</div>
                   <div>
-                    <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:2}}>{e.location}</div>
+                    <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:2}}>{e.location}{nearestElev===i&&<span style={{marginLeft:7,fontSize:9,padding:"2px 7px",borderRadius:20,background:"rgba(52,211,153,0.15)",border:"1px solid rgba(52,211,153,0.4)",color:"#34d399",fontWeight:700}}>📍 Nearest to you</span>}</div>
                     <div style={{fontSize:10,color:"rgba(255,255,255,0.45)",fontFamily:"monospace"}}>{e.floors||"Floors not specified"}</div>
                     <div style={{fontSize:9,marginTop:2,color:maintenance?"#fbbf24":v?"#34d399":"rgba(255,255,255,0.3)"}}>{maintenance?"⚠ Under maintenance":v?"✓ Verified working by you":`✓ Verified by ${e.verifiedCount||"—"} recent users`}</div>
                   </div>
