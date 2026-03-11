@@ -843,7 +843,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:9}}>
             <div onClick={()=>setTab("elevators")} style={{background:"rgba(66,133,244,0.08)",border:"2px solid rgba(66,133,244,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(66,133,244,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(66,133,244,0.25)"}>
               <div style={{fontSize:22,fontWeight:700,color:"#3b82f6",fontFamily:"monospace"}}>{station.elevatorCount}</div>
-              <div style={{fontSize:9,color:"#7dd3fc"}}>Elevators</div>
+              <div style={{fontSize:9,color:"#7dd3fc"}}>🛗 Elevators</div>
               <div style={{fontSize:8,color:"rgba(66,133,244,0.7)",marginTop:2}}>Tap for details</div>
             </div>
             <div onClick={()=>setTab("toilets")} style={{background:"rgba(6,182,212,0.08)",border:"2px solid rgba(6,182,212,0.25)",borderRadius:9,padding:"10px 12px",textAlign:"center",cursor:"pointer",transition:"border-color 0.15s"}} onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.55)"} onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(6,182,212,0.25)"}>
