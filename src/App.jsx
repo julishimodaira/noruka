@@ -1,6 +1,12 @@
 /* eslint-disable */
 import { useState, useMemo, useEffect } from "react";
 import T from "./translations";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+// Fix leaflet default marker icons
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({iconRetinaUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",iconUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",shadowUrl:"https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png"});
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -896,6 +902,25 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {tab==="elevators"&&(
         <div>
+          {/* Elevator Map */}
+          {station.lat&&station.lng&&(
+            <div style={{borderRadius:11,overflow:"hidden",marginBottom:12,border:"1px solid rgba(66,133,244,0.2)",height:200}}>
+              <MapContainer center={[station.lat,station.lng]} zoom={17} style={{height:"100%",width:"100%"}} zoomControl={true} scrollWheelZoom={false}>
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="© OpenStreetMap"/>
+                {(station.elevators||[]).map((e,i)=>{
+                  const angle=(i/Math.max(station.elevators.length,1))*2*Math.PI;
+                  const offset=0.00015;
+                  const pos=[station.lat+Math.sin(angle)*offset,station.lng+Math.cos(angle)*offset];
+                  const icon=L.divIcon({className:"",html:`<div style="background:${e.status==="maintenance"?"#f59e0b":"#3b82f6"};width:28px;height:28px;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.4)">🛗</div>`,iconSize:[28,28],iconAnchor:[14,14]});
+                  return(
+                    <Marker key={i} position={pos} icon={icon}>
+                      <Popup><strong>{e.location}</strong><br/>{e.floors}<br/><span style={{fontSize:11,color:e.status==="maintenance"?"#f59e0b":"#16a34a"}}>{e.status==="maintenance"?"⚠️ Under maintenance":"✓ Operational"}</span></Popup>
+                    </Marker>
+                  );
+                })}
+              </MapContainer>
+            </div>
+          )}
           <div style={{fontSize:11,color:"rgba(255,255,255,0.4)",marginBottom:9,lineHeight:1.5}}>
             Tap any elevator to see floor details, location landmark, and door width. Tap <strong style={{color:"#34d399"}}>Verify</strong> to confirm it's working.
           </div>
