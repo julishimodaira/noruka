@@ -97,16 +97,19 @@ const BABY_CHANGING = {
 // ── ODPT: live train information ─────────────────────────────────────────────
 function useTrainInfo(lines=[]) {
   const [info, setInfo] = React.useState([]);
+  const linesKey = lines.slice().sort().join(',');
 
   React.useEffect(() => {
     if (!lines.length) return;
+    let cancelled = false;
     const operators = ['JR-East','TokyoMetro','Toei'];
     Promise.all(operators.map(op =>
-      fetch(`/api/odpt?type=TrainInformation&operator=${op}`)
+      fetch('/api/odpt?type=TrainInformation&operator=' + op)
         .then(r => r.ok ? r.json() : [])
         .then(d => Array.isArray(d) ? d : [])
         .catch(() => [])
     )).then(results => {
+      if (cancelled) return;
       const all = results.flat();
       const relevant = all.filter(item => {
         try {
@@ -115,8 +118,9 @@ function useTrainInfo(lines=[]) {
         } catch(e) { return false; }
       });
       setInfo(relevant);
-    }).catch(() => setInfo([]));
-  }, [lines.join(',')]);
+    }).catch(() => { if (!cancelled) setInfo([]); });
+    return () => { cancelled = true; };
+  }, [linesKey]);
 
   return { info };
 }
@@ -790,7 +794,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   const [nearestElev,setNearestElev]=useState(null);
   const [locLoading,setLocLoading]=useState(false);
   const [locError,setLocError]=useState(null);
-  const trainInfo=[];// const {info:trainInfo}=useTrainInfo(station.lines||[]);
+  const {info:trainInfo}=useTrainInfo(station.lines||[]);
   const city=CITIES[cityKey];
 
   return(
