@@ -103,16 +103,19 @@ function useTrainInfo(lines=[]) {
     const operators = ['JR-East','TokyoMetro','Toei'];
     Promise.all(operators.map(op =>
       fetch(`/api/odpt?type=TrainInformation&operator=${op}`)
-        .then(r => r.json())
+        .then(r => r.ok ? r.json() : [])
+        .then(d => Array.isArray(d) ? d : [])
         .catch(() => [])
     )).then(results => {
       const all = results.flat();
       const relevant = all.filter(item => {
-        const railwayId = (item['odpt:railway'] || '').toLowerCase();
-        return lines.some(line => railwayId.includes(line.toLowerCase().replace(/\s/g,'')));
+        try {
+          const railwayId = (item['odpt:railway'] || '').toLowerCase();
+          return lines.some(line => railwayId.includes(line.toLowerCase().replace(/\s/g,'')));
+        } catch(e) { return false; }
       });
       setInfo(relevant);
-    });
+    }).catch(() => setInfo([]));
   }, [lines.join(',')]);
 
   return { info };
