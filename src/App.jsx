@@ -790,7 +790,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   const [nearestElev,setNearestElev]=useState(null);
   const [locLoading,setLocLoading]=useState(false);
   const [locError,setLocError]=useState(null);
-  const {info:trainInfo}=useTrainInfo(station.lines||[]);
+  const trainInfo=[];// const {info:trainInfo}=useTrainInfo(station.lines||[]);
   const city=CITIES[cityKey];
 
   return(
