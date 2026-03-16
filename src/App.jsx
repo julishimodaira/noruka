@@ -94,6 +94,30 @@ const BABY_CHANGING = {
   otemachi:   {location:"C10 Exit concourse", note:"Baby changing in multipurpose restroom"},
 };
 
+// ── ODPT: live train information ─────────────────────────────────────────────
+function useTrainInfo(lines=[]) {
+  const [info, setInfo] = React.useState([]);
+
+  React.useEffect(() => {
+    if (!lines.length) return;
+    const operators = ['JR-East','TokyoMetro','Toei'];
+    Promise.all(operators.map(op =>
+      fetch(`/api/odpt?type=TrainInformation&operator=${op}`)
+        .then(r => r.json())
+        .catch(() => [])
+    )).then(results => {
+      const all = results.flat();
+      const relevant = all.filter(item => {
+        const railwayId = (item['odpt:railway'] || '').toLowerCase();
+        return lines.some(line => railwayId.includes(line.toLowerCase().replace(/\s/g,'')));
+      });
+      setInfo(relevant);
+    });
+  }, [lines.join(',')]);
+
+  return { info };
+}
+
 function useWeather() {
   const [weather, setWeather] = useState(WEATHER_FALLBACK);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -763,6 +787,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   const [nearestElev,setNearestElev]=useState(null);
   const [locLoading,setLocLoading]=useState(false);
   const [locError,setLocError]=useState(null);
+  const {info:trainInfo}=useTrainInfo(station.lines||[]);
   const city=CITIES[cityKey];
 
   return(
@@ -783,6 +808,17 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <span style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,0.25)",letterSpacing:"1.5px",textTransform:"uppercase"}}>noruka</span>
         </div>
       </div>
+
+      {/* Live disruption banner */}
+      {trainInfo.filter(i=>i["odpt:trainInformationText"]?.en||i["odpt:trainInformationText"]?.ja).map((item,i)=>(
+        <div key={i} style={{background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.35)",borderRadius:9,padding:"9px 12px",marginBottom:8,display:"flex",gap:8,alignItems:"flex-start"}}>
+          <span style={{fontSize:14,flexShrink:0}}>🚨</span>
+          <div>
+            <div style={{fontSize:10,fontWeight:700,color:"#fbbf24",marginBottom:2}}>LIVE SERVICE UPDATE</div>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.8)",lineHeight:1.4}}>{item["odpt:trainInformationText"]?.en||item["odpt:trainInformationText"]?.ja}</div>
+          </div>
+        </div>
+      ))}
 
       {/* Header */}
       <div style={{marginBottom:11}}>
