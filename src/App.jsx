@@ -96,10 +96,10 @@ const BABY_CHANGING = {
 
 // ── ODPT: live train information ─────────────────────────────────────────────
 function useTrainInfo(lines=[]) {
-  const [info, setInfo] = React.useState([]);
+  const [info, setInfo] = useState([]);
   const linesKey = lines.slice().sort().join(',');
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!lines.length) return;
     let cancelled = false;
     const operators = ['JR-East','TokyoMetro','Toei'];
@@ -123,6 +123,171 @@ function useTrainInfo(lines=[]) {
   }, [linesKey]);
 
   return { info };
+}
+
+
+
+// ── ODPT station ID lookup ───────────────────────────────────────────────────
+
+const METRO_ACCESSIBILITY_URLS = {
+  "ginza": "ginza",
+  "shinjuku": "shinjuku",
+  "shibuya": "shibuya",
+  "ikebukuro": "ikebukuro",
+  "ueno": "ueno",
+  "asakusa": "asakusa",
+  "omotesando": "omotesando",
+  "roppongi": "roppongi",
+  "kasumigaseki": "kasumigaseki",
+  "otemachi": "otemachi",
+  "tameike-sanno": "tameike-sanno",
+  "shirokane-takanawa": "shirokane-takanawa",
+  "aoyama-itchome": "aoyama-itchome",
+  "shinjuku-sanchome": "shinjuku-sanchome",
+  "nakameguro": "nakameguro",
+  "kita-senju": "kita-senju",
+  "iidabashi": "iidabashi",
+  "kudanshita": "kudanshita",
+  "nihonbashi": "nihombashi",
+  "ebisu": "ebisu",
+  "akihabara": "akihabara",
+  "meguro": "meguro",
+  "azabu-juban": "azabu-juban",
+  "monzen-nakacho": "monzen-nakacho",
+  "komagome": "komagome",
+  "nakano": "nakano",
+  "ogikubo": "ogikubo",
+  "takadanobaba": "takadanobaba",
+  "tokyo": "tokyo",
+  "shimbashi": "shimbashi",
+  "yurakucho": "yurakucho"
+};
+
+const ODPT_STATION_IDS = {
+  "ginza": "Ginza.Ginza",
+  "shinjuku": "Marunouchi.Shinjuku",
+  "shibuya": "Ginza.Shibuya",
+  "ikebukuro": "Marunouchi.Ikebukuro",
+  "ueno": "Ginza.Ueno",
+  "asakusa": "Ginza.Asakusa",
+  "omotesando": "Ginza.OmoteSando",
+  "roppongi": "Hibiya.Roppongi",
+  "kasumigaseki": "Ginza.AkasakaMitsuke",
+  "otemachi": "Marunouchi.Otemachi",
+  "tameike-sanno": "Ginza.TameikeSanno",
+  "shirokane-takanawa": "Namboku.ShirokaneTakanawa",
+  "aoyama-itchome": "Ginza.AoyamaItchome",
+  "shinjuku-sanchome": "Marunouchi.ShinjukuSanchome",
+  "nakameguro": "Hibiya.NakaMeguro",
+  "kita-senju": "Hibiya.KitaSenju",
+  "iidabashi": "Yurakucho.Iidabashi",
+  "kudanshita": "Hanzomon.Kudanshita",
+  "nihonbashi": "Ginza.Nihombashi",
+  "ebisu": "Hibiya.Ebisu",
+  "akihabara": "Hibiya.Akihabara",
+  "meguro": "Namboku.Meguro",
+  "azabu-juban": "Namboku.AzabuJuban",
+  "monzen-nakacho": "Tozai.MonzenNakacho",
+  "shin-toyosu": "Yurakucho.Toyosu",
+  "komagome": "Namboku.Komagome",
+  "nakano": "Tozai.Nakano",
+  "ogikubo": "Marunouchi.Ogikubo",
+  "takadanobaba": "Tozai.Takadanobaba",
+  "tokyo": "Marunouchi.Tokyo",
+  "kanda": "Ginza.Kanda",
+  "shimbashi": "Ginza.Shimbashi",
+  "yurakucho": "Yurakucho.Yurakucho",
+  "uguisudani": null,
+  "nippori": null,
+  "tabata": null,
+  "sugamo": "Mita.Sugamo",
+  "yoyogi": "Oedo.Yoyogi",
+  "harajuku": null,
+  "gotanda": "Asakusa.Gotanda",
+  "osaki": null,
+  "shinagawa": null,
+  "tamachi": "Mita.Tamachi",
+  "hamamatsucho": null,
+  "mita": "Mita.Mita",
+  "suidobashi": "Mita.Suidobashi",
+  "jiyugaoka": null,
+  "daikanyama": null,
+  "shimo-kitazawa": null,
+  "shinjuku-nishiguchi": "Oedo.ShinjukuNishiguchi",
+  "okachimachi": null,
+  "nishi-nippori": null,
+  "mejiro": null,
+  "shin-okubo": null,
+  "koenji": null,
+  "otsuka": null,
+  "haneda": null,
+  "tachikawa": null,
+  "hachioji": null,
+  "musashino": null,
+  "kichijoji": null,
+  "mitaka": null,
+  "musashi-kosugi": null,
+  "kawasaki": null,
+  "yokohama": null
+};
+
+// ── ODPT: station timetable ──────────────────────────────────────────────────
+function useStationTimetable(stationId, operatorId) {
+  const [departures, setDepartures] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!stationId || !operatorId) return;
+    let cancelled = false;
+    setLoading(true);
+
+    // Determine if today is a weekday or weekend in Japan
+    const now = new Date();
+    const japanDay = new Date(now.toLocaleString('en-US', {timeZone: 'Asia/Tokyo'})).getDay();
+    const isWeekend = japanDay === 0 || japanDay === 6;
+    const calendar = isWeekend ? 'SaturdayHoliday' : 'Weekday';
+
+    fetch(`/api/odpt?type=StationTimetable&operator=${operatorId}&station=odpt.Station:${operatorId}.${stationId}&calendar=${calendar}`).then(r => { console.log('ODPT fetch:', `/api/odpt?type=StationTimetable&operator=${operatorId}&station=odpt.Station:${operatorId}.${stationId}&calendar=${calendar}`); return r; })
+      .then(r => r.ok ? r.json() : [])
+      .then(data => {
+        if (cancelled) return;
+        if (!Array.isArray(data)) { setDepartures([]); setLoading(false); return; }
+
+        // Get current Japan time
+        const japanNow = new Date(new Date().toLocaleString('en-US', {timeZone: 'Asia/Tokyo'}));
+        const nowMinutes = japanNow.getHours() * 60 + japanNow.getMinutes();
+
+        // Process each direction
+        const processed = data.map(timetable => {
+          const direction = timetable['odpt:railDirection'] || '';
+          const dirName = direction.split(':').pop().replace(/.*\./, '');
+          const objects = timetable['odpt:stationTimetableObject'] || [];
+
+          // Find next 4 departures from now
+          const upcoming = objects
+            .map(obj => {
+              const t = obj['odpt:departureTime'] || obj['odpt:arrivalTime'] || '';
+              if (!t) return null;
+              const [h, m] = t.split(':').map(Number);
+              const mins = h * 60 + m;
+              return { time: t, mins, trainType: obj['odpt:trainType'] || '', destinationStation: obj['odpt:destinationStation'] || [] };
+            })
+            .filter(Boolean)
+            
+            .filter(obj => obj.mins >= nowMinutes).slice(0, 4);
+
+          return { direction: dirName, upcoming };
+        }).filter(d => d.upcoming.length > 0);
+
+        setDepartures(processed);
+        setLoading(false);
+      })
+      .catch(() => { if (!cancelled) { setDepartures([]); setLoading(false); } });
+
+    return () => { cancelled = true; };
+  }, [stationId, operatorId]);
+
+  return { departures, loading };
 }
 
 function useWeather() {
@@ -645,7 +810,7 @@ function CrowdingChart({crowding,quiet}){
   return(
     <div style={{background:"rgba(255,255,255,0.03)",borderRadius:14,padding:"13px 15px",border:"1px solid rgba(255,255,255,0.07)",marginBottom:12}}>
       <div style={{display:"flex",justifyContent:"space-between",marginBottom:9}}>
-        <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.8)"}}>📊 Crowding</span>
+        <span style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.8)"}}>📊 Typical Crowding</span>
         <span style={{fontSize:11,color:c,fontWeight:700}}>{v<=3?"Quiet":v<=6?"Moderate":v<=8?"Busy":"Very Busy"} now</span>
       </div>
       <div style={{display:"flex",gap:2,alignItems:"flex-end",height:38}}>
@@ -794,7 +959,12 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
   const [nearestElev,setNearestElev]=useState(null);
   const [locLoading,setLocLoading]=useState(false);
   const [locError,setLocError]=useState(null);
-  const trainInfo=[];
+  const { info: trainInfo } = useTrainInfo(station.lines);
+  const operatorId = station.lines.some(l => ['Ginza','Marunouchi','Hibiya','Tozai','Chiyoda','Yurakucho','Hanzomon','Namboku','Fukutoshin'].includes(l)) ? 'TokyoMetro' : station.lines.some(l => ['Asakusa','Mita','Shinjuku Line','Oedo'].includes(l)) ? 'Toei' : null;
+  const odptEntry = ODPT_STATION_IDS[station.id];
+  const stationOdptId = odptEntry || null;
+  const resolvedOperatorId = odptEntry ? (odptEntry.startsWith('Mita')||odptEntry.startsWith('Asakusa')||odptEntry.startsWith('Oedo')||odptEntry.startsWith('Shinjuku') ? 'Toei' : 'TokyoMetro') : null;
+  const { departures, loading: depLoading } = useStationTimetable(stationOdptId, resolvedOperatorId);
   const city=CITIES[cityKey];
 
   return(
@@ -817,7 +987,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       </div>
 
       {/* Live disruption banner */}
-      {trainInfo.filter(i=>i["odpt:trainInformationText"]?.en||i["odpt:trainInformationText"]?.ja).map((item,i)=>(
+      {trainInfo.filter(i=>{const t=i["odpt:trainInformationText"];const m=t?.en||t?.ja||"";return m&&!m.includes("平常")&&!m.includes("normal")&&!m.includes("遅延はありません");}).map((item,i)=>(
         <div key={i} style={{background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.35)",borderRadius:9,padding:"9px 12px",marginBottom:8,display:"flex",gap:8,alignItems:"flex-start"}}>
           <span style={{fontSize:14,flexShrink:0}}>🚨</span>
           <div>
@@ -877,7 +1047,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
-        {[["overview","📋 Overview"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","🚻 Restrooms"]].map(([v,l])=>(
+        {[["overview","📋 Overview"],["departures","🕐 Departures"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","🚻 Restrooms"]].map(([v,l])=>(
           <button key={v} onClick={()=>setTab(v)} style={{padding:"7px 10px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",background:"none",border:"none",borderBottom:`2px solid ${tab===v?"#3b82f6":"transparent"}`,marginBottom:-2,color:tab===v?"#3b82f6":"rgba(255,255,255,0.35)",whiteSpace:"nowrap"}}>{l}</button>
         ))}
       </div>
@@ -948,6 +1118,42 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
             <div style={{fontSize:10,fontWeight:700,color:"#34d399",marginBottom:3}}>🏥 Nearest Medical</div>
             <div style={{fontSize:11,color:"rgba(255,255,255,0.65)",lineHeight:1.4}}>{station.medicalNearby}</div>
             <div style={{fontSize:10,color:"#f87171",marginTop:5,fontWeight:700}}>119 Ambulance · 110 Police · 03-5285-8181 English Lifeline</div>
+          </div>
+        </div>
+      )}
+
+      
+      {tab==="departures"&&(
+        <div>
+          {depLoading && <div style={{textAlign:"center",padding:"24px",color:"rgba(255,255,255,0.4)",fontSize:13}}>Loading departures…</div>}
+          {!depLoading && departures.length === 0 && (
+            <div style={{textAlign:"center",padding:"24px",color:"rgba(255,255,255,0.35)",fontSize:12}}>
+              <div style={{fontSize:28,marginBottom:8}}>🚉</div>
+              {stationOdptId ? (
+                <div>No departures right now — trains may not be running at this hour.</div>
+              ) : (
+                <div>
+                  <div style={{marginBottom:6}}>Timetable not available for this station.</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.2)",lineHeight:1.6}}>Live departures are only available for Tokyo Metro and Toei lines via ODPT. JR East, Keikyu, Tokyu and other private lines don't share timetable data publicly.</div>
+                </div>
+              )}
+            </div>
+          )}
+          {departures.map((dir, i) => (
+            <div key={i} style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.08)",borderRadius:12,padding:"13px 15px",marginBottom:10}}>
+              <div style={{fontSize:11,fontWeight:700,color:"#7dd3fc",marginBottom:10,textTransform:"uppercase",letterSpacing:"1px"}}>→ {dir.direction}</div>
+              <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                {dir.upcoming.map((d, j) => (
+                  <div key={j} style={{background:j===0?"rgba(59,130,246,0.2)":"rgba(255,255,255,0.06)",border:`1px solid ${j===0?"rgba(59,130,246,0.5)":"rgba(255,255,255,0.1)"}`,borderRadius:10,padding:"8px 14px",textAlign:"center",minWidth:60}}>
+                    <div style={{fontSize:16,fontWeight:700,color:j===0?"#fff":"rgba(255,255,255,0.7)",fontFamily:"monospace"}}>{d.time}</div>
+                    {j===0&&<div style={{fontSize:9,color:"#7dd3fc",marginTop:2}}>Next</div>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div style={{fontSize:10,color:"rgba(255,255,255,0.25)",marginTop:8,lineHeight:1.6,textAlign:"center"}}>
+            Scheduled times · Tokyo Metro and Toei lines only · Updated daily
           </div>
         </div>
       )}
@@ -1081,6 +1287,16 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
           <div style={{background:"rgba(66,133,244,0.06)",border:"1px solid rgba(66,133,244,0.15)",borderRadius:9,padding:"9px 11px",fontSize:10,color:"rgba(255,255,255,0.4)",lineHeight:1.5,marginTop:4}}>
             📞 Live status: call {station.phone} · JR East English line <strong style={{color:"#7dd3fc"}}>050-2016-1603</strong> · Tokyo Metro <strong style={{color:"#7dd3fc"}}>03-3941-2004</strong>
           </div>
+          {METRO_ACCESSIBILITY_URLS[station.id] && (
+            <a href={`https://www.tokyometro.jp/lang_en/station/${METRO_ACCESSIBILITY_URLS[station.id]}/accessibility/index.html`} target="_blank" rel="noopener noreferrer" style={{display:"flex",alignItems:"center",gap:8,background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:9,padding:"10px 13px",marginTop:8,textDecoration:"none",color:"rgba(255,255,255,0.7)",fontSize:11}}>
+              <span style={{fontSize:16}}>🚇</span>
+              <div>
+                <div style={{fontWeight:700,color:"#fff",marginBottom:2}}>Official Tokyo Metro Accessibility Info</div>
+                <div style={{fontSize:10,color:"rgba(255,255,255,0.4)"}}>Escalators, elevators, barrier-free facilities · Opens Tokyo Metro website</div>
+              </div>
+              <span style={{marginLeft:"auto",fontSize:12,color:"rgba(255,255,255,0.3)"}}>↗</span>
+            </a>
+          )}
         </div>
       )}
 

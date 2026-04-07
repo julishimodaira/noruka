@@ -10,8 +10,11 @@ export default async function handler(req, res) {
   if (!validTypes.includes(type)) return res.status(400).json({ error: 'Invalid type' });
 
   try {
-    let url = `https://api.odpt.org/api/4/odpt:${type}?acl:consumerKey=${apiKey}`;
+    let url = `https://api.odpt.org/api/v4/odpt:${type}?acl:consumerKey=${apiKey}`;
     if (operator) url += `&odpt:operator=odpt.Operator:${operator}`;
+    const { station, calendar } = req.query;
+    if (station) url += `&odpt:station=${station}`;
+    if (calendar) url += `&odpt:calendar=odpt.Calendar:${calendar}`;
 
     const response = await fetch(url);
     if (!response.ok) return res.status(response.status).json({ error: 'ODPT API error' });
