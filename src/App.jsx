@@ -1667,6 +1667,7 @@ export default function App(){
   const [showProfile,setShowProfile]=useState(false);
   const [profile,setProfile]=useState(null);
   const [lang,setLang]=useState("en");
+  const [legalPage,setLegalPage]=useState(null);
   const [showLangMenu,setShowLangMenu]=useState(false);
   const t = T[lang] || T.en;
   const [globalSearch,setGlobalSearch]=useState("");
@@ -1738,6 +1739,53 @@ export default function App(){
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
       {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}}/>}
 
+
+      {legalPage && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"flex-end",justifyContent:"center",backdropFilter:"blur(8px)"}} onClick={()=>setLegalPage(null)}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#0f1424",borderRadius:"20px 20px 0 0",border:"1px solid rgba(255,255,255,0.09)",width:"100%",maxWidth:700,maxHeight:"85vh",overflowY:"auto",padding:"24px 20px 40px"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+              <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:16,fontWeight:700,color:"#fff"}}>{legalPage==="terms"?"Terms of Service":"Privacy Policy"}</div>
+              <button onClick={()=>setLegalPage(null)} style={{background:"rgba(255,255,255,0.08)",border:"none",borderRadius:8,color:"rgba(255,255,255,0.6)",width:28,height:28,cursor:"pointer",fontSize:13}}>✕</button>
+            </div>
+            {legalPage==="terms" && (
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.9}}>
+                <p style={{marginBottom:16}}><strong style={{color:"#fff"}}>Last updated: April 2026</strong></p>
+                <p style={{marginBottom:16}}>Noruka ("the app") is created and operated by Juli Shimodaira ("I", "me"). By using Noruka, you agree to these terms.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>1. Use of the App</p>
+                <p style={{marginBottom:16}}>Noruka is provided free of charge for personal, non-commercial use. You may not copy, modify, distribute, or create derivative works based on Noruka without permission.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>2. Accuracy of Information</p>
+                <p style={{marginBottom:16}}>Accessibility information including elevator status, platform gaps, and station facilities is provided for guidance only. Always confirm critical accessibility needs with station staff before travel. I am not liable for any inconvenience or harm arising from inaccurate information.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>3. Third-Party Data</p>
+                <p style={{marginBottom:16}}>Train and station data is sourced from the Public Transportation Open Data Center (ODPT) and is subject to their terms. Weather data is provided by Open-Meteo. I do not guarantee the accuracy or availability of third-party data.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>4. Intellectual Property</p>
+                <p style={{marginBottom:16}}>The Noruka name, logo, design, and original content are © 2026 Juli Shimodaira. All rights reserved. Unauthorized use is prohibited.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>5. Changes</p>
+                <p style={{marginBottom:16}}>I may update these terms at any time. Continued use of the app constitutes acceptance of the updated terms.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>6. Contact</p>
+                <p>For questions, contact: hello@noruka.app</p>
+              </div>
+            )}
+            {legalPage==="privacy" && (
+              <div style={{fontSize:12,color:"rgba(255,255,255,0.65)",lineHeight:1.9}}>
+                <p style={{marginBottom:16}}><strong style={{color:"#fff"}}>Last updated: April 2026</strong></p>
+                <p style={{marginBottom:16}}>Your privacy is important. This policy explains what data Noruka collects and how it is used.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>1. Data We Collect</p>
+                <p style={{marginBottom:16}}>Noruka does not require account creation. We do not collect your name, email, or personal information. The app stores your accessibility profile and saved routes locally on your device only — this data never leaves your device.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>2. Location Data</p>
+                <p style={{marginBottom:16}}>The "Find nearest elevator" feature requests your device location. This is used only in the moment to calculate distances and is never stored or transmitted.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>3. Third-Party Services</p>
+                <p style={{marginBottom:16}}>Noruka uses Open-Meteo for weather data and ODPT for train data. These services may have their own privacy practices. No personal data is shared with these services.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>4. Analytics</p>
+                <p style={{marginBottom:16}}>Noruka does not use any analytics or tracking services. No cookies are set. No data is sold to third parties.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>5. Changes</p>
+                <p style={{marginBottom:16}}>This policy may be updated occasionally. Continued use of the app constitutes acceptance.</p>
+                <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>6. Contact</p>
+                <p>For privacy questions: hello@noruka.app</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       {/* HEADER */}
       <div style={{background:"rgba(8,11,20,0.92)",borderBottom:"1px solid rgba(255,255,255,0.06)",padding:"12px 18px",position:"sticky",top:0,zIndex:300,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)"}}>
         <div style={{maxWidth:900,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
@@ -1990,6 +2038,34 @@ export default function App(){
           <StationDetail station={activeStation} cityKey={activeCityKey} onBack={()=>setPage("city")} isFav={isFav(activeStation.id)} onToggleFav={toggleFav} profile={profile} weather={weather} lastUpdated={lastUpdated}/>
         )}
 
+      </div>
+
+      {/* ── FOOTER ── */}
+      <div style={{borderTop:"1px solid rgba(255,255,255,0.06)",marginTop:40,padding:"24px 16px",textAlign:"center"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginBottom:12}}>
+          <div style={{width:24,height:24,background:"#0d0d1a",border:"1.5px solid rgba(59,130,246,0.4)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <svg width="16" height="16" viewBox="0 0 84 84" fill="none">
+              <line x1="22" y1="64" x2="22" y2="24" stroke="#3b82f6" strokeWidth="10" strokeLinecap="round"/>
+              <path d="M22 36 Q22 16 42 16 Q62 16 62 36 L62 64" stroke="#8b5cf6" strokeWidth="10" strokeLinecap="round" fill="none"/>
+              <circle cx="22" cy="24" r="9" fill="#3b82f6"/>
+              <circle cx="22" cy="64" r="9" fill="#1d4ed8"/>
+              <circle cx="42" cy="16" r="7" fill="#8b5cf6"/>
+              <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
+            </svg>
+          </div>
+          <span style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"rgba(255,255,255,0.5)",fontSize:13}}>Noruka</span>
+        </div>
+        <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginBottom:10}}>
+          © 2026 Juli Shimodaira. All rights reserved.
+        </div>
+        <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:12}}>
+          <button onClick={()=>setLegalPage("terms")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.35)",fontSize:11,cursor:"pointer",fontFamily:"inherit",padding:0,textDecoration:"underline"}}>Terms of Service</button>
+          <button onClick={()=>setLegalPage("privacy")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.35)",fontSize:11,cursor:"pointer",fontFamily:"inherit",padding:0,textDecoration:"underline"}}>Privacy Policy</button>
+          <a href="mailto:hello@noruka.app" style={{color:"rgba(255,255,255,0.35)",fontSize:11,textDecoration:"underline"}}>Contact</a>
+        </div>
+        <div style={{fontSize:10,color:"rgba(255,255,255,0.15)",lineHeight:1.6,maxWidth:500,margin:"0 auto"}}>
+          Accessibility data sourced from Public Transportation Open Data Center (ODPT) and operator-provided information. Accuracy not guaranteed — always confirm with station staff.
+        </div>
       </div>
 
     </div>
