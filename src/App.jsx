@@ -1302,6 +1302,10 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {tab==="cars"&&(
         <div>
+          <div style={{background:"rgba(245,158,11,0.07)",border:"1px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"10px 13px",marginBottom:10,display:"flex",gap:8,alignItems:"flex-start"}}>
+            <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
+            <div style={{fontSize:11,color:"rgba(255,255,255,0.55)",lineHeight:1.6}}>Gap and car position data is based on published operator guidelines and community research. Always confirm with station staff on arrival as layouts may vary by platform and train type.</div>
+          </div>
           <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"12px 13px",marginBottom:9}}>
             <div style={{fontWeight:700,fontSize:12,color:"#fff",marginBottom:6}}>🚃 Wheelchair Boarding Car</div>
             <div style={{fontSize:13,color:"#7dd3fc",fontFamily:"monospace",marginBottom:6}}>{station.wheelchairCar}</div>
