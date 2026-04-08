@@ -997,6 +997,9 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
         </div>
       ))}
 
+      <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginBottom:10,padding:"6px 10px",background:"rgba(255,255,255,0.03)",borderRadius:8,border:"1px solid rgba(255,255,255,0.06)"}}>
+        🔴 Live service disruption alerts are available for Tokyo Metro and Toei lines only. JR East and private lines are not included.
+      </div>
       {/* Header */}
       <div style={{marginBottom:11}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
