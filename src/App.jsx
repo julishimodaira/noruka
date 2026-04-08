@@ -1277,7 +1277,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
                     {/* Verify button */}
                     <button onClick={e2=>{e2.stopPropagation();setVerified(vv=>({...vv,[key]:true}));}} style={{alignSelf:"flex-start",fontSize:11,padding:"6px 14px",borderRadius:20,border:`1px solid ${v?"rgba(52,211,153,0.45)":"rgba(255,255,255,0.18)"}`,background:v?"rgba(52,211,153,0.12)":"rgba(255,255,255,0.06)",color:v?"#34d399":"rgba(255,255,255,0.6)",cursor:"pointer",fontFamily:"inherit",fontWeight:700}}>
-                      {v?"✓ Confirmed working":"Confirm this elevator is working"}
+                      {v?"✓ Confirmed working":"Verify this elevator is working"}
                     </button>
                   </div>
                 )}
