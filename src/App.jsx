@@ -1802,7 +1802,10 @@ export default function App(){
             </div>
             <div>
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:20,fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:"-0.5px"}}>Noruka™</div>
-              <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:"2px",textTransform:"uppercase",marginTop:3}}>Japan Rail Access</div>
+              <div style={{display:"flex",alignItems:"center",gap:6,marginTop:3}}>
+              <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:"2px",textTransform:"uppercase"}}>Japan Rail Access</div>
+              <span style={{fontSize:8,padding:"1px 6px",borderRadius:20,background:"rgba(59,130,246,0.2)",border:"1px solid rgba(59,130,246,0.4)",color:"#7dd3fc",fontWeight:700,letterSpacing:"1px",textTransform:"uppercase"}}>Beta</span>
+            </div>
             </div>
           </div>
 
@@ -1838,6 +1841,9 @@ export default function App(){
                 <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(66,133,244,0.1)",border:"1px solid rgba(66,133,244,0.2)",borderRadius:20,padding:"5px 14px",fontSize:12,color:"#8bb8f8"}}>{profileType?.icon} {profileType?.label} mode active · <select value={lang} onChange={e=>setLang(e.target.value)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 8px",cursor:"pointer",fontSize:11,fontFamily:"inherit"}}><option value="en">EN</option><option value="ja">JA</option><option value="es">ES</option><option value="fr">FR</option><option value="ko">KO</option></select>
             <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>{t.editProfile}</button></div>
               )}
+              <div style={{marginTop:12,padding:"8px 16px",background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.15)",borderRadius:12,display:"inline-block"}}>
+                <span style={{fontSize:11,color:"rgba(255,255,255,0.45)",lineHeight:1.6}}>🎉 Noruka is <strong style={{color:"#7dd3fc"}}>free during beta</strong> — early users will receive free access forever as a thank you for supporting us from the start.</span>
+              </div>
             </div>
 
             {/* Global search */}
