@@ -2053,7 +2053,7 @@ export default function App(){
               <circle cx="62" cy="64" r="9" fill="#06b6d4"/>
             </svg>
           </div>
-          <span style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"rgba(255,255,255,0.5)",fontSize:13}}>Noruka</span>
+          <span style={{fontFamily:"'Space Grotesk',sans-serif",fontWeight:700,color:"rgba(255,255,255,0.5)",fontSize:13}}>Noruka™</span>
         </div>
         <div style={{fontSize:11,color:"rgba(255,255,255,0.25)",marginBottom:10}}>
           © 2026 Juli Shimodaira. All rights reserved.
