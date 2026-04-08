@@ -1758,7 +1758,7 @@ export default function App(){
                 <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>3. Third-Party Data</p>
                 <p style={{marginBottom:16}}>Train and station data is sourced from the Public Transportation Open Data Center (ODPT) and is subject to their terms. Weather data is provided by Open-Meteo. I do not guarantee the accuracy or availability of third-party data.</p>
                 <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>4. Intellectual Property</p>
-                <p style={{marginBottom:16}}>The Noruka name, logo, design, and original content are © 2026 Juli Shimodaira. All rights reserved. Unauthorized use is prohibited.</p>
+                <p style={{marginBottom:16}}>The Noruka name, logo, design, and original content are © 2026 Juli Shimodaira. All rights reserved. Noruka™ is a trademark of Juli Shimodaira. Unauthorized use is prohibited.</p>
                 <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>5. Changes</p>
                 <p style={{marginBottom:16}}>I may update these terms at any time. Continued use of the app constitutes acceptance of the updated terms.</p>
                 <p style={{marginBottom:8,fontWeight:700,color:"#fff"}}>6. Contact</p>
@@ -1801,7 +1801,7 @@ export default function App(){
               </svg>
             </div>
             <div>
-              <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:20,fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:"-0.5px"}}>Noruka</div>
+              <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:20,fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:"-0.5px"}}>Noruka™</div>
               <div style={{fontSize:9,color:"rgba(255,255,255,0.35)",letterSpacing:"2px",textTransform:"uppercase",marginTop:3}}>Japan Rail Access</div>
             </div>
           </div>
