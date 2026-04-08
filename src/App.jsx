@@ -1048,7 +1048,7 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
       {/* Tabs */}
       <div style={{display:"flex",borderBottom:"1px solid rgba(255,255,255,0.08)",marginBottom:13,overflowX:"auto",scrollbarWidth:"none",gap:2}}>
         {[["overview","📋 Overview"],["departures","🕐 Departures"],["elevators","🛗 Elevators"],["cars","🚃 Car & Gap"],["comfort","🪑 Comfort"],["hotels","🏨 Hotels"],["phrases","🗣️ Phrases"],["toilets","🚻 Restrooms"]].map(([v,l])=>(
-          <button key={v} onClick={()=>setTab(v)} style={{padding:"6px 12px",fontSize:10,fontWeight:700,fontFamily:"inherit",cursor:"pointer",borderRadius:20,border:`1px solid ${tab===v?"#3b82f6":"rgba(255,255,255,0.1)"}`,background:tab===v?"rgba(59,130,246,0.2)":"rgba(255,255,255,0.04)",color:tab===v?"#fff":"rgba(255,255,255,0.45)",whiteSpace:"nowrap",transition:"all 0.15s",flexShrink:0}}>{l}</button>
+          <button key={v} onClick={()=>setTab(v)} style={{padding:"8px 14px",fontSize:12,fontWeight:700,fontFamily:"inherit",cursor:"pointer",borderRadius:20,border:`1px solid ${tab===v?"#3b82f6":"rgba(255,255,255,0.12)"}`,background:tab===v?"rgba(59,130,246,0.25)":"rgba(255,255,255,0.05)",color:tab===v?"#fff":"rgba(255,255,255,0.5)",whiteSpace:"nowrap",transition:"all 0.15s",flexShrink:0}}>{l}</button>
         ))}
       </div>
 
