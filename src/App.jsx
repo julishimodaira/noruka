@@ -1842,7 +1842,7 @@ export default function App(){
             <button onClick={()=>setShowProfile(true)} style={{background:"none",border:"none",color:"#3b82f6",cursor:"pointer",fontSize:11,fontFamily:"inherit",padding:0}}>{t.editProfile}</button></div>
               )}
               <div style={{marginTop:12,padding:"8px 16px",background:"rgba(59,130,246,0.06)",border:"1px solid rgba(59,130,246,0.15)",borderRadius:12,display:"inline-block"}}>
-                <span style={{fontSize:11,color:"rgba(255,255,255,0.45)",lineHeight:1.6}}>🎉 Noruka is <strong style={{color:"#7dd3fc"}}>free during beta</strong> — early users will receive free access forever as a thank you for supporting us from the start.</span>
+                <span style={{fontSize:11,color:"rgba(255,255,255,0.45)",lineHeight:1.6}}>🎉 Noruka is <strong style={{color:"#7dd3fc"}}>free during beta</strong> — enjoy full access while we continue to grow and improve.</span>
               </div>
             </div>
 
