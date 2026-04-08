@@ -1054,6 +1054,10 @@ function StationDetail({station,cityKey,onBack,isFav,onToggleFav,profile,weather
 
       {tab==="overview"&&(
         <div>
+          <div style={{background:"rgba(255,255,255,0.03)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:9,padding:"10px 13px",marginBottom:10,display:"flex",gap:8,alignItems:"flex-start"}}>
+            <span style={{fontSize:14,flexShrink:0}}>ℹ️</span>
+            <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",lineHeight:1.6}}>Station facility information including hotels, restrooms, taxis, medical services and staff locations is regularly researched but not live data. Always confirm with station staff on arrival. Live data is available for train departures and service disruptions only.</div>
+          </div>
           <div style={{background:"rgba(255,255,255,0.04)",border:"1px solid rgba(255,255,255,0.07)",borderRadius:10,padding:"11px 13px",marginBottom:9}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
               <span style={{fontWeight:700,fontSize:12,color:"#fff"}}>[wheelchair] Transfer</span>
