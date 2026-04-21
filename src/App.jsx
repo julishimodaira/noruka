@@ -1665,6 +1665,7 @@ export default function App(){
   const [favorites,setFavorites]=useState([]);
   const [savedRoutes,setSavedRoutes]=useState(()=>{try{return JSON.parse(localStorage.getItem("noruka-routes")||"[]");}catch{return[];}});
   const saveRoute = async route => {
+    console.log('saveRoute called, user:', user?.email, 'route:', route?.from, '->', route?.to);
     if (user) {
       // Save to database
       const { error } = await supabase.from('saved_routes').insert({
