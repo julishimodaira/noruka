@@ -1,6 +1,8 @@
 /* eslint-disable */
 import { useState, useMemo, useEffect } from "react";
 import T from "./translations";
+import AuthModal from "./AuthModal";
+import { supabase } from "./supabase";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const HOURS = ["6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm"];
@@ -871,7 +873,7 @@ function EmergencyModal({profile,onClose}){
 }
 
 // ─── PROFILE MODAL ────────────────────────────────────────────────────────────
-function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpenJourney}){
+function ProfileModal({profile,onSave,onClose,savedRoutes=[],onDeleteRoute,onOpenJourney,onSignOut}){
   const [types,setTypes]=useState(profile?.types||[profile?.type||"manual"]);
   const [needs,setNeeds]=useState(profile?.needs||"");
   const [contact,setContact]=useState(profile?.emergencyContact||"");
@@ -945,7 +947,8 @@ Planned with Noruka · Japan Rail Access · noruka.vercel.app`;
             <button onClick={onOpenJourney} style={{background:"rgba(59,130,246,0.1)",border:"1px solid rgba(59,130,246,0.25)",borderRadius:8,color:"#7dd3fc",padding:"5px 12px",fontSize:11,cursor:"pointer",fontFamily:"inherit"}}>Plan a Journey</button>
           </div>
         )}
-        <button onClick={()=>{onSave({type:types[0],types,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit"}}>Save Profile</button>
+        <button onClick={()=>{onSave({type:types[0],types,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit",marginBottom:10}}>Save Profile</button>
+        {onSignOut && <button onClick={onSignOut} style={{width:"100%",padding:"10px",borderRadius:10,border:"1px solid rgba(239,68,68,0.25)",background:"rgba(239,68,68,0.08)",color:"#f87171",fontWeight:700,cursor:"pointer",fontSize:13,fontFamily:"inherit"}}>Sign Out</button>}
       </div>
     </div>
   );
@@ -1679,12 +1682,25 @@ export default function App(){
   const [profile,setProfile]=useState(null);
   const [lang,setLang]=useState("en");
   const [legalPage,setLegalPage]=useState(null);
+  const [user,setUser]=useState(null);
+  const [showAuth,setShowAuth]=useState(false);
   const [showLangMenu,setShowLangMenu]=useState(false);
   const t = T[lang] || T.en;
   const [globalSearch,setGlobalSearch]=useState("");
   const [showGlobalResults,setShowGlobalResults]=useState(false);
 
   const {weather, lastUpdated} = useWeather();
+
+  // Listen for auth state changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
   const profileType=PROFILE_TYPES.find(p=>p.id===profile?.type);
   const toggleFav=id=>setFavorites(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]);
   const isFav=id=>favorites.includes(id);
@@ -1739,6 +1755,7 @@ export default function App(){
       `}</style>
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
+      {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onSuccess={()=>setShowAuth(false)}/>}
       {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t} lang={lang} onSaveRoute={saveRoute}/>}
       {/* Floating Plan Trip button - visible on city and station pages */}
       {page!=="home"&&(
@@ -1748,7 +1765,7 @@ export default function App(){
       )}
 
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
-      {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}}/>}
+      {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{await supabase.auth.signOut();setShowProfile(false);}}/>}
 
 
       {legalPage && (
@@ -1831,7 +1848,7 @@ export default function App(){
 
           <div style={{display:"flex",gap:5,flexShrink:0,alignItems:"center"}}>
             <select value={lang} onChange={e=>setLang(e.target.value)} style={{background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.09)",borderRadius:9,color:"rgba(255,255,255,0.7)",padding:"6px 8px",cursor:"pointer",fontSize:11,fontFamily:"inherit"}}><option value="en">EN</option><option value="ja">JA</option><option value="es">ES</option><option value="fr">FR</option><option value="ko">KO</option></select>
-            <button onClick={()=>setShowProfile(true)} style={{background:profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{profile?profileType?.icon||"👤":"👤"}</button>
+            <button onClick={()=>user?setShowProfile(true):setShowAuth(true)} style={{background:user?"rgba(52,211,153,0.1)":profile?"rgba(251,191,36,0.1)":"rgba(255,255,255,0.05)",border:`1px solid ${user?"rgba(52,211,153,0.25)":profile?"rgba(251,191,36,0.25)":"rgba(255,255,255,0.09)"}`,borderRadius:9,color:user?"#34d399":profile?"#fbbf24":"rgba(255,255,255,0.5)",padding:"6px 10px",cursor:"pointer",fontSize:13,fontFamily:"inherit",transition:"all 0.15s"}}>{user?"✓":profile?profileType?.icon||"👤":"👤"}</button>
             <button onClick={()=>setShowEmergency(true)} style={{background:"rgba(239,68,68,0.1)",border:"1px solid rgba(239,68,68,0.22)",borderRadius:9,color:"#f87171",padding:"6px 10px",cursor:"pointer",fontSize:13,transition:"all 0.15s"}}>🆘</button></div>
         </div>
       </div>
