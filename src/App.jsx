@@ -1664,12 +1664,28 @@ export default function App(){
   const [viewMode,setViewMode]=useState("grid");
   const [favorites,setFavorites]=useState([]);
   const [savedRoutes,setSavedRoutes]=useState(()=>{try{return JSON.parse(localStorage.getItem("noruka-routes")||"[]");}catch{return[];}});
-  const saveRoute = route => {
-    const updated = [route,...savedRoutes].slice(0,10);
-    setSavedRoutes(updated);
-    try{localStorage.setItem("noruka-routes",JSON.stringify(updated));}catch{}
+  const saveRoute = async route => {
+    if (user) {
+      // Save to database
+      await supabase.from('saved_routes').insert({
+        user_email: user.email,
+        from_station: route.from,
+        to_station: route.to,
+        plan: route.plan
+      });
+      // Reload routes from database
+      const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', user.email).order('created_at', { ascending: false });
+      if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
+    } else {
+      const updated = [route,...savedRoutes].slice(0,10);
+      setSavedRoutes(updated);
+      try{localStorage.setItem("noruka-routes",JSON.stringify(updated));}catch{}
+    }
   };
-  const deleteRoute = id => {
+  const deleteRoute = async id => {
+    if (user) {
+      await supabase.from('saved_routes').delete().eq('id', id);
+    }
     const updated = savedRoutes.filter(r=>r.id!==id);
     setSavedRoutes(updated);
     try{localStorage.setItem("noruka-routes",JSON.stringify(updated));}catch{}
@@ -1691,13 +1707,43 @@ export default function App(){
 
   const {weather, lastUpdated} = useWeather();
 
-  // Listen for auth state changes
+  // Listen for auth state changes and load profile
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        // Load profile from database
+        const { data } = await supabase.from('profiles').select('*').eq('email', u.email).single();
+        if (data) {
+          setProfile({
+            type: data.accessibility_types?.[0] || 'manual',
+            types: data.accessibility_types || [],
+            needs: data.needs || '',
+            emergencyContact: data.emergency_contact || ''
+          });
+        }
+        // Load saved routes from database
+        const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', u.email).order('created_at', { ascending: false });
+        if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
+      }
     });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        const { data } = await supabase.from('profiles').select('*').eq('email', u.email).single();
+        if (data) {
+          setProfile({
+            type: data.accessibility_types?.[0] || 'manual',
+            types: data.accessibility_types || [],
+            needs: data.needs || '',
+            emergencyContact: data.emergency_contact || ''
+          });
+        }
+        const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', u.email).order('created_at', { ascending: false });
+        if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -1765,7 +1811,18 @@ export default function App(){
       )}
 
       {showEmergency&&<EmergencyModal profile={profile} onClose={()=>setShowEmergency(false)}/>}
-      {showProfile&&<ProfileModal profile={profile} onSave={setProfile} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{await supabase.auth.signOut();setShowProfile(false);}}/>}
+      {showProfile&&<ProfileModal profile={profile} onSave={async (p) => {
+        setProfile(p);
+        if (user) {
+          await supabase.from('profiles').upsert({
+            email: user.email,
+            accessibility_types: p.types || [p.type],
+            needs: p.needs || '',
+            emergency_contact: p.emergencyContact || '',
+            updated_at: new Date()
+          });
+        }
+      }} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{await supabase.auth.signOut();setShowProfile(false);}}/>}
 
 
       {legalPage && (
