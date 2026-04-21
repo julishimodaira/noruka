@@ -1668,13 +1668,15 @@ export default function App(){
     console.log('saveRoute called, user:', user?.email, 'route:', route?.from, '->', route?.to);
     if (user) {
       // Save to database
+      const { data: sessionData } = await supabase.auth.getSession();
+      console.log('Session when saving:', sessionData?.session?.user?.email);
       const { error } = await supabase.from('saved_routes').insert({
         user_email: user.email,
         from_station: route.from,
         to_station: route.to,
         plan: route.plan
       });
-      if (error) console.error('Save route error:', error);
+      console.log('Insert error:', error);
       // Reload routes from database
       const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', user.email).order('created_at', { ascending: false });
       if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
