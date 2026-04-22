@@ -1665,20 +1665,18 @@ export default function App(){
   const [favorites,setFavorites]=useState([]);
   const [savedRoutes,setSavedRoutes]=useState(()=>{try{return JSON.parse(localStorage.getItem("noruka-routes")||"[]");}catch{return[];}});
   const saveRoute = async route => {
-    console.log('saveRoute called, user:', user?.email, 'route:', route?.from, '->', route?.to);
-    try {
-      if (user) {
-        console.log('Attempting database save...');
-        const result = await supabase.from('saved_routes').insert({
+    if (user) {
+      try {
+        const { error } = await supabase.from('saved_routes').insert({
           user_email: user.email,
           from_station: route.from,
           to_station: route.to,
           plan: route.plan
         });
-        console.log('Insert result:', JSON.stringify(result));
-      // Reload routes from database
-      const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', user.email).order('created_at', { ascending: false });
-      if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
+        if (error) { console.error('Insert error:', error); }
+        const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', user.email).order('created_at', { ascending: false });
+        if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
+      } catch(e) { console.error('Save error:', e); }
     } else {
       const updated = [route,...savedRoutes].slice(0,10);
       setSavedRoutes(updated);
