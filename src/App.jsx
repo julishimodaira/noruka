@@ -1831,10 +1831,18 @@ export default function App(){
         }
       }} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{
         console.log('Signing out...');
-        const { error } = await supabase.auth.signOut();
-        console.log('Sign out result:', error ? error.message : 'success');
+        try {
+          await Promise.race([
+            supabase.auth.signOut(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000))
+          ]);
+        } catch(e) {
+          console.log('Sign out error/timeout:', e.message);
+        }
         setUser(null);
+        setProfile(null);
         setShowProfile(false);
+        console.log('Signed out locally');
       }}/>}
 
 
