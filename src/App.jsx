@@ -1718,7 +1718,7 @@ export default function App(){
   // Detect password reset from URL on load
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash && hash.includes('type=recovery')) {
+    if (hash && hash.includes('type=recovery') || hash.includes('#reset') || window.location.hash.includes('access_token')) {
       setShowResetPassword(true);
     }
   }, []);
