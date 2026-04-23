@@ -948,7 +948,7 @@ Planned with Noruka · Japan Rail Access · noruka.vercel.app`;
           </div>
         )}
         <button onClick={()=>{onSave({type:types[0],types,needs,emergencyContact:contact});onClose();}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit",marginBottom:10}}>Save Profile</button>
-        {onSignOut && <button onClick={onSignOut} style={{width:"100%",padding:"10px",borderRadius:10,border:"1px solid rgba(239,68,68,0.25)",background:"rgba(239,68,68,0.08)",color:"#f87171",fontWeight:700,cursor:"pointer",fontSize:13,fontFamily:"inherit",marginTop:8,marginBottom:16}}>Sign Out</button>}
+        {onSignOut && <button onClick={()=>{console.log('Sign out clicked'); onSignOut();}} style={{width:"100%",padding:"10px",borderRadius:10,border:"1px solid rgba(239,68,68,0.25)",background:"rgba(239,68,68,0.08)",color:"#f87171",fontWeight:700,cursor:"pointer",fontSize:13,fontFamily:"inherit",marginTop:8,marginBottom:16}}>Sign Out</button>}
       </div>
     </div>
   );
