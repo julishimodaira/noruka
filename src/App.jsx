@@ -1829,7 +1829,13 @@ export default function App(){
             updated_at: new Date()
           });
         }
-      }} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{await supabase.auth.signOut();setShowProfile(false);}}/>}
+      }} onClose={()=>setShowProfile(false)} savedRoutes={savedRoutes} onDeleteRoute={deleteRoute} onOpenJourney={()=>{setShowProfile(false);setShowJourney(true);}} onSignOut={async()=>{
+        console.log('Signing out...');
+        const { error } = await supabase.auth.signOut();
+        console.log('Sign out result:', error ? error.message : 'success');
+        setUser(null);
+        setShowProfile(false);
+      }}/>}
 
 
       {legalPage && (
