@@ -1667,13 +1667,19 @@ export default function App(){
   const saveRoute = async route => {
     if (user) {
       try {
-        const { error } = await supabase.from('saved_routes').insert({
-          user_email: user.email,
-          from_station: route.from,
-          to_station: route.to,
-          plan: route.plan
+        const response = await fetch('/api/save-route', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_email: user.email,
+            from_station: route.from,
+            to_station: route.to,
+            plan: route.plan
+          })
         });
-        if (error) { console.error('Insert error:', error); }
+        const result = await response.json();
+        console.log('Save result:', result);
+        // Reload routes
         const { data: routes } = await supabase.from('saved_routes').select('*').eq('user_email', user.email).order('created_at', { ascending: false });
         if (routes) setSavedRoutes(routes.map(r => ({id: r.id, from: r.from_station, to: r.to_station, plan: r.plan, date: new Date(r.created_at).toLocaleDateString()})));
       } catch(e) { console.error('Save error:', e); }
