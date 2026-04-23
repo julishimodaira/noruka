@@ -1707,6 +1707,7 @@ export default function App(){
   const [legalPage,setLegalPage]=useState(null);
   const [user,setUser]=useState(null);
   const [showAuth,setShowAuth]=useState(false);
+  const [showResetPassword,setShowResetPassword]=useState(false);
   const [showLangMenu,setShowLangMenu]=useState(false);
   const t = T[lang] || T.en;
   const [globalSearch,setGlobalSearch]=useState("");
@@ -1736,6 +1737,10 @@ export default function App(){
       }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (_event === 'PASSWORD_RECOVERY') {
+        setShowResetPassword(true);
+        return;
+      }
       const u = session?.user ?? null;
       setUser(u);
       if (u) {
@@ -1809,6 +1814,32 @@ export default function App(){
 
       {showPhrases&&<PhraseModal onClose={()=>setShowPhrases(false)}/>}
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onSuccess={()=>setShowAuth(false)}/>}
+      
+      {showResetPassword && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(8px)"}}>
+          <div style={{background:"#0f1424",borderRadius:18,border:"1px solid rgba(255,255,255,0.09)",width:"100%",maxWidth:420,padding:"24px 20px"}}>
+            <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:18,fontWeight:700,color:"#fff",marginBottom:6}}>Set new password</div>
+            <div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginBottom:20}}>Choose a new password for your Noruka account</div>
+            <input
+              id="new-password"
+              type="password"
+              placeholder="New password (min 6 characters)"
+              style={{width:"100%",background:"rgba(255,255,255,0.05)",border:"1px solid rgba(255,255,255,0.1)",borderRadius:12,padding:"12px 14px",fontSize:13,color:"#fff",outline:"none",fontFamily:"inherit",boxSizing:"border-box",marginBottom:12}}
+            />
+            <button onClick={async()=>{
+              const newPassword = document.getElementById('new-password').value;
+              if (!newPassword || newPassword.length < 6) { alert('Password must be at least 6 characters'); return; }
+              const { error } = await supabase.auth.updateUser({ password: newPassword });
+              if (error) { alert(error.message); return; }
+              setShowResetPassword(false);
+              alert('Password updated successfully! Please sign in with your new password.');
+            }} style={{width:"100%",padding:"12px",borderRadius:12,border:"none",background:"linear-gradient(135deg,#3b82f6,#06b6d4)",color:"#fff",fontWeight:700,cursor:"pointer",fontSize:14,fontFamily:"inherit"}}>
+              Update Password
+            </button>
+          </div>
+        </div>
+      )}
+
       {showJourney&&<JourneyPlanner profile={profile} onClose={()=>setShowJourney(false)} t={t} lang={lang} onSaveRoute={saveRoute}/>}
       {/* Floating Plan Trip button - visible on city and station pages */}
       {page!=="home"&&(
