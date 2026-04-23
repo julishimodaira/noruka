@@ -1514,7 +1514,7 @@ Please provide a complete step-by-step accessible journey plan.`;
       setTimeout(()=>setCopied(false), 2000);
     }
   };
-  const handleSave = () => { console.log("handleSave called, plan exists:", !!plan);
+  const handleSave = () => {
     if(!plan) return;
     onSaveRoute({id:Date.now(),from,to,plan,date:new Date().toLocaleDateString()});
     setSaved(true);
