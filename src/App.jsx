@@ -1715,6 +1715,14 @@ export default function App(){
 
   const {weather, lastUpdated} = useWeather();
 
+  // Detect password reset from URL on load
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('type=recovery')) {
+      setShowResetPassword(true);
+    }
+  }, []);
+
   // Listen for auth state changes and load profile
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
