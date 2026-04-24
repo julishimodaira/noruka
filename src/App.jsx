@@ -1722,12 +1722,13 @@ export default function App(){
     if (
       hash.includes('type=recovery') ||
       hash.includes('access_token') ||
+      hash.includes('recovery') ||
       params.get('type') === 'recovery'
     ) {
       setShowResetPassword(true);
     }
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user && (hash.includes('access_token') || params.get('type') === 'recovery')) {
+      if (session?.user && (hash.includes('access_token') || hash.includes('recovery') || params.get('type') === 'recovery')) {
         setShowResetPassword(true);
       }
     });
