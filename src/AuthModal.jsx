@@ -25,7 +25,7 @@ export default function AuthModal({ onClose, onSuccess }) {
         onClose();
       } else if (mode === "reset") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: "https://www.noruka.app"
+          redirectTo: "https://www.noruka.app/#recovery"
         });
         if (error) throw error;
         setMessage("Password reset email sent!");
