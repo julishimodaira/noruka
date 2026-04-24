@@ -1718,9 +1718,19 @@ export default function App(){
   // Detect password reset from URL on load
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash && hash.includes('type=recovery') || hash.includes('#reset') || window.location.hash.includes('access_token')) {
+    const params = new URLSearchParams(window.location.search);
+    if (
+      hash.includes('type=recovery') ||
+      hash.includes('access_token') ||
+      params.get('type') === 'recovery'
+    ) {
       setShowResetPassword(true);
     }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user && (hash.includes('access_token') || params.get('type') === 'recovery')) {
+        setShowResetPassword(true);
+      }
+    });
   }, []);
 
   // Listen for auth state changes and load profile
