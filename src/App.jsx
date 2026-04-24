@@ -336,12 +336,12 @@ function useWeather() {
 
 
 const PROFILE_TYPES = [
-  {id:"manual",icon:"🦽",label:"Manual Wheelchair"},
-  {id:"power",icon:"⚡",label:"Power Wheelchair"},
-  {id:"walking_frame",icon:"🚶",label:"Walker"},
-  {id:"visual",icon:"👁",label:"Visual Impairment"},
-  {id:"companion",icon:"👥",label:"With Caretaker"},
-  {id:"stroller",icon:"🍼",label:"Stroller"},
+  {id:"manual",icon:"🦽",label:"Manual Wheelchair",labelJp:"手動車椅子"},
+  {id:"power",icon:"⚡",label:"Power Wheelchair",labelJp:"電動車椅子"},
+  {id:"walking_frame",icon:"🚶",label:"Walker",labelJp:"歩行器使用"},
+  {id:"visual",icon:"👁",label:"Visual Impairment",labelJp:"視覚障害"},
+  {id:"companion",icon:"👥",label:"With Caretaker",labelJp:"介護者同伴"},
+  {id:"stroller",icon:"🍼",label:"Stroller",labelJp:"ベビーカー"},
 ];
 
 const PHRASES = [
@@ -856,7 +856,7 @@ function PhraseModal({onClose}){
 function EmergencyModal({profile,onClose}){
   const [copied,setCopied]=useState(false);
   const pt=PROFILE_TYPES.find(p=>p.id===profile?.type)||PROFILE_TYPES[0];
-  const text=`【緊急連絡カード / Emergency Card】\n私は${pt.label}の利用者です。\nI am a ${pt.label} user.\n${profile?.needs?"\n"+profile.needs:""}\n${profile?.emergencyContact?"\n緊急連絡先:\n"+profile.emergencyContact:""}\n\n119（救急）· 110（警察）· 03-5285-8181（英語ライフライン）\n119 Ambulance · 110 Police · 03-5285-8181 English Lifeline`;
+  const text=`【緊急連絡カード / Emergency Card】\n私は${pt.labelJp||pt.label}の利用者です。\nI am a ${pt.label} user.\n${profile?.needs?"\n"+profile.needs:""}\n${profile?.emergencyContact?"\n緊急連絡先 / Emergency Contact:\n"+profile.emergencyContact:""}\n\n119（救急）· 110（警察）· 03-5285-8181（英語ライフライン）\n119 Ambulance · 110 Police · 03-5285-8181 English Lifeline`;
   return(
     <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:500,display:"flex",alignItems:"center",justifyContent:"center",padding:16,backdropFilter:"blur(4px)"}} onClick={onClose}>
       <div onClick={e=>e.stopPropagation()} style={{background:"#0f1424",borderRadius:18,border:"1px solid rgba(239,68,68,0.3)",width:"100%",maxWidth:460,padding:"20px 17px"}}>
